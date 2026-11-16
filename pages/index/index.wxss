@@ -193,15 +193,28 @@
   width: calc(50% - 10rpx);
   box-sizing: border-box;
   background: #ffffff;
-  border-radius: 24rpx;
+  border-radius: 28rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.gcard-top {
-  height: 10rpx;
+.gcard-press {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 16rpx rgba(43, 43, 43, 0.12);
 }
 .gcard-body {
-  padding: 20rpx 24rpx 24rpx;
+  padding: 24rpx;
+}
+.gcard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18rpx;
+}
+.gcard-headright {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
 }
 .gcard-name {
   font-size: 30rpx;
@@ -213,27 +226,46 @@
 .gcard-cat {
   font-size: 22rpx;
   color: #a8a8a0;
-  margin: 6rpx 0 20rpx;
+  margin: 4rpx 0 20rpx;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.gcard-price {
-  font-size: 40rpx;
+.gcard-daily-big {
+  font-size: 44rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-}
-.gcard-foot {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-top: 8rpx;
-}
-.gcard-daily {
-  font-size: 24rpx;
   color: #7fa32a;
+  line-height: 1.2;
+}
+.gcard-daily-big .per {
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-left: 2rpx;
+}
+.gcard-price {
+  font-size: 22rpx;
+  color: #b0b0a8;
+  margin: 6rpx 0 18rpx;
+}
+.gcard-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+.gcard-bar-track {
+  flex: 1;
+  height: 10rpx;
+  background: #f0f2e6;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+.gcard-bar {
+  height: 100%;
+  border-radius: 6rpx;
 }
 .gcard-days {
   font-size: 20rpx;
   color: #c8c8c0;
+  flex-shrink: 0;
 }
