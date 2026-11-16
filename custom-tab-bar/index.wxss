@@ -85,8 +85,26 @@
   font-weight: 600;
 }
 
+/* ➕ 圆钮容器：小猫趴在顶部 */
+.plus-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* 探头小猫：趴在圆钮上沿，爪子搭在边缘 */
+.cat-peek {
+  position: absolute;
+  top: -62rpx;
+  left: 50%;
+  width: 104rpx;
+  height: 74rpx;
+  margin-left: -52rpx;
+  z-index: 3;
+}
+
 /* 右侧独立 ➕ 圆钮（荧光紫主色） */
 .plus {
+  position: relative;
   flex-shrink: 0;
   width: 108rpx;
   height: 108rpx;
@@ -99,6 +117,7 @@
   justify-content: center;
   box-shadow: 0 8rpx 28rpx rgba(168, 85, 247, 0.55);
   transition: transform 0.15s ease;
+  z-index: 2;
 }
 
 .plus-press {

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="170" viewBox="0 0 240 170">
+  <defs>
+    <filter id="sh" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 耳朵 -->
+  <polygon points="62,52 40,-6 122,26" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
+  <polygon points="178,52 200,-6 118,26" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
+  <polygon points="74,40 62,8 108,28" fill="#D8BDFB"/>
+  <polygon points="166,40 178,8 132,28" fill="#D8BDFB"/>
+
+  <!-- 脑袋 -->
+  <ellipse cx="120" cy="78" rx="66" ry="58" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5" filter="url(#sh)"/>
+
+  <!-- 眯眯眼 + ω嘴 + 腮红 -->
+  <path d="M74 68 Q84 80 94 68" fill="none" stroke="#4A4238" stroke-width="6" stroke-linecap="round"/>
+  <path d="M146 68 Q156 80 166 68" fill="none" stroke="#4A4238" stroke-width="6" stroke-linecap="round"/>
+  <path d="M112 96 Q116 102 120 98 Q124 102 128 96" fill="none" stroke="#4A4238" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="66" cy="90" rx="11" ry="7" fill="#D8BDFB" opacity="0.8"/>
+  <ellipse cx="174" cy="90" rx="11" ry="7" fill="#D8BDFB" opacity="0.8"/>
+
+  <!-- 扒边的两只前爪 -->
+  <ellipse cx="76" cy="150" rx="20" ry="15" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
+  <ellipse cx="164" cy="150" rx="20" ry="15" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
+  <path d="M70 144 v10 M82 144 v10" stroke="#E9DBFC" stroke-width="4" stroke-linecap="round"/>
+  <path d="M158 144 v10 M170 144 v10" stroke="#E9DBFC" stroke-width="4" stroke-linecap="round"/>
+</svg>
