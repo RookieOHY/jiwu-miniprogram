@@ -7,6 +7,7 @@ Component({
     selected: 0,
     list: [
       { pagePath: '/pages/index/index', text: '物品' },
+      { pagePath: '/pages/wishlist/wishlist', text: '种草' },
       { pagePath: '/pages/stats/stats', text: '统计' },
       { pagePath: '/pages/settings/settings', text: '设置' }
     ]

@@ -1,0 +1,37 @@
+<view class="page">
+
+  <!-- 主视觉 -->
+  <view class="card hero-card">
+    <view class="sprout-icon"></view>
+    <view class="hero-title">种草清单 · 开发中</view>
+    <view class="hero-sub">看到心动的先记一笔，冷静几天再决定买不买</view>
+  </view>
+
+  <!-- 未来玩法预告 -->
+  <view class="card">
+    <view class="sec-title">以后可以这样玩</view>
+    <view class="step">
+      <view class="step-idx">1</view>
+      <view class="step-main">
+        <view class="step-name">记录心动</view>
+        <view class="step-sub">先记下想买的东西，填预估价格，立刻看到它未来的日均</view>
+      </view>
+    </view>
+    <view class="step">
+      <view class="step-idx">2</view>
+      <view class="step-main">
+        <view class="step-name">冷静期</view>
+        <view class="step-sub">加入 N 天后才解锁「可购买」标记，防冲动消费</view>
+      </view>
+    </view>
+    <view class="step">
+      <view class="step-idx">3</view>
+      <view class="step-main">
+        <view class="step-name">拔草</view>
+        <view class="step-sub">确定要买，一键转入物品清单，继承价格和日期开始摊销</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

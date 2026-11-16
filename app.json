@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/stats/stats",
+    "pages/wishlist/wishlist",
     "pages/settings/settings",
     "pages/add/add",
     "pages/detail/detail"
@@ -23,6 +24,10 @@
       {
         "pagePath": "pages/index/index",
         "text": "物品"
+      },
+      {
+        "pagePath": "pages/wishlist/wishlist",
+        "text": "种草"
       },
       {
         "pagePath": "pages/stats/stats",

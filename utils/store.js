@@ -92,6 +92,7 @@ function addItem(data) {
     category: data.category || 'other',
     platform: data.platform || 'other',
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
+    icon: data.icon || null,
     note: data.note || '',
     pinned: false,
     retired: false,

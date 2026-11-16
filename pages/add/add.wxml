@@ -1,4 +1,18 @@
 <view class="page">
+
+  <!-- 物品图标预览（图标在物品之上） -->
+  <view class="icon-hero">
+    <view class="icon-preview">
+      <text wx:if="{{icon && icon.type === 'emoji'}}" class="icon-preview-emoji">{{icon.value}}</text>
+      <image wx:elif="{{icon && (icon.type === 'photo' || icon.type === '3d')}}" class="icon-preview-img" src="{{icon.value}}"/>
+      <text wx:else class="icon-preview-emoji">📦</text>
+      <view wx:if="{{icon}}" class="icon-clear" catchtap="clearIcon">×</view>
+    </view>
+    <view class="icon-change" bindtap="openIconPanel">
+      <text class="icon-change-txt">⇄ 更换图标</text>
+    </view>
+  </view>
+
   <view class="card form">
 
     <view class="field">
@@ -85,4 +99,67 @@
   <button class="btn-primary save-btn {{canSave ? '' : 'dim'}}" disabled="{{!canSave}}" bindtap="save">
     记一笔
   </button>
+</view>
+
+<!-- 图标选择面板（半屏弹层） -->
+<view wx:if="{{showIconPanel}}" class="icon-mask" bindtap="closeIconPanel">
+  <view class="icon-panel" catchtap="noop">
+    <view class="icon-panel-head">
+      <text class="icon-panel-cancel" bindtap="closeIconPanel">取消</text>
+      <text class="icon-panel-title">选择图标</text>
+      <text class="icon-panel-ok" bindtap="closeIconPanel">确定</text>
+    </view>
+
+    <view class="icon-panel-actions">
+      <view class="icon-action" data-src="album" bindtap="pickPhoto">🖼️ 从图库选择</view>
+      <view class="icon-action" data-src="camera" bindtap="pickPhoto">📷 拍照</view>
+    </view>
+
+    <view class="icon-tabs">
+      <view class="icon-tab {{iconTab === 'emoji' ? 'on' : ''}}" data-tab="emoji" bindtap="setIconTab">Emoji</view>
+      <view class="icon-tab {{iconTab === '3d' ? 'on' : ''}}" data-tab="3d" bindtap="setIconTab">3D 图标</view>
+    </view>
+
+    <view class="icon-search">
+      <input
+        class="icon-search-input"
+        placeholder="搜索（如：手机 咖啡 相机）"
+        placeholder-class="ph"
+        value="{{iconKeyword}}"
+        bindinput="onIconSearch"
+      />
+    </view>
+
+    <scroll-view scroll-y class="icon-grid-scroll">
+      <!-- Emoji 网格 -->
+      <view wx:if="{{iconTab === 'emoji'}}" class="icon-grid">
+        <view
+          wx:for="{{emojiList}}"
+          wx:key="index"
+          class="icon-cell"
+          data-e="{{item.e}}"
+          bindtap="pickEmoji"
+        >
+          <text class="icon-cell-emoji">{{item.e}}</text>
+          <text class="icon-cell-name">{{item.name}}</text>
+        </view>
+        <view wx:if="{{!emojiList.length}}" class="icon-empty">没有匹配的 emoji</view>
+      </view>
+
+      <!-- 3D 图标网格 -->
+      <view wx:else class="icon-grid">
+        <view
+          wx:for="{{icon3dList}}"
+          wx:key="key"
+          class="icon-cell"
+          data-src="{{item.src}}"
+          bindtap="pick3d"
+        >
+          <image class="icon-cell-img" src="{{item.src}}" mode="aspectFit"/>
+          <text class="icon-cell-name">{{item.name}}</text>
+        </view>
+        <view wx:if="{{!icon3dList.length}}" class="icon-empty">没有匹配的 3D 图标</view>
+      </view>
+    </scroll-view>
+  </view>
 </view>
