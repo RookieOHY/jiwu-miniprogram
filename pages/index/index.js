@@ -6,9 +6,7 @@ Page({
     totalSpend: '0',
     todaySpend: '0',
     count: 0,
-    filter: 'all', // all | 持有中 | 已退役
-    activeCat: 'all',
-    categories: [{ key: 'all', name: '全部' }].concat(store.CATEGORIES),
+    filter: 'all', // all | 持有中 | 已退役 | 已卖出
     viewMode: 'list' // list | card
   },
 
@@ -41,7 +39,6 @@ Page({
         if (this.data.filter === '持有中' && it.retired) return false
         if (this.data.filter === '已退役' && (!it.retired || it.sold)) return false
         if (this.data.filter === '已卖出' && !it.sold) return false
-        if (this.data.activeCat !== 'all' && it.category !== this.data.activeCat) return false
         return true
       })
       .map((it) => ({
@@ -76,10 +73,6 @@ Page({
 
   setFilter(e) {
     this.setData({ filter: e.currentTarget.dataset.f }, () => this.refresh())
-  },
-
-  setCat(e) {
-    this.setData({ activeCat: e.currentTarget.dataset.key }, () => this.refresh())
   },
 
   goAdd() {

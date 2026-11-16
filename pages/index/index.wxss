@@ -69,24 +69,6 @@
   background: #2b2b2b;
   color: #ffffff;
 }
-.cats {
-  white-space: nowrap;
-  margin: 0 4rpx 24rpx;
-}
-.cat-chip {
-  display: inline-block;
-  font-size: 26rpx;
-  padding: 8rpx 26rpx;
-  border-radius: 32rpx;
-  margin-right: 14rpx;
-  background: #f0f2e6;
-  color: #9b9b93;
-}
-.cat-chip.on {
-  background: #eef3d8;
-  color: #5c7a12;
-  font-weight: 600;
-}
 
 /* 物品卡片 */
 .item {

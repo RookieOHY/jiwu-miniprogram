@@ -24,17 +24,6 @@
     <view class="view-toggle" bindtap="toggleView">{{viewMode === 'list' ? '▦' : '☰'}}</view>
   </view>
 
-  <!-- 分类横滑 -->
-  <scroll-view scroll-x class="cats" enhanced show-scrollbar="{{false}}">
-    <view
-      wx:for="{{categories}}"
-      wx:key="key"
-      class="cat-chip {{activeCat === item.key ? 'on' : ''}}"
-      data-key="{{item.key}}"
-      bindtap="setCat"
-    >{{item.name}}</view>
-  </scroll-view>
-
   <!-- 物品列表（列表视图） -->
   <block wx:if="{{viewMode === 'list'}}">
     <view wx:if="{{items.length === 0}}" class="empty">
