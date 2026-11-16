@@ -14,9 +14,9 @@ page {
   box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
 }
 
-/* 通用按钮（荧光紫主色） */
+/* 通用按钮（荧光紫渐变） */
 .btn-primary {
-  background: #a855f7;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #c084fc 100%);
   color: #ffffff;
   border-radius: 48rpx;
   font-size: 32rpx;

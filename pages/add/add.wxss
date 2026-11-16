@@ -42,7 +42,7 @@
   color: #9b93a8;
 }
 .cat-opt.on {
-  background: #a855f7;
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
   color: #ffffff;
 }
 .cat-opt-dot {
@@ -70,7 +70,7 @@
   color: #9b93a8;
 }
 .cur-opt.on {
-  background: #a855f7;
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
   color: #ffffff;
 }
 .more-opt {

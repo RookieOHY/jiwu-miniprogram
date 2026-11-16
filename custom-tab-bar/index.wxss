@@ -37,13 +37,13 @@
   transition: background 0.15s ease;
 }
 
-/* 选中态：荧光紫淡底圆角高亮 */
+/* 选中态：荧光紫淡底渐变圆角高亮 */
 .tab.on {
-  background: rgba(168, 85, 247, 0.12);
+  background: linear-gradient(135deg, #e4d6fc, #f6f1ff);
 }
 
 .tab-press {
-  background: rgba(168, 85, 247, 0.12);
+  background: linear-gradient(135deg, #e4d6fc, #f6f1ff);
 }
 
 /* 图标：Lucide 风格 SVG，灰 → 选中变深 */
@@ -85,13 +85,13 @@
   font-weight: 600;
 }
 
-/* 右侧独立 ➕ 圆钮（荧光紫主色） */
+/* 右侧独立 ➕ 圆钮（荧光紫渐变主色） */
 .plus {
   flex-shrink: 0;
   width: 108rpx;
   height: 108rpx;
   border-radius: 50%;
-  background: #a855f7;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #c084fc 100%);
   color: #ffffff;
   font-size: 56rpx;
   display: flex;

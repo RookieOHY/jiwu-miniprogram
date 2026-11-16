@@ -54,7 +54,7 @@
   width: 10rpx;
   min-height: 4rpx;
   border-radius: 6rpx;
-  background: #a855f7;
+  background: linear-gradient(to top, #8b5cf6, #c084fc);
   margin-bottom: 8rpx;
 }
 .bar-day {
@@ -87,7 +87,7 @@
 .mbar {
   width: 44rpx;
   border-radius: 12rpx 12rpx 4rpx 4rpx;
-  background: #a855f7;
+  background: linear-gradient(to top, #8b5cf6, #c084fc);
 }
 .mbar-label {
   font-size: 22rpx;
@@ -174,7 +174,7 @@
   flex-shrink: 0;
 }
 .rank-idx.top {
-  background: #a855f7;
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
   color: #ffffff;
 }
 .rank-name {
