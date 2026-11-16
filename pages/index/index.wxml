@@ -14,7 +14,7 @@
           <view class="hero-num-label">总日均</view>
         </view>
       </view>
-      <view class="hero-sub">共 {{count}} 件 · 今日支出 ¥{{todaySpend}}</view>
+      <view class="hero-sub">共 {{count}} 件</view>
     </view>
     <view class="hero-btn" bindtap="goStats">统计 ↗</view>
   </view>
