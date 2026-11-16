@@ -33,6 +33,13 @@ Page({
     if (saved) this.setData({ viewMode: saved })
   },
 
+  /** 切换列表/卡片视图，图标显示将要切过去的视图 */
+  toggleView() {
+    const viewMode = this.data.viewMode === 'list' ? 'card' : 'list'
+    this.setData({ viewMode })
+    wx.setStorageSync('viewMode', viewMode)
+  },
+
   /** 直接选择视图（list | card），不做切换翻转 */
   setView(e) {
     const viewMode = e.currentTarget.dataset.v

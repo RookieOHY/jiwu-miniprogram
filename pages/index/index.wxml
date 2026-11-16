@@ -21,10 +21,7 @@
         bindtap="setFilter"
       >{{item === 'all' ? '全部' : item}}</view>
     </view>
-    <view class="seg">
-      <view class="seg-btn seg-list {{viewMode === 'list' ? 'on' : ''}}" data-v="list" bindtap="setView"></view>
-      <view class="seg-btn seg-grid {{viewMode === 'card' ? 'on' : ''}}" data-v="card" bindtap="setView"></view>
-    </view>
+    <view class="view-toggle {{viewMode === 'list' ? 'to-card' : 'to-list'}}" bindtap="toggleView"></view>
   </view>
 
   <!-- 物品列表（列表视图） -->
