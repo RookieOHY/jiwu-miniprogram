@@ -4,14 +4,12 @@ Page({
   data: {
     items: [],
     totalSpend: '0',
-    todaySpend: '0',
     count: 0,
     filter: 'all', // all | 持有中 | 已退役 | 已卖出
     viewMode: 'list', // list | card
     heroHidden: false,
     totalDaily: '0'
   },
-
   /** 上滑收起顶部绿色汇总卡（迟滞阈值防抖动：>300 收起，<20 展开） */
   onPageScroll(e) {
     const st = e.scrollTop
@@ -56,9 +54,6 @@ Page({
   refresh() {
     const all = store.getAll()
     const today = this.fmtDate(new Date())
-    const todaySpend = all
-      .filter((it) => it.buyDate === today)
-      .reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
     const totalSpend = all.reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
     // 总日均：持有中物品的日均成本之和（折算人民币）
     const totalDaily = all
@@ -95,7 +90,6 @@ Page({
       items,
       count: all.length,
       totalSpend: store.fmtMoney(totalSpend),
-      todaySpend: store.fmtMoney(todaySpend),
       totalDaily: store.fmtMoney(totalDaily)
     })
   },

@@ -16,7 +16,6 @@
       </view>
       <view class="hero-sub">共 {{count}} 件</view>
     </view>
-    <view class="hero-btn" bindtap="goStats">统计 ↗</view>
   </view>
 
   <!-- 筛选 + 视图切换 -->
