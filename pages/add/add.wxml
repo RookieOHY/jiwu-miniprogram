@@ -63,7 +63,7 @@
         <view
           wx:for="{{platforms}}"
           wx:key="key"
-          class="cat-opt {{platform === item.key ? 'on' : ''}}"
+          class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
           bindtap="onPlatform"
         >{{item.name}}</view>
