@@ -47,6 +47,12 @@ const PLATFORMS = [
   { key: 'xy',   name: '闲鱼' },
   { key: 'wx',   name: '微信小店' },
   { key: 'dy',   name: '抖音' },
+  { key: 'amazon', name: '亚马逊' },
+  { key: 'ebay',   name: 'eBay' },
+  { key: 'iherb',  name: 'iHerb' },
+  { key: 'shein',  name: 'SHEIN' },
+  { key: 'temu',   name: 'Temu' },
+  { key: 'ali',    name: '速卖通' },
   { key: 'off',  name: '线下' },
   { key: 'other', name: '其他' }
 ]

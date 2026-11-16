@@ -143,6 +143,12 @@
 .pfc-wx   { background: #07c160; }
 .pfc-dy   { background: #161823; }
 .pfc-off  { background: #8a6d3b; }
+.pfc-amazon { background: #ff9900; }
+.pfc-ebay   { background: #0064d2; }
+.pfc-iherb  { background: #43a047; }
+.pfc-shein  { background: #111111; }
+.pfc-temu   { background: #fb7701; }
+.pfc-ali    { background: #e62e04; }
 
 /* 排行 */
 .rank-row {

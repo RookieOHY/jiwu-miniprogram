@@ -59,6 +59,12 @@ page {
 .cat-opt.pf-wx   { background: rgba(7, 193, 96, 0.09); color: #129a52; }
 .cat-opt.pf-dy   { background: rgba(22, 24, 35, 0.08); color: #161823; }
 .cat-opt.pf-off  { background: rgba(138, 109, 59, 0.10); color: #8a6d3b; }
+.cat-opt.pf-amazon { background: rgba(255, 153, 0, 0.12); color: #b36b00; }
+.cat-opt.pf-ebay   { background: rgba(0, 100, 210, 0.10); color: #0064d2; }
+.cat-opt.pf-iherb  { background: rgba(67, 160, 71, 0.10); color: #2e7d32; }
+.cat-opt.pf-shein  { background: rgba(17, 17, 17, 0.08); color: #111111; }
+.cat-opt.pf-temu   { background: rgba(251, 119, 1, 0.12); color: #d96a00; }
+.cat-opt.pf-ali    { background: rgba(230, 46, 4, 0.10); color: #e62e04; }
 
 /* 分类标签淡底彩字（与渠道标签同风格） */
 .cat-opt.cat-food       { background: rgba(246, 196, 83, 0.16); color: #a87d00; }
@@ -78,3 +84,9 @@ page {
 .pfc-wx   { background: #07c160; }
 .pfc-dy   { background: #161823; }
 .pfc-off  { background: #8a6d3b; }
+.pfc-amazon { background: #ff9900; }
+.pfc-ebay   { background: #0064d2; }
+.pfc-iherb  { background: #43a047; }
+.pfc-shein  { background: #111111; }
+.pfc-temu   { background: #fb7701; }
+.pfc-ali    { background: #e62e04; }
