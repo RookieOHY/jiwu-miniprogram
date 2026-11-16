@@ -1,6 +1,5 @@
 .page {
   padding: 24rpx;
-  padding-top: 132rpx;
   padding-bottom: 200rpx;
 }
 
@@ -44,20 +43,12 @@
   padding: 10rpx 24rpx;
 }
 
-/* 工具栏：筛选 + 视图切换（fixed 吸顶，热区稳定） */
+/* 工具栏：筛选 + 视图切换（随内容滚动） */
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0;
-  position: fixed;
-  top: 12rpx;
-  left: 24rpx;
-  right: 24rpx;
-  z-index: 20;
-  padding: 12rpx 8rpx;
-  background: #f7f7f2;
-  border-radius: 40rpx;
+  margin: 0 4rpx 16rpx;
 }
 .filters {
   display: flex;
