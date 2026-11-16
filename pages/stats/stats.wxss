@@ -196,6 +196,7 @@
   color: #7fa32a;
   flex-shrink: 0;
 }
+/* 给悬浮胶囊 TabBar 让位 */
 .bottom-space {
-  height: 40rpx;
+  height: 200rpx;
 }

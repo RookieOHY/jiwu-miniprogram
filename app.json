@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/stats/stats",
+    "pages/settings/settings",
     "pages/add/add",
     "pages/detail/detail"
   ],
@@ -13,6 +14,7 @@
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
+    "custom": true,
     "color": "#9b9b93",
     "selectedColor": "#2b2b2b",
     "backgroundColor": "#ffffff",
@@ -25,6 +27,10 @@
       {
         "pagePath": "pages/stats/stats",
         "text": "统计"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "设置"
       }
     ]
   },

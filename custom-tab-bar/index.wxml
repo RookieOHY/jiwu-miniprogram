@@ -1,0 +1,20 @@
+<view class="tabbar-wrap">
+  <!-- 左侧胶囊：3 个 tab -->
+  <view class="capsule">
+    <view
+      wx:for="{{list}}"
+      wx:key="pagePath"
+      class="tab {{selected === index ? 'on' : ''}}"
+      data-index="{{index}}"
+      bindtap="switchTab"
+      hover-class="tab-press"
+      hover-stay-time="80"
+    >
+      <view class="tab-icon icon-{{index}}"></view>
+      <view class="tab-label">{{item.text}}</view>
+    </view>
+  </view>
+
+  <!-- 右侧独立 ➕ 圆钮 -->
+  <view class="plus" bindtap="goAdd" hover-class="plus-press" hover-stay-time="80">＋</view>
+</view>

@@ -1,0 +1,40 @@
+<view class="page">
+
+  <!-- 数据 -->
+  <view class="card">
+    <view class="sec-title">数据</view>
+    <view class="row" bindtap="exportData" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">导出全部数据</view>
+        <view class="row-sub">复制 JSON 备份到剪贴板，粘贴保存防丢</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <view class="row" bindtap="clearData" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name danger">清空全部数据</view>
+        <view class="row-sub">删除所有物品记录，不可恢复</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="card">
+    <view class="sec-title">关于</view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">版本</view>
+        <view class="row-sub">MVP · 数据仅保存在本机，不上传服务器</view>
+      </view>
+    </view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">深色模式</view>
+        <view class="row-sub">规划中，敬请期待</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

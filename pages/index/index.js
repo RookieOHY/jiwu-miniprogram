@@ -24,6 +24,10 @@ Page({
   },
 
   onShow() {
+    // 同步胶囊 TabBar 选中态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 })
+    }
     this.refresh()
   },
 
@@ -70,6 +74,7 @@ Page({
         buyDate: it.buyDate,
         category: it.category,
         catName: store.getCategoryName(it.category),
+        platform: it.platform,
         platformName: store.getPlatformName(it.platform),
         symbol: store.currencySymbol(it.currency),
         retired: it.retired,
@@ -98,10 +103,6 @@ Page({
 
   setFilter(e) {
     this.setData({ filter: e.currentTarget.dataset.f }, () => this.refresh())
-  },
-
-  goAdd() {
-    wx.navigateTo({ url: '/pages/add/add' })
   },
 
   goDetail(e) {

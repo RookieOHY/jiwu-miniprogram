@@ -161,26 +161,9 @@
   font-size: 24rpx;
   margin-top: 8rpx;
 }
+/* 给悬浮胶囊 TabBar 让位 */
 .bottom-space {
-  height: 40rpx;
-}
-
-/* 悬浮按钮 */
-.fab {
-  position: fixed;
-  right: 40rpx;
-  bottom: 60rpx;
-  width: 108rpx;
-  height: 108rpx;
-  border-radius: 50%;
-  background: #a5cd39;
-  color: #2b2b2b;
-  font-size: 56rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(165, 205, 57, 0.45);
-  z-index: 10;
+  height: 200rpx;
 }
 
 /* 卡片视图网格 */
