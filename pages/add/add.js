@@ -8,7 +8,8 @@ Page({
     category: 'other',
     categories: store.CATEGORIES,
     platform: 'other',
-    platforms: store.PLATFORMS,
+    platformChips: [],
+    showAllPlatforms: false,
     currency: 'CNY',
     currencies: store.CURRENCIES,
     note: '',
@@ -21,6 +22,21 @@ Page({
     const p = (n) => (n < 10 ? '0' + n : '' + n)
     const today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
     this.setData({ buyDate: today, maxDate: today })
+    this.updatePlatformChips()
+  },
+
+  /** 计算渠道标签：收起时只显示常用项 + 当前已选的非常用项 */
+  updatePlatformChips() {
+    const list = this.data.showAllPlatforms
+      ? store.PLATFORMS
+      : store.PLATFORMS.filter(
+          (p) => store.COMMON_PLATFORMS.includes(p.key) || p.key === this.data.platform
+        )
+    this.setData({ platformChips: list })
+  },
+
+  togglePlatforms() {
+    this.setData({ showAllPlatforms: !this.data.showAllPlatforms }, () => this.updatePlatformChips())
   },
 
   onName(e) {
@@ -42,7 +58,7 @@ Page({
   },
 
   onPlatform(e) {
-    this.setData({ platform: e.currentTarget.dataset.key })
+    this.setData({ platform: e.currentTarget.dataset.key }, () => this.updatePlatformChips())
   },
 
   onCurrency(e) {

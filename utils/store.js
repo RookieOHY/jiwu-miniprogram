@@ -57,6 +57,9 @@ const PLATFORMS = [
   { key: 'other', name: '其他' }
 ]
 
+// 常用渠道（表单平铺展示，其余收进「更多」）
+const COMMON_PLATFORMS = ['jd', 'tb', 'pdd', 'xy', 'wx', 'amazon', 'other']
+
 function getPlatformName(key) {
   const p = PLATFORMS.find((p) => p.key === key)
   return p ? p.name : '其他'
@@ -155,6 +158,7 @@ function pinnedCount() {
 module.exports = {
   CATEGORIES,
   PLATFORMS,
+  COMMON_PLATFORMS,
   CURRENCIES,
   USD_TO_CNY,
   PIN_LIMIT,

@@ -58,12 +58,15 @@
       <view class="label">购买渠道</view>
       <view class="cat-grid">
         <view
-          wx:for="{{platforms}}"
+          wx:for="{{platformChips}}"
           wx:key="key"
           class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
           bindtap="onPlatform"
         >{{item.name}}</view>
+        <view class="cat-opt more-opt" bindtap="togglePlatforms">
+          {{showAllPlatforms ? '收起 ▴' : '更多 ▾'}}
+        </view>
       </view>
     </view>
 
