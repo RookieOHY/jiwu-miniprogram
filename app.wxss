@@ -131,3 +131,42 @@ page {
 .badge-study       { background-color: rgba(179, 157, 219, 0.22); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237e57c2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20'/%3E%3C/svg%3E"); }
 .badge-sport       { background-color: rgba(241, 154, 126, 0.22); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d97048' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E"); }
 .badge-other       { background-color: rgba(196, 187, 168, 0.25); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8378' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7.5 4.27 9 5.15'/%3E%3Cpath d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'/%3E%3Cpath d='m3.3 7 8.7 5 8.7-5'/%3E%3Cpath d='M12 22V12'/%3E%3C/svg%3E"); }
+
+/* ============ 夜间模式 ============ */
+@media (prefers-color-scheme: dark) {
+  page {
+    background: #161320;
+    color: #eae5f4;
+  }
+  .card {
+    background: #221e2d;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.35);
+  }
+  .btn-primary {
+    box-shadow: 0 6rpx 24rpx rgba(168, 85, 247, 0.4);
+  }
+
+  /* 中性胶囊底色 */
+  .cat-opt       { color: #a79bc4; }
+  .cat-opt.cat-food        { background: rgba(246, 196, 83, 0.14); }
+  .cat-opt.cat-electronic  { background: rgba(125, 167, 217, 0.14); }
+  .cat-opt.cat-clothing    { background: rgba(232, 160, 154, 0.14); }
+  .cat-opt.cat-home        { background: rgba(155, 192, 138, 0.14); }
+  .cat-opt.cat-study       { background: rgba(179, 157, 219, 0.14); }
+  .cat-opt.cat-sport       { background: rgba(241, 154, 126, 0.14); }
+  .cat-opt.cat-other       { background: rgba(196, 187, 168, 0.10); }
+  .cat-opt.pf-jd   { background: rgba(225, 37, 27, 0.15); }
+  .cat-opt.pf-tb   { background: rgba(255, 80, 0, 0.15); }
+  .cat-opt.pf-pdd  { background: rgba(226, 46, 31, 0.15); }
+  .cat-opt.pf-vip  { background: rgba(228, 0, 127, 0.15); }
+  .cat-opt.pf-xy   { background: rgba(255, 230, 15, 0.12); }
+  .cat-opt.pf-wx   { background: rgba(7, 193, 96, 0.14); }
+  .cat-opt.pf-dy   { background: rgba(255, 255, 255, 0.08); color: #eae5f4; }
+  .cat-opt.pf-off  { background: rgba(138, 109, 59, 0.18); }
+  .cat-opt.pf-amazon { background: rgba(255, 153, 0, 0.15); }
+  .cat-opt.pf-ebay   { background: rgba(0, 100, 210, 0.18); }
+  .cat-opt.pf-iherb  { background: rgba(67, 160, 71, 0.16); }
+  .cat-opt.pf-shein  { background: rgba(255, 255, 255, 0.10); color: #eae5f4; }
+  .cat-opt.pf-temu   { background: rgba(251, 119, 1, 0.16); }
+  .cat-opt.pf-ali    { background: rgba(230, 46, 4, 0.16); }
+}

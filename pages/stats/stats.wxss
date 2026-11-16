@@ -200,3 +200,41 @@
 .bottom-space {
   height: 200rpx;
 }
+
+/* ============ 夜间模式 ============ */
+@media (prefers-color-scheme: dark) {
+  .sec-title {
+    color: #8d85a0;
+  }
+  .avg-label {
+    color: #8d85a0;
+  }
+  .chart-max {
+    color: #6e6580;
+  }
+  .bar-day {
+    color: #6e6580;
+  }
+  .mbar-sum {
+    color: #8d85a0;
+  }
+  .mbar-label {
+    color: #8d85a0;
+  }
+  .cat-bar-track {
+    background: #352e44;
+  }
+  .cat-pct {
+    color: #8d85a0;
+  }
+  .rank-row {
+    border-bottom-color: #352e44;
+  }
+  .rank-idx {
+    background: #2c2640;
+    color: #a79bc4;
+  }
+  .rank-sub {
+    color: #6e6580;
+  }
+}

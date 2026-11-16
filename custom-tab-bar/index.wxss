@@ -104,3 +104,23 @@
 .plus-press {
   transform: scale(0.92);
 }
+
+/* ============ 夜间模式 ============ */
+@media (prefers-color-scheme: dark) {
+  .capsule {
+    background: #221e2d;
+    box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.5);
+  }
+  .tab.on {
+    background: linear-gradient(135deg, #3a3050, #2c2640);
+  }
+  .tab-press {
+    background: #3a3050;
+  }
+  .tab-label {
+    color: #8d85a0;
+  }
+  .tab.on .tab-label {
+    color: #b49cf8;
+  }
+}

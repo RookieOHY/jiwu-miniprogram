@@ -77,3 +77,28 @@
   background: #f3eefe;
   color: #9b93a8;
 }
+
+/* ============ 夜间模式 ============ */
+@media (prefers-color-scheme: dark) {
+  .field {
+    border-bottom-color: #352e44;
+  }
+  .label {
+    color: #8d85a0;
+  }
+  .ph {
+    color: #554d68;
+  }
+  .cur-opt {
+    background: #2c2640;
+    color: #a79bc4;
+  }
+  .cur-opt.on {
+    background: linear-gradient(135deg, #8b5cf6, #c084fc);
+    color: #ffffff;
+  }
+  .more-opt {
+    background: #2c2640;
+    color: #a79bc4;
+  }
+}

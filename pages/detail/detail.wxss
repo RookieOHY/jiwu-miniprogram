@@ -81,3 +81,25 @@
   color: #c05a4d;
   flex: 1;
 }
+
+/* ============ 夜间模式 ============ */
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background: linear-gradient(180deg, #6d3fd4 0%, #8b5cf6 40%, #2b2338 135%);
+    box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.5), 0 4rpx 24rpx rgba(168, 85, 247, 0.3);
+  }
+  .row {
+    border-bottom-color: #352e44;
+  }
+  .k {
+    color: #8d85a0;
+  }
+  .op-plain {
+    background: #2c2640;
+    color: #b49cf8;
+  }
+  .op-danger {
+    background: #3a2b33;
+    color: #e08579;
+  }
+}

@@ -7,18 +7,18 @@
     "pages/detail/detail"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#f7f7f2",
+    "navigationBarBackgroundColor": "@navBg",
     "navigationBarTitleText": "记物",
-    "navigationBarTextStyle": "black",
-    "backgroundColor": "#f7f7f2",
-    "backgroundTextStyle": "dark"
+    "navigationBarTextStyle": "@navTxt",
+    "backgroundColor": "@bg",
+    "backgroundTextStyle": "@bgTxt"
   },
   "tabBar": {
     "custom": true,
-    "color": "#9b9b93",
-    "selectedColor": "#2b2b2b",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "white",
+    "color": "@tabColor",
+    "selectedColor": "@tabSelected",
+    "backgroundColor": "@tabBg",
+    "borderStyle": "@tabBorder",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -36,5 +36,7 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "darkmode": true,
+  "themeLocation": "theme.json"
 }
