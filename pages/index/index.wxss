@@ -3,17 +3,18 @@
   padding-bottom: 200rpx;
 }
 
-/* 顶部汇总（黄绿渐变，上滑收起） */
+/* 顶部汇总（荧光紫渐变，上滑收起） */
 .hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #c9e96b, #a5cd39);
-  color: #2b3a0e;
+  background: linear-gradient(135deg, #c084fc, #8b5cf6);
+  color: #ffffff;
   padding: 36rpx 32rpx;
   margin-bottom: 24rpx;
   max-height: 400rpx;
   overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(168, 85, 247, 0.35);
   transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
 }
 .hero-hidden {
@@ -53,7 +54,7 @@
 }
 .hero-btn {
   font-size: 26rpx;
-  border: 1rpx solid rgba(43, 58, 14, 0.35);
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
   border-radius: 32rpx;
   padding: 10rpx 24rpx;
 }
@@ -139,12 +140,12 @@
   height: 26rpx;
   margin-right: 8rpx;
   vertical-align: -3rpx;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237fa32a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' x2='12' y1='17' y2='22'/%3E%3Cpath d='M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z'/%3E%3C/svg%3E") no-repeat center / contain;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' x2='12' y1='17' y2='22'/%3E%3Cpath d='M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 .tag-sold {
   font-size: 20rpx;
-  color: #7fa32a;
-  border: 1rpx solid #d3e3a0;
+  color: #8b5cf6;
+  border: 1rpx solid #d8c7f5;
   border-radius: 8rpx;
   padding: 0 8rpx;
   margin-left: 8rpx;
@@ -167,7 +168,7 @@
 }
 .item-daily {
   font-size: 22rpx;
-  color: #7fa32a;
+  color: #8b5cf6;
   margin-top: 4rpx;
 }
 
@@ -208,11 +209,11 @@
   transform: rotate(40deg);
   background: linear-gradient(
     to bottom,
-    rgba(165, 205, 57, 0.4),
-    rgba(165, 205, 57, 0.55)
+    rgba(168, 85, 247, 0.45),
+    rgba(168, 85, 247, 0.6)
   );
   border-radius: 6rpx;
-  box-shadow: 0 2rpx 6rpx rgba(43, 43, 43, 0.08);
+  box-shadow: 0 0 12rpx rgba(168, 85, 247, 0.35);
   z-index: 5;
 }
 .gcard-press {
@@ -261,8 +262,9 @@
   font-size: 44rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-  color: #7fa32a;
+  color: #8b5cf6;
   line-height: 1.2;
+  text-shadow: 0 0 16rpx rgba(168, 85, 247, 0.25);
 }
 .gcard-daily-big .per {
   font-size: 24rpx;

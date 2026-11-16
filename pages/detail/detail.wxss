@@ -2,11 +2,12 @@
   padding: 24rpx;
 }
 .hero {
-  background: linear-gradient(135deg, #c9e96b, #a5cd39);
-  color: #2b3a0e;
+  background: linear-gradient(135deg, #c084fc, #8b5cf6);
+  color: #ffffff;
   text-align: center;
   padding: 48rpx 32rpx;
   margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(168, 85, 247, 0.35);
 }
 .hero-label {
   font-size: 24rpx;
@@ -52,7 +53,7 @@
   font-family: "DIN Alternate", sans-serif;
 }
 .profit-pos {
-  color: #7fa32a;
+  color: #8b5cf6;
 }
 .profit-neg {
   color: #c05a4d;

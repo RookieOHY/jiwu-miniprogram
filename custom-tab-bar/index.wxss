@@ -85,19 +85,19 @@
   font-weight: 600;
 }
 
-/* 右侧独立 ➕ 圆钮（品牌黄绿主色） */
+/* 右侧独立 ➕ 圆钮（荧光紫主色） */
 .plus {
   flex-shrink: 0;
   width: 108rpx;
   height: 108rpx;
   border-radius: 50%;
-  background: #a5cd39;
-  color: #2b2b2b;
+  background: #a855f7;
+  color: #ffffff;
   font-size: 56rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 28rpx rgba(165, 205, 57, 0.45);
+  box-shadow: 0 8rpx 28rpx rgba(168, 85, 247, 0.55);
   transition: transform 0.15s ease;
 }
 

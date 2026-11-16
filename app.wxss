@@ -14,10 +14,10 @@ page {
   box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
 }
 
-/* 通用按钮（黄绿主色） */
+/* 通用按钮（荧光紫主色） */
 .btn-primary {
-  background: #a5cd39;
-  color: #2b2b2b;
+  background: #a855f7;
+  color: #ffffff;
   border-radius: 48rpx;
   font-size: 32rpx;
   padding: 20rpx 0;
