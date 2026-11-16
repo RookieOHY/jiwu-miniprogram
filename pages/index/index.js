@@ -29,8 +29,10 @@ Page({
     if (saved) this.setData({ viewMode: saved })
   },
 
-  toggleView() {
-    const viewMode = this.data.viewMode === 'list' ? 'card' : 'list'
+  /** 直接选择视图（list | card），不做切换翻转 */
+  setView(e) {
+    const viewMode = e.currentTarget.dataset.v
+    if (viewMode === this.data.viewMode) return
     this.setData({ viewMode })
     wx.setStorageSync('viewMode', viewMode)
   },
