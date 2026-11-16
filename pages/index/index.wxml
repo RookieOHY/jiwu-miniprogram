@@ -5,7 +5,7 @@
     <view class="hero-main">
       <view class="hero-label">物资总览</view>
       <view class="hero-num">¥{{totalSpend}}</view>
-      <view class="hero-sub">共 {{count}} 件物品 · 今日支出 ¥{{todaySpend}}</view>
+      <view class="hero-sub">共 {{count}} 件 · 今日支出 ¥{{todaySpend}} · 总日均 ¥{{totalDaily}}</view>
     </view>
     <view class="hero-btn" bindtap="goStats">统计 ↗</view>
   </view>
