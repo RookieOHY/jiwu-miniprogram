@@ -91,14 +91,14 @@
   flex-shrink: 0;
 }
 
-/* 探头小猫：趴在圆钮上沿，爪子搭在边缘 */
+/* 探头小猫：趴在圆钮上沿，只露脑袋和爪尖 */
 .cat-peek {
   position: absolute;
-  top: -62rpx;
+  top: -53rpx;
   left: 50%;
-  width: 104rpx;
-  height: 74rpx;
-  margin-left: -52rpx;
+  width: 92rpx;
+  height: 65rpx;
+  margin-left: -46rpx;
   z-index: 3;
 }
 
