@@ -50,12 +50,12 @@ page {
 .cat-sport     { background: #f19a7e; }
 .cat-other     { background: #c4bba8; }
 
-/* 购买渠道品牌色（淡底 + 品牌色文字） */
-.pf-jd   { background: rgba(225, 37, 27, 0.08); color: #d43a2f; }
-.pf-tb   { background: rgba(255, 80, 0, 0.08); color: #e8541c; }
-.pf-pdd  { background: rgba(226, 46, 31, 0.08); color: #d43a2f; }
-.pf-vip  { background: rgba(228, 0, 127, 0.08); color: #c9006f; }
-.pf-xy   { background: rgba(255, 230, 15, 0.18); color: #9c8a00; }
-.pf-wx   { background: rgba(7, 193, 96, 0.09); color: #129a52; }
-.pf-dy   { background: rgba(22, 24, 35, 0.08); color: #161823; }
-.pf-off  { background: rgba(138, 109, 59, 0.10); color: #8a6d3b; }
+/* 购买渠道品牌色（淡底 + 品牌色文字），加 .cat-opt 提升优先级避免被页面样式覆盖 */
+.cat-opt.pf-jd   { background: rgba(225, 37, 27, 0.08); color: #d43a2f; }
+.cat-opt.pf-tb   { background: rgba(255, 80, 0, 0.08); color: #e8541c; }
+.cat-opt.pf-pdd  { background: rgba(226, 46, 31, 0.08); color: #d43a2f; }
+.cat-opt.pf-vip  { background: rgba(228, 0, 127, 0.08); color: #c9006f; }
+.cat-opt.pf-xy   { background: rgba(255, 230, 15, 0.18); color: #9c8a00; }
+.cat-opt.pf-wx   { background: rgba(7, 193, 96, 0.09); color: #129a52; }
+.cat-opt.pf-dy   { background: rgba(22, 24, 35, 0.08); color: #161823; }
+.cat-opt.pf-off  { background: rgba(138, 109, 59, 0.10); color: #8a6d3b; }
