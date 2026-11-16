@@ -183,15 +183,14 @@
   position: relative;
 }
 
-/* 置顶和纸胶带：半透明产品绿，微倾斜贴在顶边 */
+/* 置顶和纸胶带：斜贴右上角 */
 .tape {
   position: absolute;
-  top: -16rpx;
-  left: 50%;
-  width: 150rpx;
-  height: 42rpx;
-  margin-left: -75rpx;
-  transform: rotate(-3deg);
+  top: -20rpx;
+  right: -50rpx;
+  width: 170rpx;
+  height: 44rpx;
+  transform: rotate(40deg);
   background: linear-gradient(
     to bottom,
     rgba(165, 205, 57, 0.4),
