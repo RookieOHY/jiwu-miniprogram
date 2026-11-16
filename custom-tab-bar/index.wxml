@@ -15,9 +15,6 @@
     </view>
   </view>
 
-  <!-- 右侧独立 ➕ 圆钮（小猫趴在圆钮上） -->
-  <view class="plus-wrap">
-    <image class="cat-peek" src="/assets/cat-peek.png"/>
-    <view class="plus" bindtap="goAdd" hover-class="plus-press" hover-stay-time="80">＋</view>
-  </view>
+  <!-- 右侧独立 ➕ 圆钮 -->
+  <view class="plus" bindtap="goAdd" hover-class="plus-press" hover-stay-time="80">＋</view>
 </view>
