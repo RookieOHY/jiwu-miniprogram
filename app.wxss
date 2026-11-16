@@ -1,17 +1,38 @@
 page {
-  background: #f7f7f2;
+  /* 色彩变量：明暗两套，页面样式一律引用变量 */
+  --bg: #f7f7f2;
+  --card: #ffffff;
+  --text-1: #2b2b2b;
+  --text-2: #a8a8a0;
+  --text-3: #c8c8c0;
+  --text-dim: #b0b0a8;
+  --border: #f1ecfa;
+  --chip: #f3eefe;
+  --chip-text: #9b93a8;
+  --track: #f1ecfa;
+  --line: #d8c8f7;
+  --sep: #d5d0e4;
+  --hero-end: #ece3fd;
+  --danger-bg: #f3e5e2;
+  --danger-text: #c05a4d;
+  --shadow-1: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
+  --shadow-press: 0 4rpx 16rpx rgba(43, 43, 43, 0.1);
+  --logo-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.18);
+  --hero-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.22), 0 4rpx 24rpx rgba(168, 85, 247, 0.3);
+
+  background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
-  color: #2b2b2b;
+  color: var(--text-1);
   font-size: 28rpx;
   line-height: 1.6;
 }
 
 /* 通用卡片 */
 .card {
-  background: #ffffff;
+  background: var(--card);
   border-radius: 24rpx;
   padding: 28rpx;
-  box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
+  box-shadow: var(--shadow-1);
 }
 
 /* 通用按钮（荧光紫渐变） */
@@ -132,15 +153,28 @@ page {
 .badge-sport       { background-color: rgba(241, 154, 126, 0.22); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d97048' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E"); }
 .badge-other       { background-color: rgba(196, 187, 168, 0.25); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8378' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7.5 4.27 9 5.15'/%3E%3Cpath d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'/%3E%3Cpath d='m3.3 7 8.7 5 8.7-5'/%3E%3Cpath d='M12 22V12'/%3E%3C/svg%3E"); }
 
-/* ============ 夜间模式 ============ */
+/* ============ 夜间模式：只翻转变量 ============ */
 @media (prefers-color-scheme: dark) {
   page {
-    background: #161320;
-    color: #eae5f4;
-  }
-  .card {
-    background: #221e2d;
-    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.35);
+    --bg: #161320;
+    --card: #221e2d;
+    --text-1: #eae5f4;
+    --text-2: #8d85a0;
+    --text-3: #6e6580;
+    --text-dim: #8d85a0;
+    --border: #352e44;
+    --chip: #2c2640;
+    --chip-text: #a79bc4;
+    --track: #352e44;
+    --line: #3a3150;
+    --sep: #4a4160;
+    --hero-end: #2b2338;
+    --danger-bg: #3a2b33;
+    --danger-text: #e08579;
+    --shadow-1: 0 2rpx 12rpx rgba(0, 0, 0, 0.35);
+    --shadow-press: 0 4rpx 16rpx rgba(0, 0, 0, 0.4);
+    --logo-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.4);
+    --hero-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.5), 0 4rpx 24rpx rgba(168, 85, 247, 0.3);
   }
   .btn-primary {
     box-shadow: 0 6rpx 24rpx rgba(168, 85, 247, 0.4);

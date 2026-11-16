@@ -5,7 +5,7 @@
 /* 区块标题 */
 .sec-title {
   font-size: 26rpx;
-  color: #b0a898;
+  color: var(--text-2);
   margin-bottom: 8rpx;
 }
 
@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   padding: 24rpx 0;
-  border-bottom: 1rpx solid #f2f2ec;
+  border-bottom: 1rpx solid var(--border);
 }
 .row:last-child {
   border-bottom: none;
@@ -30,16 +30,16 @@
   font-weight: 600;
 }
 .row-name.danger {
-  color: #c05a4d;
+  color: var(--danger-text);
 }
 .row-sub {
   font-size: 24rpx;
-  color: #b0a898;
+  color: var(--text-2);
   margin-top: 4rpx;
 }
 .row-arrow {
   font-size: 40rpx;
-  color: #c8c8c0;
+  color: var(--text-3);
   margin-left: 16rpx;
 }
 

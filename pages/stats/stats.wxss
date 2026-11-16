@@ -7,7 +7,7 @@
 }
 .sec-title {
   font-size: 26rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   margin-bottom: 24rpx;
 }
 
@@ -28,12 +28,12 @@
 }
 .avg-label {
   font-size: 22rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   margin-top: 4rpx;
 }
 .chart-max {
   font-size: 20rpx;
-  color: #c8c8c0;
+  color: var(--text-3);
   text-align: right;
   margin-bottom: 8rpx;
 }
@@ -59,7 +59,7 @@
 }
 .bar-day {
   font-size: 18rpx;
-  color: #c8c8c0;
+  color: var(--text-3);
 }
 
 /* 月度 */
@@ -80,7 +80,7 @@
 }
 .mbar-sum {
   font-size: 20rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   margin-bottom: 8rpx;
   white-space: nowrap;
 }
@@ -91,7 +91,7 @@
 }
 .mbar-label {
   font-size: 22rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   margin-top: 10rpx;
 }
 
@@ -117,7 +117,7 @@
 .cat-bar-track {
   flex: 1;
   height: 16rpx;
-  background: #f1ecfa;
+  background: var(--track);
   border-radius: 8rpx;
   overflow: hidden;
   margin: 0 16rpx;
@@ -130,7 +130,7 @@
   width: 90rpx;
   text-align: right;
   font-size: 24rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   flex-shrink: 0;
 }
 
@@ -155,7 +155,7 @@
   display: flex;
   align-items: center;
   padding: 18rpx 0;
-  border-bottom: 1rpx solid #f1ecfa;
+  border-bottom: 1rpx solid var(--border);
 }
 .rank-row:last-child {
   border-bottom: none;
@@ -164,8 +164,8 @@
   width: 48rpx;
   height: 48rpx;
   border-radius: 12rpx;
-  background: #f1ecfa;
-  color: #9b9b93;
+  background: var(--chip);
+  color: var(--chip-text);
   font-size: 24rpx;
   display: flex;
   align-items: center;
@@ -187,7 +187,7 @@
 }
 .rank-sub {
   font-size: 20rpx;
-  color: #b0b0a8;
+  color: var(--text-dim);
 }
 .rank-val {
   font-size: 30rpx;
@@ -199,42 +199,4 @@
 /* 给悬浮胶囊 TabBar 让位 */
 .bottom-space {
   height: 200rpx;
-}
-
-/* ============ 夜间模式 ============ */
-@media (prefers-color-scheme: dark) {
-  .sec-title {
-    color: #8d85a0;
-  }
-  .avg-label {
-    color: #8d85a0;
-  }
-  .chart-max {
-    color: #6e6580;
-  }
-  .bar-day {
-    color: #6e6580;
-  }
-  .mbar-sum {
-    color: #8d85a0;
-  }
-  .mbar-label {
-    color: #8d85a0;
-  }
-  .cat-bar-track {
-    background: #352e44;
-  }
-  .cat-pct {
-    color: #8d85a0;
-  }
-  .rank-row {
-    border-bottom-color: #352e44;
-  }
-  .rank-idx {
-    background: #2c2640;
-    color: #a79bc4;
-  }
-  .rank-sub {
-    color: #6e6580;
-  }
 }

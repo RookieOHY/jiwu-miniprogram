@@ -6,14 +6,14 @@
 }
 .field {
   padding: 20rpx 0;
-  border-bottom: 1rpx solid #f1ecfa;
+  border-bottom: 1rpx solid var(--border);
 }
 .field:last-child {
   border-bottom: none;
 }
 .label {
   font-size: 24rpx;
-  color: #a8a8a0;
+  color: var(--text-2);
   margin-bottom: 12rpx;
 }
 .input {
@@ -21,7 +21,7 @@
   padding: 8rpx 0;
 }
 .ph {
-  color: #c8c8c0;
+  color: var(--text-3);
 }
 .picker-val {
   font-weight: 600;
@@ -38,8 +38,8 @@
   font-size: 26rpx;
   padding: 10rpx 22rpx;
   border-radius: 32rpx;
-  background: #f3eefe;
-  color: #9b93a8;
+  background: var(--chip);
+  color: var(--chip-text);
 }
 .cat-opt.on {
   background: linear-gradient(135deg, #8b5cf6, #c084fc);
@@ -66,39 +66,14 @@
   font-size: 24rpx;
   padding: 6rpx 22rpx;
   border-radius: 28rpx;
-  background: #f3eefe;
-  color: #9b93a8;
+  background: var(--chip);
+  color: var(--chip-text);
 }
 .cur-opt.on {
   background: linear-gradient(135deg, #8b5cf6, #c084fc);
   color: #ffffff;
 }
 .more-opt {
-  background: #f3eefe;
-  color: #9b93a8;
-}
-
-/* ============ 夜间模式 ============ */
-@media (prefers-color-scheme: dark) {
-  .field {
-    border-bottom-color: #352e44;
-  }
-  .label {
-    color: #8d85a0;
-  }
-  .ph {
-    color: #554d68;
-  }
-  .cur-opt {
-    background: #2c2640;
-    color: #a79bc4;
-  }
-  .cur-opt.on {
-    background: linear-gradient(135deg, #8b5cf6, #c084fc);
-    color: #ffffff;
-  }
-  .more-opt {
-    background: #2c2640;
-    color: #a79bc4;
-  }
+  background: var(--chip);
+  color: var(--chip-text);
 }
