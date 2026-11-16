@@ -13,8 +13,11 @@
           <view class="hero-num">¥{{totalDaily}}</view>
           <view class="hero-num-label">总日均</view>
         </view>
+        <view class="hero-num-item">
+          <view class="hero-num">{{count}}</view>
+          <view class="hero-num-label">总件数</view>
+        </view>
       </view>
-      <view class="hero-sub">共 {{count}} 件</view>
     </view>
   </view>
 
