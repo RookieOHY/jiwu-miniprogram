@@ -116,20 +116,36 @@
 /* 物品卡片 */
 .item {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   margin-bottom: 20rpx;
-  padding: 26rpx 28rpx;
+  padding: 24rpx 28rpx;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.cat-dot {
-  width: 20rpx;
-  height: 80rpx;
-  border-radius: 10rpx;
-  margin-right: 24rpx;
+.item-press {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 16rpx rgba(43, 43, 43, 0.1);
+}
+
+/* 时间线轨道：徽章 + 虚线连接 */
+.tl-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex-shrink: 0;
+  margin-right: 24rpx;
 }
+.tl-line {
+  flex: 1;
+  width: 0;
+  border-left: 3rpx dashed #d8c8f7;
+  margin: 10rpx 0 2rpx;
+}
+
+/* 主文本区 */
 .item-main {
   flex: 1;
   min-width: 0;
+  padding: 4rpx 0;
 }
 .item-name {
   font-size: 30rpx;
@@ -167,22 +183,36 @@
 .item-meta {
   font-size: 22rpx;
   color: #a8a8a0;
-  margin-top: 4rpx;
+  margin-top: 6rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.item-meta .sep {
+  color: #d5d0e4;
 }
 .item-right {
   text-align: right;
   flex-shrink: 0;
   margin-left: 16rpx;
+  padding: 2rpx 0;
 }
-.item-price {
-  font-size: 30rpx;
+.item-daily-big {
+  font-size: 34rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-}
-.item-daily {
-  font-size: 22rpx;
   color: #8b5cf6;
-  margin-top: 4rpx;
+  line-height: 1.25;
+}
+.item-daily-big .per {
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-left: 2rpx;
+}
+.item-buy {
+  font-size: 20rpx;
+  color: #b0b0a8;
+  margin-top: 6rpx;
 }
 
 /* 空状态 */

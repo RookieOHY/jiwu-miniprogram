@@ -47,15 +47,22 @@
       wx:for="{{items}}"
       wx:key="id"
       class="item card"
+      hover-class="item-press"
+      hover-stay-time="80"
       data-id="{{item.id}}"
       bindtap="goDetail"
       bindlongpress="onItemLongPress"
     >
-      <view class="cat-dot cat-{{item.category}}"></view>
+      <!-- 时间线轨道：徽章 + 竖向虚线 -->
+      <view class="tl-rail">
+        <view class="cat-badge badge-{{item.category}}"></view>
+        <view wx:if="{{index < items.length - 1}}" class="tl-line"></view>
+      </view>
+
       <view class="item-main">
         <view class="item-name">
-          <view wx:if="{{item.pinned}}" class="pin-mark"></view>
           {{item.name}}
+          <text wx:if="{{item.pinned}}" class="pin-mark"></text>
           <text wx:if="{{item.sold}}" class="tag-sold">已卖出</text>
           <text wx:elif="{{item.retired}}" class="tag-retired">已退役</text>
         </view>
@@ -63,12 +70,13 @@
           <text class="tcat-{{item.category}}">{{item.catName}}</text>
           <text class="sep"> · </text>
           <text class="tpf-{{item.platform}}">{{item.platformName}}</text>
-          <text class="sep"> · </text>{{item.buyDate}} · 已持有 {{item.days}} 天
+          <text class="sep"> · </text>已持有 {{item.days}} 天
         </view>
       </view>
+
       <view class="item-right">
-        <view class="item-price">{{item.symbol}}{{item.price}}</view>
-        <view class="item-daily">日均 {{item.symbol}}{{item.daily}}</view>
+        <view class="item-daily-big">{{item.symbol}}{{item.daily}}<text class="per">/天</text></view>
+        <view class="item-buy">买入 {{item.symbol}}{{item.price}}</view>
       </view>
     </view>
   </block>
