@@ -20,7 +20,9 @@ Component({
     },
 
     goAdd() {
-      wx.navigateTo({ url: '/pages/add/add' })
+      // 跟随当前 tab：种草页 ➕ 记种草，物品页 ➕ 记一笔
+      const url = this.data.selected === 1 ? '/pages/wishlist/add' : '/pages/add/add'
+      wx.navigateTo({ url })
     }
   }
 })

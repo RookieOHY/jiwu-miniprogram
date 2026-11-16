@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/stats/stats",
     "pages/wishlist/wishlist",
+    "pages/wishlist/add",
     "pages/settings/settings",
     "pages/add/add",
     "pages/detail/detail"

@@ -1,37 +1,59 @@
 <view class="page">
 
-  <!-- 主视觉 -->
-  <view class="card hero-card">
-    <view class="sprout-icon"></view>
-    <view class="hero-title">种草清单 · 开发中</view>
-    <view class="hero-sub">看到心动的先记一笔，冷静几天再决定买不买</view>
+  <!-- 汇总条 -->
+  <view class="card head-card" wx:if="{{wishes.length}}">
+    <view class="head-item">
+      <view class="head-num">{{wishes.length}}</view>
+      <view class="head-label">株草</view>
+    </view>
+    <view class="head-item">
+      <view class="head-num">¥{{totalPrice}}</view>
+      <view class="head-label">全拔要花</view>
+    </view>
+    <view class="head-item">
+      <view class="head-num">¥{{totalDaily}}</view>
+      <view class="head-label">摊 30 天日均</view>
+    </view>
   </view>
 
-  <!-- 未来玩法预告 -->
-  <view class="card">
-    <view class="sec-title">以后可以这样玩</view>
-    <view class="step">
-      <view class="step-idx">1</view>
-      <view class="step-main">
-        <view class="step-name">记录心动</view>
-        <view class="step-sub">先记下想买的东西，填预估价格，立刻看到它未来的日均</view>
-      </view>
+  <!-- 空状态 -->
+  <view wx:if="{{!wishes.length}}" class="empty">
+    <view class="empty-icon">🌱</view>
+    <view>还没有种草</view>
+    <view class="empty-tip">看到心动的先记一笔，冷静几天再决定</view>
+    <button class="btn-primary first-add" bindtap="goAdd">种第一株</button>
+  </view>
+
+  <!-- 草单 -->
+  <view
+    wx:for="{{wishes}}"
+    wx:key="id"
+    class="card wish"
+    data-id="{{item.id}}"
+    bindlongpress="onWishLongPress"
+  >
+    <view class="wish-head">
+      <view class="wish-name">{{item.name}}</view>
+      <view class="wish-price">¥{{item.price}}</view>
     </view>
-    <view class="step">
-      <view class="step-idx">2</view>
-      <view class="step-main">
-        <view class="step-name">冷静期</view>
-        <view class="step-sub">加入 N 天后才解锁「可购买」标记，防冲动消费</view>
-      </view>
+    <view class="wish-daily">现在买，按 30 天摊 ¥{{item.daily}}/天</view>
+
+    <view wx:if="{{item.reason}}" class="wish-row">
+      <text class="row-tag reason">为啥想买</text>
+      <text class="row-text">{{item.reason}}</text>
     </view>
-    <view class="step">
-      <view class="step-idx">3</view>
-      <view class="step-main">
-        <view class="step-name">拔草</view>
-        <view class="step-sub">确定要买，一键转入物品清单，继承价格和日期开始摊销</view>
-      </view>
+
+    <view wx:if="{{item.alternative}}" class="wish-row">
+      <text class="row-tag alt">替代品</text>
+      <text class="row-text">{{item.alternative}}</text>
+    </view>
+
+    <view wx:if="{{item.url}}" class="wish-link" data-url="{{item.url}}" catchtap="copyLink">
+      🔗 复制链接
     </view>
   </view>
+
+  <view wx:if="{{wishes.length}}" class="foot-tip">长按可删除 · 拔草转入物品清单开发中</view>
 
   <view class="bottom-space"></view>
 </view>

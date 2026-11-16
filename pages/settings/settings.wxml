@@ -31,7 +31,7 @@
     <view class="row">
       <view class="row-main">
         <view class="row-name">深色模式</view>
-        <view class="row-sub">规划中，敬请期待</view>
+        <view class="row-sub">跟随系统自动切换</view>
       </view>
     </view>
   </view>

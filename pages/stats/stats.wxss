@@ -198,5 +198,5 @@
 }
 /* 给悬浮胶囊 TabBar 让位 */
 .bottom-space {
-  height: 200rpx;
+  height: 300rpx;
 }

@@ -8,6 +8,7 @@
  */
 
 const STORAGE_KEY = 'items'
+const WISH_KEY = 'wishes' // 种草清单
 const PIN_LIMIT = 3
 
 // 分类定义
@@ -155,6 +156,46 @@ function pinnedCount() {
   return getAll().filter((it) => it.pinned).length
 }
 
+// ---------- 种草清单 ----------
+
+function getWishes() {
+  return wx.getStorageSync(WISH_KEY) || []
+}
+
+function saveWishes(wishes) {
+  wx.setStorageSync(WISH_KEY, wishes)
+}
+
+/** 新增一株草：name 必填，url / price / reason(为啥想买) / alternative(替代品) 可选 */
+function addWish(data) {
+  const wishes = getWishes()
+  const wish = {
+    id: 'ws_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+    name: data.name,
+    url: data.url || '',
+    price: Number(data.price) || 0,
+    reason: data.reason || '',
+    alternative: data.alternative || '',
+    createdAt: Date.now()
+  }
+  wishes.unshift(wish)
+  saveWishes(wishes)
+  return wish
+}
+
+function updateWish(id, patch) {
+  const wishes = getWishes()
+  const idx = wishes.findIndex((w) => w.id === id)
+  if (idx < 0) return null
+  wishes[idx] = Object.assign({}, wishes[idx], patch)
+  saveWishes(wishes)
+  return wishes[idx]
+}
+
+function removeWish(id) {
+  saveWishes(getWishes().filter((w) => w.id !== id))
+}
+
 module.exports = {
   CATEGORIES,
   PLATFORMS,
@@ -172,6 +213,10 @@ module.exports = {
   updateItem,
   removeItem,
   pinnedCount,
+  getWishes,
+  addWish,
+  updateWish,
+  removeWish,
   daysHeld,
   dailyCost,
   monthlyCost,
