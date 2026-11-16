@@ -1,6 +1,17 @@
 .page {
   padding: 24rpx;
-  padding-bottom: 200rpx;
+  padding-bottom: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 滚动区 */
+.scroll-area {
+  flex: 1;
+  min-height: 0;
 }
 
 /* 顶部汇总（黄绿渐变，上滑收起） */
@@ -43,19 +54,12 @@
   padding: 10rpx 24rpx;
 }
 
-/* 工具栏：筛选 + 视图切换（上滑后吸顶） */
+/* 工具栏：筛选 + 视图切换（常驻顶部） */
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 28rpx 4rpx 16rpx;
-  position: sticky;
-  top: 12rpx;
-  z-index: 20;
-  padding: 12rpx 8rpx;
-  background: #f7f7f2;
-  border-radius: 40rpx;
-  transition: box-shadow 0.3s ease;
+  margin: 0 4rpx 20rpx;
 }
 .filters {
   display: flex;

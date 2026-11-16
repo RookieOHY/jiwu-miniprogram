@@ -11,16 +11,16 @@ Page({
     heroHidden: false
   },
 
-  /** 上滑收起顶部绿色汇总卡 */
-  onPageScroll(e) {
-    const hide = e.scrollTop > 80
+  onShow() {
+    this.refresh()
+  },
+
+  /** scroll-view 滚动：上滑收起顶部汇总卡 */
+  onScroll(e) {
+    const hide = e.detail.scrollTop > 80
     if (hide !== this.data.heroHidden) {
       this.setData({ heroHidden: hide })
     }
-  },
-
-  onShow() {
-    this.refresh()
   },
 
   onLoad() {
