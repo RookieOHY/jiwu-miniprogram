@@ -43,6 +43,7 @@ Page({
         category: it.category,
         catName: store.getCategoryName(it.category),
         platformName: store.getPlatformName(it.platform),
+        symbol: store.currencySymbol(it.currency),
         note: it.note,
         pinned: !!it.pinned,
         retired: retired,
@@ -69,7 +70,7 @@ Page({
     const today = this.fmtDate(new Date())
     wx.showModal({
       title: '确认退役？',
-      content: `将停止日均计算，最终日均 ¥${store.fmtMoney(store.dailyCost(it))}`,
+      content: `将停止日均计算，最终日均 ${store.currencySymbol(it.currency)}${store.fmtMoney(store.dailyCost(it))}`,
       confirmText: '退役',
       success: (r) => {
         if (r.confirm) {
@@ -85,11 +86,12 @@ Page({
   sell() {
     const it = store.getById(this.id)
     const today = this.fmtDate(new Date())
+    const sym = store.currencySymbol(it.currency)
     wx.showModal({
       title: '标记为已卖出',
       editable: true,
-      placeholderText: '卖出价格（元），不填视为 0',
-      content: `持有 ${store.daysHeld(it)} 天，最终日均 ¥${store.fmtMoney(store.dailyCost(it))}`,
+      placeholderText: '卖出价格（' + sym + '），不填视为 0',
+      content: `持有 ${store.daysHeld(it)} 天，最终日均 ${sym}${store.fmtMoney(store.dailyCost(it))}`,
       confirmText: '卖出',
       success: (r) => {
         if (!r.confirm) return

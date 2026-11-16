@@ -21,6 +21,23 @@ const CATEGORIES = [
   { key: 'other',      name: '其他' }
 ]
 
+// 币种
+const USD_TO_CNY = 7.2 // 汇率，后续可做成可配置
+const CURRENCIES = [
+  { key: 'CNY', name: '人民币', symbol: '¥' },
+  { key: 'USD', name: '美元', symbol: '$' }
+]
+
+function currencySymbol(key) {
+  const c = CURRENCIES.find((c) => c.key === key)
+  return c ? c.symbol : '¥'
+}
+
+/** 折算成人民币，用于跨币种汇总 */
+function toCNY(price, currency) {
+  return currency === 'USD' ? price * USD_TO_CNY : price
+}
+
 // 购买渠道
 const PLATFORMS = [
   { key: 'jd',   name: '京东' },
@@ -65,6 +82,7 @@ function addItem(data) {
     buyDate: data.buyDate,
     category: data.category || 'other',
     platform: data.platform || 'other',
+    currency: data.currency === 'USD' ? 'USD' : 'CNY',
     note: data.note || '',
     pinned: false,
     retired: false,
@@ -114,11 +132,12 @@ function fmtMoney(n) {
   return s.replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
 }
 
-/** 某一天的总支出（所有该日购买的物品价格之和） */
+/** 某一天的总支出（该日购买物品折算人民币之和） */
 function spendByDate() {
   const map = {}
   getAll().forEach((it) => {
-    map[it.buyDate] = (map[it.buyDate] || 0) + it.price
+    const v = toCNY(it.price, it.currency)
+    map[it.buyDate] = (map[it.buyDate] || 0) + v
   })
   return map
 }
@@ -130,9 +149,13 @@ function pinnedCount() {
 module.exports = {
   CATEGORIES,
   PLATFORMS,
+  CURRENCIES,
+  USD_TO_CNY,
   PIN_LIMIT,
   getCategoryName,
   getPlatformName,
+  currencySymbol,
+  toCNY,
   getAll,
   getById,
   addItem,

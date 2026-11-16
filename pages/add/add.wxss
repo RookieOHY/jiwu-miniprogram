@@ -57,3 +57,19 @@
 .save-btn {
   margin-top: 8rpx;
 }
+.cur-seg {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 14rpx;
+}
+.cur-opt {
+  font-size: 24rpx;
+  padding: 6rpx 22rpx;
+  border-radius: 28rpx;
+  background: #f0f2e6;
+  color: #9b9b93;
+}
+.cur-opt.on {
+  background: #2b2b2b;
+  color: #ffffff;
+}

@@ -14,7 +14,7 @@
     </view>
 
     <view class="field">
-      <view class="label">花费（元）</view>
+      <view class="label">花费</view>
       <input
         class="input"
         type="digit"
@@ -23,6 +23,15 @@
         value="{{price}}"
         bindinput="onPrice"
       />
+      <view class="cur-seg">
+        <view
+          wx:for="{{currencies}}"
+          wx:key="key"
+          class="cur-opt {{currency === item.key ? 'on' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onCurrency"
+        >{{item.symbol}} {{item.name}}</view>
+      </view>
     </view>
 
     <view class="field">

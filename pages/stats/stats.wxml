@@ -73,9 +73,9 @@
       <view class="rank-idx {{index === 0 ? 'top' : ''}}">{{index + 1}}</view>
       <view class="rank-name">
         {{item.name}}
-        <view class="rank-sub">买入价 ¥{{item.price}} · 已持有 {{item.days}} 天</view>
+        <view class="rank-sub">买入价 {{item.symbol}}{{item.price}} · 已持有 {{item.days}} 天</view>
       </view>
-      <view class="rank-val">¥{{item.daily}}<view class="rank-sub">/天</view></view>
+      <view class="rank-val">{{item.symbol}}{{item.daily}}<view class="rank-sub">/天</view></view>
     </view>
   </view>
 

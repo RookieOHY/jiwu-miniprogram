@@ -54,8 +54,8 @@
         <view class="item-meta">{{item.catName}} · {{item.platformName}} · {{item.buyDate}} · 已持有 {{item.days}} 天</view>
       </view>
       <view class="item-right">
-        <view class="item-price">¥{{item.price}}</view>
-        <view class="item-daily">日均 ¥{{item.daily}}</view>
+        <view class="item-price">{{item.symbol}}{{item.price}}</view>
+        <view class="item-daily">日均 {{item.symbol}}{{item.daily}}</view>
       </view>
     </view>
   </block>
@@ -86,9 +86,9 @@
             <text wx:elif="{{item.retired}}" class="tag-retired">退役</text>
           </view>
           <view class="gcard-cat">{{item.catName}} · {{item.platformName}}</view>
-          <view class="gcard-price">¥{{item.price}}</view>
+          <view class="gcard-price">{{item.symbol}}{{item.price}}</view>
           <view class="gcard-foot">
-            <text class="gcard-daily">日均 ¥{{item.daily}}</text>
+            <text class="gcard-daily">日均 {{item.symbol}}{{item.daily}}</text>
             <text class="gcard-days">{{item.days}} 天</text>
           </view>
         </view>

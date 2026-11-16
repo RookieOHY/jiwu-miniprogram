@@ -33,8 +33,12 @@ Page({
       return
     }
 
-    // ---- 近 30 天每日支出 ----
-    const spendMap = store.spendByDate()
+    // ---- 近 30 天每日支出（折算人民币）----
+    const spendMap = {}
+    all.forEach((it) => {
+      const v = store.toCNY(it.price, it.currency)
+      spendMap[it.buyDate] = (spendMap[it.buyDate] || 0) + v
+    })
     const bars = []
     const today = new Date()
     for (let i = 29; i >= 0; i--) {
@@ -56,26 +60,32 @@ Page({
       const prefix = d.getFullYear() + '-' + (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1)
       const sum = all
         .filter((it) => it.buyDate.startsWith(prefix))
-        .reduce((s, it) => s + it.price, 0)
+        .reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
       months.push({ label: (d.getMonth() + 1) + '月', sum: store.fmtMoney(sum), h: 0 })
     }
     const maxMonth = Math.max(...months.map((m) => parseFloat(m.sum)), 1)
     months.forEach((m) => { m.h = Math.round((parseFloat(m.sum) / maxMonth) * 100) })
     const curMonth = months[months.length - 1]
 
-    // ---- 分类占比 ----
+    // ---- 分类占比（折算人民币）----
     const catSum = {}
-    all.forEach((it) => { catSum[it.category] = (catSum[it.category] || 0) + it.price })
-    const total = all.reduce((s, it) => s + it.price, 0)
+    all.forEach((it) => {
+      const k = it.category
+      catSum[k] = (catSum[k] || 0) + store.toCNY(it.price, it.currency)
+    })
+    const total = all.reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
     const cats = Object.keys(catSum)
       .map((k) => ({ key: k, name: store.getCategoryName(k), v: catSum[k], pct: ((catSum[k] / total) * 100).toFixed(1) }))
       .sort((a, b) => b.v - a.v)
     const maxCat = cats[0] ? cats[0].v : 1
     cats.forEach((c) => { c.w = Math.round((c.v / maxCat) * 100) })
 
-    // ---- 平台占比 ----
+    // ---- 平台占比（折算人民币）----
     const pfSum = {}
-    all.forEach((it) => { pfSum[it.platform || 'other'] = (pfSum[it.platform || 'other'] || 0) + it.price })
+    all.forEach((it) => {
+      const k = it.platform || 'other'
+      pfSum[k] = (pfSum[k] || 0) + store.toCNY(it.price, it.currency)
+    })
     const pfs = Object.keys(pfSum)
       .map((k) => ({ key: k, name: store.getPlatformName(k), v: pfSum[k], pct: ((pfSum[k] / total) * 100).toFixed(1) }))
       .sort((a, b) => b.v - a.v)
@@ -88,6 +98,7 @@ Page({
       .map((it) => ({
         id: it.id,
         name: it.name,
+        symbol: store.currencySymbol(it.currency),
         daily: store.fmtMoney(store.dailyCost(it)),
         monthly: store.fmtMoney(store.monthlyCost(it)),
         price: store.fmtMoney(it.price),

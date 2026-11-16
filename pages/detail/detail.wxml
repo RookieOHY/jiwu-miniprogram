@@ -3,7 +3,7 @@
   <!-- 日均成本主展示 -->
   <view class="hero card">
     <view class="hero-label">{{item.sold ? '卖出后真实日均成本' : (item.retired ? '最终日均成本' : '当前日均成本')}}</view>
-    <view class="hero-num">¥<text class="hero-num-big">{{daily}}</text></view>
+    <view class="hero-num">{{item.symbol}}<text class="hero-num-big">{{daily}}</text></view>
     <view class="hero-sub" wx:if="{{!item.retired}}">已持有 {{days}} 天 · 30 天后日均 ¥{{daily30}} · 一年后 ¥{{daily365}}</view>
     <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
   </view>
@@ -11,7 +11,7 @@
   <!-- 基本信息 -->
   <view class="card info">
     <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>
-    <view class="row"><text class="k">花费</text><text class="v price">¥{{item.price}}</text></view>
+    <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.catName}}</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
@@ -20,11 +20,11 @@
       <text class="k">卖出日期</text><text class="v">{{item.soldDate}}</text>
     </view>
     <view class="row" wx:if="{{item.sold}}">
-      <text class="k">卖出价格</text><text class="v price">¥{{item.soldPrice}}</text>
+      <text class="k">卖出价格</text><text class="v price">{{item.symbol}}{{item.soldPrice}}</text>
     </view>
     <view class="row" wx:if="{{item.sold}}">
       <text class="k">回收差价</text>
-      <text class="v price {{item.profitSign === '+' ? 'profit-pos' : 'profit-neg'}}">{{item.profitSign}}¥{{item.profit}}</text>
+      <text class="v price {{item.profitSign === '+' ? 'profit-pos' : 'profit-neg'}}">{{item.profitSign}}{{item.symbol}}{{item.profit}}</text>
     </view>
     <view class="row" wx:if="{{item.retired && !item.sold}}">
       <text class="k">退役日期</text><text class="v">{{item.retiredDate}}</text>

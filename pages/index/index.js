@@ -46,8 +46,8 @@ Page({
     const today = this.fmtDate(new Date())
     const todaySpend = all
       .filter((it) => it.buyDate === today)
-      .reduce((s, it) => s + it.price, 0)
-    const totalSpend = all.reduce((s, it) => s + it.price, 0)
+      .reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
+    const totalSpend = all.reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
 
     const items = all
       .filter((it) => {
@@ -64,6 +64,7 @@ Page({
         category: it.category,
         catName: store.getCategoryName(it.category),
         platformName: store.getPlatformName(it.platform),
+        symbol: store.currencySymbol(it.currency),
         retired: it.retired,
         sold: !!it.sold,
         pinned: !!it.pinned,

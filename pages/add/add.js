@@ -9,6 +9,8 @@ Page({
     categories: store.CATEGORIES,
     platform: 'other',
     platforms: store.PLATFORMS,
+    currency: 'CNY',
+    currencies: store.CURRENCIES,
     note: '',
     maxDate: '',
     canSave: false
@@ -43,6 +45,10 @@ Page({
     this.setData({ platform: e.currentTarget.dataset.key })
   },
 
+  onCurrency(e) {
+    this.setData({ currency: e.currentTarget.dataset.key })
+  },
+
   onNote(e) {
     this.setData({ note: e.detail.value })
   },
@@ -58,7 +64,7 @@ Page({
       wx.showToast({ title: '请填写有效价格', icon: 'none' })
       return
     }
-    store.addItem({ name: name.trim(), price: p, buyDate, category, platform, note })
+    store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note })
     wx.showToast({ title: '已记录', icon: 'success' })
     setTimeout(() => wx.navigateBack(), 500)
   }
