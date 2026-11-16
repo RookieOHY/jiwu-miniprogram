@@ -362,6 +362,10 @@
   .gcard-press {
     box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.4);
   }
+  .gcard {
+    background: #221e2d;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.35);
+  }
   .gcard-cat {
     color: #8d85a0;
   }
