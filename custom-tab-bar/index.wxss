@@ -39,11 +39,11 @@
 
 /* 选中态：紫色淡底圆角高亮 */
 .tab.on {
-  background: rgba(168, 85, 247, 0.22);
+  background: rgba(168, 85, 247, 0.3);
 }
 
 .tab-press {
-  background: rgba(168, 85, 247, 0.22);
+  background: rgba(168, 85, 247, 0.3);
 }
 
 /* 图标：Lucide 风格 SVG，灰 → 选中变深 */
