@@ -11,15 +11,15 @@
   background: linear-gradient(135deg, #c9e96b, #a5cd39);
   color: #2b3a0e;
   padding: 36rpx 32rpx;
+  margin-bottom: 24rpx;
   max-height: 400rpx;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease, opacity 0.3s ease;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
 }
 .hero-hidden {
   max-height: 0;
   padding-top: 0;
   padding-bottom: 0;
-  margin-bottom: 0;
   opacity: 0;
 }
 .hero-label {
