@@ -134,11 +134,10 @@ function monthlyCost(item) {
   return dailyCost(item) * 30
 }
 
-/** 金额格式化：保留两位，去掉多余的 0 */
+/** 金额格式化：统一两位小数 */
 function fmtMoney(n) {
-  if (!isFinite(n)) return '0'
-  const s = Number(n).toFixed(2)
-  return s.replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')
+  if (!isFinite(n)) return '0.00'
+  return Number(n).toFixed(2)
 }
 
 /** 某一天的总支出（该日购买物品折算人民币之和） */

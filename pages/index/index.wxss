@@ -26,11 +26,26 @@
   font-size: 24rpx;
   opacity: 0.75;
 }
-.hero-num {
-  font-size: 64rpx;
+.hero-sub {
+  font-size: 24rpx;
+  opacity: 0.75;
+}
+.hero-nums {
+  display: flex;
+  align-items: flex-end;
+  gap: 48rpx;
+  margin: 4rpx 0;
+}
+.hero-num-item .hero-num {
+  font-size: 48rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-  margin: 4rpx 0;
+  line-height: 1.2;
+}
+.hero-num-label {
+  font-size: 22rpx;
+  opacity: 0.75;
+  margin-top: 2rpx;
 }
 .hero-sub {
   font-size: 24rpx;
