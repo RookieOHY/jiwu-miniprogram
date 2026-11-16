@@ -27,9 +27,6 @@
   <!-- 背景光斑 -->
   <ellipse cx="256" cy="290" rx="150" ry="130" fill="#A855F7" opacity="0.14" filter="url(#soft)"/>
 
-  <!-- 尾巴 -->
-  <path d="M352 395 Q428 388 424 330" fill="none" stroke="#C084FC" stroke-width="16" stroke-linecap="round"/>
-
   <!-- 耳朵（先画，被头盖住底部） -->
   <polygon points="172,128 148,58 226,96" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="4"/>
   <polygon points="340,128 364,58 286,96" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="4"/>
