@@ -10,9 +10,9 @@
   justify-content: space-between;
   background: linear-gradient(135deg, #c084fc, #8b5cf6);
   color: #ffffff;
-  padding: 36rpx 32rpx;
+  padding: 44rpx 36rpx 40rpx;
   margin-bottom: 24rpx;
-  max-height: 400rpx;
+  max-height: 500rpx;
   overflow: hidden;
   box-shadow: 0 8rpx 32rpx rgba(168, 85, 247, 0.35);
   transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
@@ -31,6 +31,7 @@
   display: flex;
   align-items: center;
   gap: 14rpx;
+  margin-bottom: 24rpx;
 }
 .hero-logo {
   width: 56rpx;
@@ -46,8 +47,8 @@
 .hero-nums {
   display: flex;
   align-items: flex-end;
-  gap: 48rpx;
-  margin: 4rpx 0;
+  gap: 56rpx;
+  margin: 4rpx 0 6rpx;
 }
 .hero-num-item .hero-num {
   font-size: 48rpx;
@@ -57,8 +58,8 @@
 }
 .hero-num-label {
   font-size: 22rpx;
-  opacity: 0.75;
-  margin-top: 2rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
 }
 .hero-sub {
   font-size: 24rpx;
