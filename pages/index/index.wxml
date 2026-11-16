@@ -1,7 +1,7 @@
 <view class="page">
 
-  <!-- 顶部汇总 -->
-  <view class="hero card">
+  <!-- 顶部汇总（上滑自动收起） -->
+  <view class="hero card {{heroHidden ? 'hero-hidden' : ''}}">
     <view class="hero-main">
       <view class="hero-label">累计投入</view>
       <view class="hero-num">¥{{totalSpend}}</view>

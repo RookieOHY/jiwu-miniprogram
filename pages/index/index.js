@@ -7,7 +7,16 @@ Page({
     todaySpend: '0',
     count: 0,
     filter: 'all', // all | 持有中 | 已退役 | 已卖出
-    viewMode: 'list' // list | card
+    viewMode: 'list', // list | card
+    heroHidden: false
+  },
+
+  /** 上滑收起顶部绿色汇总卡 */
+  onPageScroll(e) {
+    const hide = e.scrollTop > 80
+    if (hide !== this.data.heroHidden) {
+      this.setData({ heroHidden: hide })
+    }
   },
 
   onShow() {
