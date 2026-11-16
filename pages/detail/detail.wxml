@@ -41,7 +41,7 @@
       wx:if="{{!item.sold}}"
       class="btn-primary op-btn"
       bindtap="sell"
-    >标记卖出</button>
+    >卖出</button>
     <button
       wx:if="{{item.retired}}"
       class="op-btn op-plain"
