@@ -241,9 +241,9 @@
   margin-top: 14rpx;
 }
 .cur-opt {
-  font-size: 24rpx;
-  padding: 6rpx 22rpx;
-  border-radius: 28rpx;
+  font-size: 26rpx;
+  padding: 10rpx 24rpx;
+  border-radius: 32rpx;
   background: var(--chip);
   color: var(--chip-text);
 }
