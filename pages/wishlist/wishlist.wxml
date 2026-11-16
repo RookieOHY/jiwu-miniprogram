@@ -41,13 +41,22 @@
     </view>
 
     <!-- 理由 / 替代品：灰字弱化 -->
-    <view wx:if="{{item.reason}}" class="wish-note">💭 {{item.reason}}</view>
-    <view wx:if="{{item.alternative}}" class="wish-note">🔁 替代品：{{item.alternative}}</view>
+    <view wx:if="{{item.reason}}" class="wish-note">
+      <view class="note-icon icon-reason"></view>
+      <text class="note-text">{{item.reason}}</text>
+    </view>
+    <view wx:if="{{item.alternative}}" class="wish-note">
+      <view class="note-icon icon-alt"></view>
+      <text class="note-text">{{item.alternative}}</text>
+    </view>
 
     <!-- 底部 meta：日期 · 日均 · 链接 -->
     <view class="wish-foot">
       <view class="foot-meta">{{item.time}}{{item.daily !== '' ? ' · 日均 ¥' + item.daily : ''}}</view>
-      <view wx:if="{{item.url}}" class="foot-link" data-url="{{item.url}}" catchtap="copyLink">🔗 链接</view>
+      <view wx:if="{{item.url}}" class="foot-link" data-url="{{item.url}}" catchtap="copyLink">
+        <view class="note-icon icon-link"></view>
+        <text>链接</text>
+      </view>
     </view>
   </view>
 

@@ -82,6 +82,11 @@ Page({
     })
   },
 
+  /** 进入编辑页 */
+  edit() {
+    wx.navigateTo({ url: '/pages/add/add?id=' + this.id })
+  },
+
   /** 标记卖出：记录卖出价与日期，日均锁定，可复盘真实成本 */
   sell() {
     const it = store.getById(this.id)

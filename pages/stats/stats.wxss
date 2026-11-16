@@ -24,7 +24,7 @@
   font-size: 40rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-  color: #2b2b2b;
+  color: var(--text-1);
 }
 .avg-label {
   font-size: 22rpx;

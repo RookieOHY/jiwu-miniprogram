@@ -118,13 +118,13 @@ Page({
     wx.navigateTo({ url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id })
   },
 
-  /** 长按物品：置顶 / 删除 */
+  /** 长按物品：置顶 / 编辑 / 删除 */
   onItemLongPress(e) {
     const id = e.currentTarget.dataset.id
     const it = store.getById(id)
     if (!it) return
     wx.showActionSheet({
-      itemList: [it.pinned ? '取消置顶' : '置顶', '删除'],
+      itemList: [it.pinned ? '取消置顶' : '置顶', '编辑', '删除'],
       itemColor: '#2b2b2b',
       success: (r) => {
         if (r.tapIndex === 0) {
@@ -136,6 +136,8 @@ Page({
           this.refresh()
           wx.showToast({ title: it.pinned ? '已取消置顶' : '已置顶', icon: 'none' })
         } else if (r.tapIndex === 1) {
+          wx.navigateTo({ url: '/pages/add/add?id=' + id })
+        } else if (r.tapIndex === 2) {
           wx.showModal({
             title: '删除物品',
             content: '删除「' + it.name + '」后无法恢复，确定删除？',

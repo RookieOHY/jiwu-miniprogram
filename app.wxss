@@ -54,7 +54,7 @@ page {
 /* 空状态 */
 .empty {
   text-align: center;
-  color: #b0a898;
+  color: var(--text-dim);
   padding: 100rpx 0;
 }
 .empty .empty-icon {

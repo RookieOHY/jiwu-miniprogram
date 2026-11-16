@@ -103,7 +103,7 @@
   </view>
 
   <button class="btn-primary save-btn {{canSave ? '' : 'dim'}}" disabled="{{!canSave}}" bindtap="save">
-    记一笔
+    {{isEdit ? '保存修改' : '记一笔'}}
   </button>
 </view>
 

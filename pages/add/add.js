@@ -26,11 +26,33 @@ Page({
     icon3dList: []
   },
 
-  onLoad() {
+  onLoad(query) {
     const d = new Date()
     const p = (n) => (n < 10 ? '0' + n : '' + n)
     const today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
     this.setData({ buyDate: today, maxDate: today })
+
+    // 编辑模式：预填物品数据
+    if (query.id) {
+      const it = store.getById(query.id)
+      if (it) {
+        this.editId = it.id
+        this.setData({
+          name: it.name,
+          price: String(it.price),
+          buyDate: it.buyDate,
+          category: it.category,
+          platform: it.platform || 'other',
+          currency: it.currency || 'CNY',
+          note: it.note || '',
+          icon: it.icon || null,
+          canSave: true,
+          isEdit: true
+        })
+        wx.setNavigationBarTitle({ title: '编辑物品' })
+      }
+    }
+
     this.updatePlatformChips()
     this.filterIcons()
   },
@@ -155,8 +177,15 @@ Page({
       wx.showToast({ title: '请填写有效价格', icon: 'none' })
       return
     }
-    store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon })
-    wx.showToast({ title: '已记录', icon: 'success' })
+    if (this.data.isEdit && this.editId) {
+      store.updateItem(this.editId, {
+        name: name.trim(), price: p, buyDate, category, platform, currency, note, icon
+      })
+      wx.showToast({ title: '已保存修改', icon: 'success' })
+    } else {
+      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon })
+      wx.showToast({ title: '已记录', icon: 'success' })
+    }
     setTimeout(() => wx.navigateBack(), 500)
   }
 })
