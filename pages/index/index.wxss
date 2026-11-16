@@ -3,12 +3,12 @@
   padding-bottom: 200rpx;
 }
 
-/* 顶部汇总（荧光紫渐变，上滑收起） */
+/* 顶部汇总（紫→白渐隐，上滑收起） */
 .hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #c084fc, #8b5cf6);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 40%, #ece3fd 125%);
   color: #ffffff;
   padding: 44rpx 36rpx 40rpx;
   margin-bottom: 24rpx;
