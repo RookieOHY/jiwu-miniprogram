@@ -186,10 +186,10 @@
 /* 置顶和纸胶带：斜贴右上角 */
 .tape {
   position: absolute;
-  top: -20rpx;
-  right: -50rpx;
-  width: 170rpx;
-  height: 44rpx;
+  top: -14rpx;
+  right: -36rpx;
+  width: 110rpx;
+  height: 32rpx;
   transform: rotate(40deg);
   background: linear-gradient(
     to bottom,
