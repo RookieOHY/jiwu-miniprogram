@@ -1,0 +1,57 @@
+<view class="page" wx:if="{{item}}">
+
+  <!-- 日均成本主展示 -->
+  <view class="hero card">
+    <view class="hero-label">{{item.sold ? '卖出后真实日均成本' : (item.retired ? '最终日均成本' : '当前日均成本')}}</view>
+    <view class="hero-num">¥<text class="hero-num-big">{{daily}}</text></view>
+    <view class="hero-sub" wx:if="{{!item.retired}}">已持有 {{days}} 天 · 30 天后日均 ¥{{daily30}} · 一年后 ¥{{daily365}}</view>
+    <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="card info">
+    <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>
+    <view class="row"><text class="k">花费</text><text class="v price">¥{{item.price}}</text></view>
+    <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
+    <view class="row"><text class="k">分类</text><text class="v">{{item.catName}}</text></view>
+    <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
+    <view class="row" wx:if="{{item.note}}"><text class="k">备注</text><text class="v">{{item.note}}</text></view>
+    <view class="row" wx:if="{{item.sold}}">
+      <text class="k">卖出日期</text><text class="v">{{item.soldDate}}</text>
+    </view>
+    <view class="row" wx:if="{{item.sold}}">
+      <text class="k">卖出价格</text><text class="v price">¥{{item.soldPrice}}</text>
+    </view>
+    <view class="row" wx:if="{{item.sold}}">
+      <text class="k">回收差价</text>
+      <text class="v price {{item.profitSign === '+' ? 'profit-pos' : 'profit-neg'}}">{{item.profitSign}}¥{{item.profit}}</text>
+    </view>
+    <view class="row" wx:if="{{item.retired && !item.sold}}">
+      <text class="k">退役日期</text><text class="v">{{item.retiredDate}}</text>
+    </view>
+    <view class="row">
+      <text class="k">状态</text>
+      <text class="v">{{item.sold ? '已卖出' : (item.retired ? '已退役（日均已锁定）' : '持有中')}}</text>
+    </view>
+  </view>
+
+  <!-- 操作 -->
+  <view class="ops">
+    <button
+      wx:if="{{!item.sold}}"
+      class="btn-primary op-btn"
+      bindtap="sell"
+    >标记卖出</button>
+    <button
+      wx:if="{{item.retired}}"
+      class="op-btn op-plain"
+      bindtap="unRetire"
+    >恢复持有</button>
+    <button
+      wx:if="{{!item.retired}}"
+      class="op-btn op-plain"
+      bindtap="retire"
+    >退役</button>
+    <button class="op-btn op-danger" bindtap="remove">删除</button>
+  </view>
+</view>

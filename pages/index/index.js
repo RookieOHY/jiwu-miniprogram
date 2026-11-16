@@ -1,0 +1,131 @@
+const store = require('../../utils/store')
+
+Page({
+  data: {
+    items: [],
+    totalSpend: '0',
+    todaySpend: '0',
+    count: 0,
+    filter: 'all', // all | 持有中 | 已退役
+    activeCat: 'all',
+    categories: [{ key: 'all', name: '全部' }].concat(store.CATEGORIES),
+    viewMode: 'list' // list | card
+  },
+
+  onShow() {
+    this.refresh()
+  },
+
+  onLoad() {
+    // 记住用户的视图偏好
+    const saved = wx.getStorageSync('viewMode')
+    if (saved) this.setData({ viewMode: saved })
+  },
+
+  toggleView() {
+    const viewMode = this.data.viewMode === 'list' ? 'card' : 'list'
+    this.setData({ viewMode })
+    wx.setStorageSync('viewMode', viewMode)
+  },
+
+  refresh() {
+    const all = store.getAll()
+    const today = this.fmtDate(new Date())
+    const todaySpend = all
+      .filter((it) => it.buyDate === today)
+      .reduce((s, it) => s + it.price, 0)
+    const totalSpend = all.reduce((s, it) => s + it.price, 0)
+
+    const items = all
+      .filter((it) => {
+        if (this.data.filter === '持有中' && it.retired) return false
+        if (this.data.filter === '已退役' && (!it.retired || it.sold)) return false
+        if (this.data.filter === '已卖出' && !it.sold) return false
+        if (this.data.activeCat !== 'all' && it.category !== this.data.activeCat) return false
+        return true
+      })
+      .map((it) => ({
+        id: it.id,
+        name: it.name,
+        price: store.fmtMoney(it.price),
+        buyDate: it.buyDate,
+        category: it.category,
+        catName: store.getCategoryName(it.category),
+        platformName: store.getPlatformName(it.platform),
+        retired: it.retired,
+        sold: !!it.sold,
+        pinned: !!it.pinned,
+        daily: store.fmtMoney(store.dailyCost(it)),
+        days: store.daysHeld(it)
+      }))
+      // 置顶的排最前，其余保持最新买入在前的顺序
+      .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
+
+    this.setData({
+      items,
+      count: all.length,
+      totalSpend: store.fmtMoney(totalSpend),
+      todaySpend: store.fmtMoney(todaySpend)
+    })
+  },
+
+  fmtDate(d) {
+    const p = (n) => (n < 10 ? '0' + n : '' + n)
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+  },
+
+  setFilter(e) {
+    this.setData({ filter: e.currentTarget.dataset.f }, () => this.refresh())
+  },
+
+  setCat(e) {
+    this.setData({ activeCat: e.currentTarget.dataset.key }, () => this.refresh())
+  },
+
+  goAdd() {
+    wx.navigateTo({ url: '/pages/add/add' })
+  },
+
+  goDetail(e) {
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id })
+  },
+
+  /** 长按物品：置顶 / 删除 */
+  onItemLongPress(e) {
+    const id = e.currentTarget.dataset.id
+    const it = store.getById(id)
+    if (!it) return
+    wx.showActionSheet({
+      itemList: [it.pinned ? '取消置顶' : '置顶', '删除'],
+      itemColor: '#2b2b2b',
+      success: (r) => {
+        if (r.tapIndex === 0) {
+          if (!it.pinned && store.pinnedCount() >= store.PIN_LIMIT) {
+            wx.showToast({ title: '最多置顶 ' + store.PIN_LIMIT + ' 件', icon: 'none' })
+            return
+          }
+          store.updateItem(id, { pinned: !it.pinned })
+          this.refresh()
+          wx.showToast({ title: it.pinned ? '已取消置顶' : '已置顶', icon: 'none' })
+        } else if (r.tapIndex === 1) {
+          wx.showModal({
+            title: '删除物品',
+            content: '删除「' + it.name + '」后无法恢复，确定删除？',
+            confirmText: '删除',
+            confirmColor: '#c05a4d',
+            success: (m) => {
+              if (m.confirm) {
+                store.removeItem(id)
+                this.refresh()
+              }
+            }
+          })
+        }
+      }
+    })
+  },
+
+  goStats() {
+    wx.switchTab({ url: '/pages/stats/stats' })
+  }
+})

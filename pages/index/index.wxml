@@ -1,0 +1,111 @@
+<view class="page">
+
+  <!-- 顶部汇总 -->
+  <view class="hero card">
+    <view class="hero-main">
+      <view class="hero-label">累计投入</view>
+      <view class="hero-num">¥{{totalSpend}}</view>
+      <view class="hero-sub">共 {{count}} 件物品 · 今日支出 ¥{{todaySpend}}</view>
+    </view>
+    <view class="hero-btn" bindtap="goStats">统计 ↗</view>
+  </view>
+
+  <!-- 筛选 + 视图切换 -->
+  <view class="toolbar">
+    <view class="filters">
+      <view
+        wx:for="{{['all','持有中','已退役','已卖出']}}"
+        wx:key="*this"
+        class="filter-chip {{filter === item ? 'on' : ''}}"
+        data-f="{{item}}"
+        bindtap="setFilter"
+      >{{item === 'all' ? '全部' : item}}</view>
+    </view>
+    <view class="view-toggle" bindtap="toggleView">{{viewMode === 'list' ? '▦' : '☰'}}</view>
+  </view>
+
+  <!-- 分类横滑 -->
+  <scroll-view scroll-x class="cats" enhanced show-scrollbar="{{false}}">
+    <view
+      wx:for="{{categories}}"
+      wx:key="key"
+      class="cat-chip {{activeCat === item.key ? 'on' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="setCat"
+    >{{item.name}}</view>
+  </scroll-view>
+
+  <!-- 物品列表（列表视图） -->
+  <block wx:if="{{viewMode === 'list'}}">
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <view class="empty-icon">📦</view>
+      <view>还没有记录任何物品</view>
+      <view class="empty-tip">点击下方按钮，记下第一件吧</view>
+    </view>
+
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="item card"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+      bindlongpress="onItemLongPress"
+    >
+      <view class="cat-dot cat-{{item.category}}"></view>
+      <view class="item-main">
+        <view class="item-name">
+          <view wx:if="{{item.pinned}}" class="pin-mark"></view>
+          {{item.name}}
+          <text wx:if="{{item.sold}}" class="tag-sold">已卖出</text>
+          <text wx:elif="{{item.retired}}" class="tag-retired">已退役</text>
+        </view>
+        <view class="item-meta">{{item.catName}} · {{item.platformName}} · {{item.buyDate}} · 已持有 {{item.days}} 天</view>
+      </view>
+      <view class="item-right">
+        <view class="item-price">¥{{item.price}}</view>
+        <view class="item-daily">日均 ¥{{item.daily}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 物品网格（卡片视图） -->
+  <block wx:else>
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <view class="empty-icon">📦</view>
+      <view>还没有记录任何物品</view>
+      <view class="empty-tip">点击下方按钮，记下第一件吧</view>
+    </view>
+
+    <view class="grid">
+      <view
+        wx:for="{{items}}"
+        wx:key="id"
+        class="gcard"
+        data-id="{{item.id}}"
+        bindtap="goDetail"
+        bindlongpress="onItemLongPress"
+      >
+        <view class="gcard-top cat-{{item.category}}"></view>
+        <view class="gcard-body">
+          <view class="gcard-name">
+            <view wx:if="{{item.pinned}}" class="pin-mark"></view>
+            {{item.name}}
+            <text wx:if="{{item.sold}}" class="tag-sold">卖出</text>
+            <text wx:elif="{{item.retired}}" class="tag-retired">退役</text>
+          </view>
+          <view class="gcard-cat">{{item.catName}} · {{item.platformName}}</view>
+          <view class="gcard-price">¥{{item.price}}</view>
+          <view class="gcard-foot">
+            <text class="gcard-daily">日均 ¥{{item.daily}}</text>
+            <text class="gcard-days">{{item.days}} 天</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="bottom-space"></view>
+</view>
+
+<!-- 悬浮添加按钮 -->
+<view class="fab" bindtap="goAdd">＋</view>

@@ -1,0 +1,51 @@
+page {
+  background: #f7f7f2;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  color: #2b2b2b;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* 通用卡片 */
+.card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
+}
+
+/* 通用按钮（黄绿主色） */
+.btn-primary {
+  background: #a5cd39;
+  color: #2b2b2b;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  padding: 20rpx 0;
+  text-align: center;
+}
+.btn-primary::after {
+  border: none;
+}
+.btn-primary[disabled] {
+  opacity: 0.4;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  color: #b0a898;
+  padding: 100rpx 0;
+}
+.empty .empty-icon {
+  font-size: 88rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 分类色板 */
+.cat-food      { background: #f6c453; }
+.cat-electronic{ background: #7da7d9; }
+.cat-clothing  { background: #e8a09a; }
+.cat-home      { background: #9bc08a; }
+.cat-study     { background: #b39ddb; }
+.cat-sport     { background: #f19a7e; }
+.cat-other     { background: #c4bba8; }

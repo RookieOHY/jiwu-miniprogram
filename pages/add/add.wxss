@@ -1,0 +1,59 @@
+.page {
+  padding: 24rpx;
+}
+.form {
+  margin-bottom: 40rpx;
+}
+.field {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f2e6;
+}
+.field:last-child {
+  border-bottom: none;
+}
+.label {
+  font-size: 24rpx;
+  color: #a8a8a0;
+  margin-bottom: 12rpx;
+}
+.input {
+  font-size: 32rpx;
+  padding: 8rpx 0;
+}
+.ph {
+  color: #c8c8c0;
+}
+.picker-val {
+  font-weight: 600;
+  font-family: "DIN Alternate", sans-serif;
+}
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.cat-opt {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  padding: 10rpx 22rpx;
+  border-radius: 32rpx;
+  background: #f0f2e6;
+  color: #9b9b93;
+}
+.cat-opt.on {
+  background: #2b2b2b;
+  color: #ffffff;
+}
+.cat-opt-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+.save-btn.dim {
+  opacity: 0.4;
+}
+.save-btn {
+  margin-top: 8rpx;
+}

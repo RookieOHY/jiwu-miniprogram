@@ -1,0 +1,88 @@
+<view class="page">
+
+  <!-- 每日大概花多少 -->
+  <view class="card">
+    <view class="sec-title">最近 30 天</view>
+    <view class="avg-line">
+      <view class="avg-item">
+        <view class="avg-num">¥{{avgPerDay}}</view>
+        <view class="avg-label">日均支出</view>
+      </view>
+      <view class="avg-item">
+        <view class="avg-num">¥{{activeMonthSpend}}</view>
+        <view class="avg-label">本月买入</view>
+      </view>
+      <view class="avg-item">
+        <view class="avg-num">{{activeMonthDays}}</view>
+        <view class="avg-label">有消费天数</view>
+      </view>
+    </view>
+    <view class="chart" wx:if="{{bars.length}}">
+      <view class="chart-max">峰值 ¥{{maxBar}}</view>
+      <view class="chart-bars">
+        <view wx:for="{{bars}}" wx:key="date" class="bar-wrap">
+          <view class="bar" style="height: {{item.h === 0 ? 4 : item.h}}rpx;"></view>
+          <view class="bar-day">{{item.day}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 月度趋势 -->
+  <view class="card">
+    <view class="sec-title">近 6 个月买入金额</view>
+    <view class="mchart">
+      <view wx:for="{{months}}" wx:key="label" class="mbar-wrap">
+        <view class="mbar-sum">¥{{item.sum}}</view>
+        <view class="mbar" style="height: {{item.h === 0 ? 4 : item.h * 3}}rpx;"></view>
+        <view class="mbar-label">{{item.label}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类占比 -->
+  <view class="card" wx:if="{{cats.length}}">
+    <view class="sec-title">钱都花在哪了</view>
+    <view wx:for="{{cats}}" wx:key="key" class="cat-row">
+      <view class="cat-name">
+        <view class="cat-dot cat-{{item.key}}"></view>{{item.name}}
+      </view>
+      <view class="cat-bar-track">
+        <view class="cat-bar cat-{{item.key}}" style="width: {{item.w}}%;"></view>
+      </view>
+      <view class="cat-pct">{{item.pct}}%</view>
+    </view>
+  </view>
+
+  <!-- 平台占比 -->
+  <view class="card" wx:if="{{pfs.length}}">
+    <view class="sec-title">钱花在哪个平台</view>
+    <view wx:for="{{pfs}}" wx:key="key" class="cat-row">
+      <view class="cat-name pf-name">{{item.name}}</view>
+      <view class="cat-bar-track">
+        <view class="cat-bar pf-bar" style="width: {{item.w}}%;"></view>
+      </view>
+      <view class="cat-pct">{{item.pct}}%</view>
+    </view>
+  </view>
+
+  <!-- 日均排行 -->
+  <view class="card" wx:if="{{topMonthly.length}}">
+    <view class="sec-title">日均最高的物品 · 新买入还没摊薄</view>
+    <view wx:for="{{topMonthly}}" wx:key="id" class="rank-row" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="rank-idx {{index === 0 ? 'top' : ''}}">{{index + 1}}</view>
+      <view class="rank-name">
+        {{item.name}}
+        <view class="rank-sub">买入价 ¥{{item.price}} · 已持有 {{item.days}} 天</view>
+      </view>
+      <view class="rank-val">¥{{item.daily}}<view class="rank-sub">/天</view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{!bars.length && !months.length}}" class="empty">
+    <view class="empty-icon">📊</view>
+    <view>还没有数据，先去记一件物品吧</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
