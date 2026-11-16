@@ -105,7 +105,9 @@ Page({
       : store.PLATFORMS.filter(
           (p) => store.COMMON_PLATFORMS.includes(p.key) || p.key === this.data.platform
         )
-    this.setData({ platformChips: list })
+    this.setData({
+      platformChips: list.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
+    })
   },
 
   togglePlatforms() {

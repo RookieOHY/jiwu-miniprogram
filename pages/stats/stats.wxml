@@ -59,7 +59,7 @@
     <view class="sec-title">钱花在哪个平台</view>
     <view wx:for="{{pfs}}" wx:key="key" class="cat-row">
       <view class="cat-name">
-        <view class="cat-dot pfc-{{item.key}}"></view>{{item.name}}
+        <view class="dot-char pfc-{{item.key}}">{{item.char}}</view>{{item.name}}
       </view>
       <view class="cat-bar-track">
         <view class="cat-bar pfc-{{item.key}}" style="width: {{item.w}}%;"></view>

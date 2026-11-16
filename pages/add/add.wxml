@@ -77,7 +77,10 @@
           class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
           bindtap="onPlatform"
-        >{{item.name}}</view>
+        >
+          <view class="pf-char pfc-{{item.key}}">{{item.char}}</view>
+          {{item.name}}
+        </view>
         <view class="cat-opt more-opt" bindtap="togglePlatforms">
           {{showAllPlatforms ? '收起 ▴' : '更多 ▾'}}
         </view>

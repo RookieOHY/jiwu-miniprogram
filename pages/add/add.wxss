@@ -255,3 +255,17 @@
   background: var(--chip);
   color: var(--chip-text);
 }
+/* 渠道首字徽章 */
+.pf-char {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 20rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}

@@ -66,6 +66,12 @@ function getPlatformName(key) {
   return p ? p.name : '其他'
 }
 
+/** 渠道首字徽章：品牌色圆底 + 名字首字（规避商标，又有 App 图标感） */
+function getPlatformChar(key) {
+  const p = PLATFORMS.find((p) => p.key === key)
+  return p ? p.name.charAt(0) : '其'
+}
+
 function getCategoryName(key) {
   const c = CATEGORIES.find((c) => c.key === key)
   return c ? c.name : '其他'
@@ -205,6 +211,7 @@ module.exports = {
   PIN_LIMIT,
   getCategoryName,
   getPlatformName,
+  getPlatformChar,
   currencySymbol,
   toCNY,
   getAll,

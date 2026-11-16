@@ -91,7 +91,13 @@ Page({
       pfSum[k] = (pfSum[k] || 0) + store.toCNY(it.price, it.currency)
     })
     const pfs = Object.keys(pfSum)
-      .map((k) => ({ key: k, name: store.getPlatformName(k), v: pfSum[k], pct: ((pfSum[k] / total) * 100).toFixed(1) }))
+      .map((k) => ({
+        key: k,
+        name: store.getPlatformName(k),
+        char: store.getPlatformChar(k),
+        v: pfSum[k],
+        pct: ((pfSum[k] / total) * 100).toFixed(1)
+      }))
       .sort((a, b) => b.v - a.v)
     const maxPf = pfs[0] ? pfs[0].v : 1
     pfs.forEach((c) => { c.w = Math.round((c.v / maxPf) * 100) })

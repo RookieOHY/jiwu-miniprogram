@@ -108,6 +108,19 @@
   align-items: center;
   flex-shrink: 0;
 }
+.dot-char {
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 18rpx;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
 .cat-dot {
   width: 14rpx;
   height: 14rpx;
