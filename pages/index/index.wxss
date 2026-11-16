@@ -183,13 +183,13 @@
   position: relative;
 }
 
-/* 置顶和纸胶带：斜贴右上角 */
+/* 置顶和纸胶带：完全收进卡片内，右侧微探出 */
 .tape {
   position: absolute;
-  top: -12rpx;
-  right: -26rpx;
-  width: 84rpx;
-  height: 26rpx;
+  top: 10rpx;
+  right: -18rpx;
+  width: 96rpx;
+  height: 30rpx;
   transform: rotate(40deg);
   background: linear-gradient(
     to bottom,
