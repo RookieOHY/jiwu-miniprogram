@@ -273,3 +273,8 @@
 .cat-opt.on .cat-icon {
   filter: brightness(0) invert(1);
 }
+/* 选中态：首字徽章白底深字，不再和紫底叠成透明感 */
+.cat-opt.on .pf-char {
+  background: #ffffff;
+  color: #4a4238;
+}
