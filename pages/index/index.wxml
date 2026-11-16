@@ -3,7 +3,7 @@
   <!-- 顶部汇总（上滑自动收起） -->
   <view class="hero card {{heroHidden ? 'hero-hidden' : ''}}">
     <view class="hero-main">
-      <view class="hero-label">累计投入</view>
+      <view class="hero-label">物资总览</view>
       <view class="hero-num">¥{{totalSpend}}</view>
       <view class="hero-sub">共 {{count}} 件物品 · 今日支出 ¥{{todaySpend}}</view>
     </view>
