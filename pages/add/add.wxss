@@ -269,3 +269,7 @@
   margin-right: 10rpx;
   flex-shrink: 0;
 }
+/* 选中态：分类图标反白 */
+.cat-opt.on .cat-icon {
+  filter: brightness(0) invert(1);
+}

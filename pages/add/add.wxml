@@ -64,7 +64,10 @@
           class="cat-opt cat-{{item.key}} {{category === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
           bindtap="onCat"
-        >{{item.name}}</view>
+        >
+          <view class="cat-icon cat-icon-{{item.key}}"></view>
+          {{item.name}}
+        </view>
       </view>
     </view>
 
