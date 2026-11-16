@@ -217,6 +217,12 @@
 .gcard-cat .sep {
   color: #c8c8c0;
 }
+.gcard-daily-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6rpx;
+}
 .gcard-daily-big {
   font-size: 44rpx;
   font-weight: 700;
@@ -232,23 +238,6 @@
 .gcard-price {
   font-size: 22rpx;
   color: #b0b0a8;
-  margin: 6rpx 0 18rpx;
-}
-.gcard-bar-row {
-  display: flex;
-  align-items: center;
-  gap: 14rpx;
-}
-.gcard-bar-track {
-  flex: 1;
-  height: 10rpx;
-  background: #f0f2e6;
-  border-radius: 6rpx;
-  overflow: hidden;
-}
-.gcard-bar {
-  height: 100%;
-  border-radius: 6rpx;
 }
 .gcard-days {
   font-size: 20rpx;

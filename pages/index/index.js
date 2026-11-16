@@ -80,8 +80,6 @@ Page({
         retired: it.retired,
         sold: !!it.sold,
         pinned: !!it.pinned,
-        // 摊销进度：已持有天数 / 一年
-        bar: Math.min(100, Math.round((store.daysHeld(it) / 365) * 100)),
         daily: store.fmtMoney(store.dailyCost(it)),
         days: store.daysHeld(it)
       }))
