@@ -59,3 +59,22 @@ page {
 .cat-opt.pf-wx   { background: rgba(7, 193, 96, 0.09); color: #129a52; }
 .cat-opt.pf-dy   { background: rgba(22, 24, 35, 0.08); color: #161823; }
 .cat-opt.pf-off  { background: rgba(138, 109, 59, 0.10); color: #8a6d3b; }
+
+/* 分类标签淡底彩字（与渠道标签同风格） */
+.cat-opt.cat-food       { background: rgba(246, 196, 83, 0.16); color: #a87d00; }
+.cat-opt.cat-electronic{ background: rgba(125, 167, 217, 0.16); color: #4a7ab5; }
+.cat-opt.cat-clothing  { background: rgba(232, 160, 154, 0.16); color: #d47a72; }
+.cat-opt.cat-home      { background: rgba(155, 192, 138, 0.16); color: #6f9a5c; }
+.cat-opt.cat-study     { background: rgba(179, 157, 219, 0.16); color: #7e57c2; }
+.cat-opt.cat-sport     { background: rgba(241, 154, 126, 0.16); color: #d97048; }
+.cat-opt.cat-other     { background: rgba(196, 187, 168, 0.18); color: #8a8378; }
+
+/* 平台纯色（圆点 / 条形图用） */
+.pfc-jd   { background: #e1251b; }
+.pfc-tb   { background: #ff5000; }
+.pfc-pdd  { background: #e22e1f; }
+.pfc-vip  { background: #e4007f; }
+.pfc-xy   { background: #f5c400; }
+.pfc-wx   { background: #07c160; }
+.pfc-dy   { background: #161823; }
+.pfc-off  { background: #8a6d3b; }

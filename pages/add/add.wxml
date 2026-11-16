@@ -47,13 +47,10 @@
         <view
           wx:for="{{categories}}"
           wx:key="key"
-          class="cat-opt {{category === item.key ? 'on' : ''}}"
+          class="cat-opt cat-{{item.key}} {{category === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
           bindtap="onCat"
-        >
-          <view class="cat-opt-dot cat-{{item.key}}"></view>
-          {{item.name}}
-        </view>
+        >{{item.name}}</view>
       </view>
     </view>
 

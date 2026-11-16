@@ -135,13 +135,14 @@
 }
 
 /* 平台占比 */
-.pf-name {
-  width: 140rpx;
-  display: block;
-}
-.pf-bar {
-  background: #7da7d9;
-}
+.pfc-jd   { background: #e1251b; }
+.pfc-tb   { background: #ff5000; }
+.pfc-pdd  { background: #e22e1f; }
+.pfc-vip  { background: #e4007f; }
+.pfc-xy   { background: #f5c400; }
+.pfc-wx   { background: #07c160; }
+.pfc-dy   { background: #161823; }
+.pfc-off  { background: #8a6d3b; }
 
 /* 排行 */
 .rank-row {

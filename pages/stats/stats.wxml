@@ -58,9 +58,11 @@
   <view class="card" wx:if="{{pfs.length}}">
     <view class="sec-title">钱花在哪个平台</view>
     <view wx:for="{{pfs}}" wx:key="key" class="cat-row">
-      <view class="cat-name pf-name">{{item.name}}</view>
+      <view class="cat-name">
+        <view class="cat-dot pfc-{{item.key}}"></view>{{item.name}}
+      </view>
       <view class="cat-bar-track">
-        <view class="cat-bar pf-bar" style="width: {{item.w}}%;"></view>
+        <view class="cat-bar pfc-{{item.key}}" style="width: {{item.w}}%;"></view>
       </view>
       <view class="cat-pct">{{item.pct}}%</view>
     </view>
