@@ -11,10 +11,14 @@ Page({
     heroHidden: false
   },
 
-  /** 上滑收起顶部绿色汇总卡 */
+  /** 上滑收起顶部绿色汇总卡（迟滞阈值防抖动：>300 收起，<20 展开） */
   onPageScroll(e) {
-    const hide = e.scrollTop > 80
-    if (hide !== this.data.heroHidden) {
+    const st = e.scrollTop
+    const cur = this.data.heroHidden
+    let hide = cur
+    if (!cur && st > 300) hide = true
+    else if (cur && st < 20) hide = false
+    if (hide !== cur) {
       this.setData({ heroHidden: hide })
     }
   },
