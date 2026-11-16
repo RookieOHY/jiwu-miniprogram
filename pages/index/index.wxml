@@ -3,7 +3,10 @@
   <!-- 顶部汇总（上滑自动收起） -->
   <view class="hero card {{heroHidden ? 'hero-hidden' : ''}}">
     <view class="hero-main">
-      <view class="hero-label">物资总览</view>
+      <view class="hero-brand">
+        <image class="hero-logo" src="/assets/logo.png" mode="aspectFit"/>
+        <view class="hero-label">物资总览</view>
+      </view>
       <view class="hero-nums">
         <view class="hero-num-item">
           <view class="hero-num">¥{{totalSpend}}</view>

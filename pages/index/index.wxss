@@ -27,6 +27,18 @@
   font-size: 24rpx;
   opacity: 0.75;
 }
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+.hero-logo {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  background: #ffffff;
+  box-shadow: 0 2rpx 10rpx rgba(43, 43, 43, 0.12);
+}
 .hero-sub {
   font-size: 24rpx;
   opacity: 0.75;

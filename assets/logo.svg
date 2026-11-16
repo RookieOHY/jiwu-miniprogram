@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- 主色渐变：亮紫 → 深紫 -->
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C084FC"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="purpleDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9D6BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="purpleLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F3EBFF"/>
+      <stop offset="1" stop-color="#E4D2FE"/>
+    </linearGradient>
+    <!-- 荧光辉光 -->
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="22" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+  </defs>
+
+  <!-- 底：白色圆角方块，带极淡的紫晕 -->
+  <rect x="16" y="16" width="480" height="480" rx="118" fill="#FDFCFF"/>
+  <rect x="16" y="16" width="480" height="480" rx="118" fill="none" stroke="#EDE4FD" stroke-width="3"/>
+
+  <!-- 背景荧光光斑 -->
+  <ellipse cx="256" cy="300" rx="150" ry="120" fill="#A855F7" opacity="0.18" filter="url(#soft)"/>
+
+  <!-- 纸箱（等轴测） -->
+  <g filter="url(#glow)">
+    <!-- 左侧面 -->
+    <polygon points="146,215 256,272 256,405 146,348" fill="url(#purple)"/>
+    <!-- 右侧面 -->
+    <polygon points="256,272 366,215 366,348 256,405" fill="url(#purpleDark)"/>
+    <!-- 顶面（开盖后的箱口，白色内里） -->
+    <polygon points="256,158 366,215 256,272 146,215" fill="url(#purpleLight)"/>
+    <!-- 箱口内沿 -->
+    <polygon points="256,180 330,217 256,254 182,217" fill="#FFFFFF"/>
+    <!-- 向后翻开的盖子 -->
+    <polygon points="256,158 366,215 396,196 286,140" fill="#E4D2FE"/>
+    <polygon points="256,158 146,215 116,196 226,140" fill="#F3EBFF"/>
+    <!-- 正面胶带 -->
+    <rect x="238" y="268" width="36" height="137" fill="#7C3AED" opacity="0.85"/>
+  </g>
+
+  <!-- 高光 -->
+  <polyline points="163,232 163,338" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" opacity="0.35"/>
+</svg>
