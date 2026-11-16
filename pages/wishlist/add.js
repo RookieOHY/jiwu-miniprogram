@@ -19,10 +19,13 @@ Page({
   onPrice(e) {
     const price = e.detail.value
     const n = Number(price)
-    this.setData({
-      price,
-      daily: price && n > 0 ? (n / 30).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1') : ''
-    })
+    let daily = ''
+    if (price && n > 0) {
+      const d = n / 30
+      const v = d >= 100 ? String(Math.round(d)) : String(Math.round(d * 100) / 100)
+      daily = v.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    this.setData({ price, daily })
   },
 
   onUrl(e) {

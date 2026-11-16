@@ -12,7 +12,7 @@
   text-align: center;
 }
 .head-num {
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
 }
@@ -37,63 +37,60 @@
 .wish {
   margin-bottom: 20rpx;
 }
+
+/* 标题 + 价格同行 */
 .wish-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 20rpx;
 }
 .wish-name {
-  font-size: 32rpx;
+  flex: 1;
+  font-size: 30rpx;
   font-weight: 600;
+  line-height: 1.4;
 }
 .wish-price {
-  font-size: 32rpx;
+  flex-shrink: 0;
+  font-size: 28rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-  color: #8b5cf6;
-}
-.wish-daily {
-  font-size: 24rpx;
-  color: var(--text-2);
-  margin-top: 4rpx;
-}
-
-/* 备注 / 替代品行 */
-.wish-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12rpx;
-  margin-top: 14rpx;
-}
-.row-tag {
-  flex-shrink: 0;
-  font-size: 20rpx;
-  padding: 4rpx 14rpx;
-  border-radius: 18rpx;
-}
-.row-tag.reason {
-  background: rgba(139, 92, 246, 0.12);
-  color: #7c4fe0;
-}
-.row-tag.alt {
-  background: rgba(125, 167, 217, 0.16);
-  color: #4a7ab5;
-}
-.row-text {
-  font-size: 26rpx;
   color: var(--text-1);
-  line-height: 1.5;
+}
+.wish-price.dim {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--text-3);
 }
 
-/* 链接 */
-.wish-link {
-  display: inline-block;
-  font-size: 24rpx;
-  color: #4a7ab5;
-  margin-top: 16rpx;
-  padding: 6rpx 20rpx;
-  background: rgba(125, 167, 217, 0.12);
-  border-radius: 24rpx;
+/* 理由 / 替代品：灰字弱化，像备忘 */
+.wish-note {
+  font-size: 26rpx;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-top: 10rpx;
+}
+
+/* 底部 meta 行 */
+.wish-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+  padding-top: 14rpx;
+  border-top: 1rpx solid var(--border);
+}
+.foot-meta {
+  font-size: 22rpx;
+  color: var(--text-3);
+}
+.foot-link {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #7c4fe0;
+  padding: 4rpx 8rpx;
+  margin-right: -8rpx;
 }
 
 .foot-tip {

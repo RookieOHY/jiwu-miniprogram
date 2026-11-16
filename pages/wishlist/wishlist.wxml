@@ -32,24 +32,22 @@
     data-id="{{item.id}}"
     bindlongpress="onWishLongPress"
   >
+    <!-- 标题 + 价格同行 -->
     <view class="wish-head">
       <view class="wish-name">{{item.name}}</view>
-      <view class="wish-price">¥{{item.price}}</view>
-    </view>
-    <view class="wish-daily">现在买，按 30 天摊 ¥{{item.daily}}/天</view>
-
-    <view wx:if="{{item.reason}}" class="wish-row">
-      <text class="row-tag reason">为啥想买</text>
-      <text class="row-text">{{item.reason}}</text>
+      <view class="wish-price {{item.price === '' ? 'dim' : ''}}">
+        {{item.price === '' ? '待定价' : '¥' + item.price}}
+      </view>
     </view>
 
-    <view wx:if="{{item.alternative}}" class="wish-row">
-      <text class="row-tag alt">替代品</text>
-      <text class="row-text">{{item.alternative}}</text>
-    </view>
+    <!-- 理由 / 替代品：灰字弱化 -->
+    <view wx:if="{{item.reason}}" class="wish-note">💭 {{item.reason}}</view>
+    <view wx:if="{{item.alternative}}" class="wish-note">🔁 替代品：{{item.alternative}}</view>
 
-    <view wx:if="{{item.url}}" class="wish-link" data-url="{{item.url}}" catchtap="copyLink">
-      🔗 复制链接
+    <!-- 底部 meta：日期 · 日均 · 链接 -->
+    <view class="wish-foot">
+      <view class="foot-meta">{{item.time}}{{item.daily !== '' ? ' · 日均 ¥' + item.daily : ''}}</view>
+      <view wx:if="{{item.url}}" class="foot-link" data-url="{{item.url}}" catchtap="copyLink">🔗 链接</view>
     </view>
   </view>
 

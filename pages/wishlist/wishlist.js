@@ -1,5 +1,31 @@
 const store = require('../../utils/store')
 
+/** 千分位格式化：100000 → "100,000"，自动去尾零 */
+function fmtNum(n) {
+  const s = String(Math.round(Number(n) * 100) / 100)
+  const parts = s.split('.')
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return parts.join('.')
+}
+
+/** 日均：大额取整，小额保留零头 */
+function fmtDaily(price) {
+  const d = price / 30
+  if (d >= 100) return fmtNum(Math.round(d))
+  return fmtNum(d)
+}
+
+/** 相对时间：今天 / 昨天 / N 天前 / 日期 */
+function timeAgo(ts) {
+  const diff = Math.floor((Date.now() - ts) / 86400000)
+  if (diff < 1) return '今天'
+  if (diff === 1) return '昨天'
+  if (diff < 30) return diff + ' 天前'
+  const d = new Date(ts)
+  const p = (n) => (n < 10 ? '0' + n : '' + n)
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+}
+
 Page({
   data: {
     wishes: [],
@@ -16,22 +42,23 @@ Page({
   },
 
   refresh() {
-    const wishes = store
-      .getWishes()
-      .map((w) => ({
-        id: w.id,
-        name: w.name,
-        price: store.fmtMoney(w.price),
-        daily: store.fmtMoney(w.price / 30),
-        reason: w.reason,
-        alternative: w.alternative,
-        url: w.url
-      }))
-    const total = store.getWishes().reduce((s, w) => s + w.price, 0)
+    const raw = store.getWishes()
+    const wishes = raw.map((w) => ({
+      id: w.id,
+      name: w.name,
+      // 无价格传空，前端显示「待定价」
+      price: w.price > 0 ? fmtNum(w.price) : '',
+      daily: w.price > 0 ? fmtDaily(w.price) : '',
+      reason: w.reason,
+      alternative: w.alternative,
+      url: w.url,
+      time: timeAgo(w.createdAt)
+    }))
+    const total = raw.reduce((s, w) => s + w.price, 0)
     this.setData({
       wishes,
-      totalPrice: store.fmtMoney(total),
-      totalDaily: store.fmtMoney(total / 30)
+      totalPrice: fmtNum(total),
+      totalDaily: fmtDaily(total)
     })
   },
 

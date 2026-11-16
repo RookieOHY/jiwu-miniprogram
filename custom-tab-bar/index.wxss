@@ -37,13 +37,13 @@
   transition: background 0.15s ease;
 }
 
-/* 选中态：淡紫圆角高亮 */
+/* 选中态：紫色淡底圆角高亮 */
 .tab.on {
-  background: var(--track);
+  background: rgba(168, 85, 247, 0.15);
 }
 
 .tab-press {
-  background: var(--track);
+  background: rgba(168, 85, 247, 0.15);
 }
 
 /* 图标：Lucide 风格 SVG，灰 → 选中变深 */
