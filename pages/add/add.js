@@ -54,7 +54,7 @@ Page({
   },
 
   save() {
-    const { name, price, buyDate, category, platform, note } = this.data
+    const { name, price, buyDate, category, platform, currency, note } = this.data
     const p = parseFloat(price)
     if (!name.trim()) {
       wx.showToast({ title: '请填写物品名称', icon: 'none' })
