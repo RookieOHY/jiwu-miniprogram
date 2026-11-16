@@ -177,9 +177,29 @@
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 28rpx;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+}
+
+/* 置顶和纸胶带：半透明产品绿，微倾斜贴在顶边 */
+.tape {
+  position: absolute;
+  top: -16rpx;
+  left: 50%;
+  width: 150rpx;
+  height: 42rpx;
+  margin-left: -75rpx;
+  transform: rotate(-3deg);
+  background: linear-gradient(
+    to bottom,
+    rgba(165, 205, 57, 0.4),
+    rgba(165, 205, 57, 0.55)
+  );
+  border-radius: 6rpx;
+  box-shadow: 0 2rpx 6rpx rgba(43, 43, 43, 0.08);
+  z-index: 5;
 }
 .gcard-press {
   transform: scale(0.97);

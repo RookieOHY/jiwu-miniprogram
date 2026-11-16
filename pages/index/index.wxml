@@ -84,8 +84,8 @@
         <view class="gcard-body">
           <view class="gcard-head">
             <view class="cat-badge badge-{{item.category}}"></view>
+            <view class="tape" wx:if="{{item.pinned}}"></view>
             <view class="gcard-headright">
-              <view wx:if="{{item.pinned}}" class="pin-mark"></view>
               <text wx:if="{{item.sold}}" class="tag-sold">已卖出</text>
               <text wx:elif="{{item.retired}}" class="tag-retired">已退役</text>
             </view>
