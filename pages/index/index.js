@@ -5,6 +5,9 @@ Page({
     items: [],
     totalSpend: '0',
     count: 0,
+    heldCount: 0,
+    retiredCount: 0,
+    soldCount: 0,
     filter: 'all', // all | 持有中 | 已退役 | 已卖出
     viewMode: 'list', // list | card
     heroHidden: false,
@@ -86,9 +89,17 @@ Page({
       // 置顶的排最前，其余保持最新买入在前的顺序
       .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
 
+    // 筛选角标
+    const heldCount = all.filter((it) => !it.retired).length
+    const retiredCount = all.filter((it) => it.retired && !it.sold).length
+    const soldCount = all.filter((it) => it.sold).length
+
     this.setData({
       items,
       count: all.length,
+      heldCount,
+      retiredCount,
+      soldCount,
       totalSpend: store.fmtMoney(totalSpend),
       totalDaily: store.fmtMoney(totalDaily)
     })

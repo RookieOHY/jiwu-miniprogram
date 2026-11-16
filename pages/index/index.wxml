@@ -24,13 +24,10 @@
   <!-- 筛选 + 视图切换 -->
   <view class="toolbar">
     <view class="filters">
-      <view
-        wx:for="{{['all','持有中','已退役','已卖出']}}"
-        wx:key="*this"
-        class="filter-chip {{filter === item ? 'on' : ''}}"
-        data-f="{{item}}"
-        bindtap="setFilter"
-      >{{item === 'all' ? '全部' : item}}</view>
+      <view class="filter-chip {{filter === 'all' ? 'on' : ''}}" data-f="all" bindtap="setFilter">全部 {{count}}</view>
+      <view class="filter-chip {{filter === '持有中' ? 'on' : ''}}" data-f="持有中" bindtap="setFilter">持有中 {{heldCount}}</view>
+      <view class="filter-chip {{filter === '已退役' ? 'on' : ''}}" data-f="已退役" bindtap="setFilter">已退役 {{retiredCount}}</view>
+      <view class="filter-chip {{filter === '已卖出' ? 'on' : ''}}" data-f="已卖出" bindtap="setFilter">已卖出 {{soldCount}}</view>
     </view>
     <view class="view-toggle {{viewMode === 'list' ? 'to-card' : 'to-list'}}" bindtap="toggleView"></view>
   </view>
