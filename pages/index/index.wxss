@@ -75,7 +75,7 @@
   width: 64rpx;
   height: 56rpx;
   border-radius: 16rpx;
-  background-color: #f0f2e6;
+  background-color: #f3eefe;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 34rpx 34rpx;
@@ -92,11 +92,11 @@
   font-size: 26rpx;
   padding: 8rpx 28rpx;
   border-radius: 32rpx;
-  background: #f0f2e6;
-  color: #9b9b93;
+  background: #f3eefe;
+  color: #9b93a8;
 }
 .filter-chip.on {
-  background: #2b2b2b;
+  background: #a855f7;
   color: #ffffff;
 }
 

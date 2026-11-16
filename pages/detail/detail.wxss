@@ -33,7 +33,7 @@
 .row {
   display: flex;
   padding: 18rpx 0;
-  border-bottom: 1rpx solid #f0f2e6;
+  border-bottom: 1rpx solid #f1ecfa;
   font-size: 28rpx;
 }
 .row:last-child {
@@ -73,8 +73,8 @@
   border: none;
 }
 .op-plain {
-  background: #f0f2e6;
-  color: #2b2b2b;
+  background: #f3eefe;
+  color: #8b5cf6;
 }
 .op-danger {
   background: #f3e5e2;

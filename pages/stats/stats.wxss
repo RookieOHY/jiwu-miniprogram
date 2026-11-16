@@ -117,7 +117,7 @@
 .cat-bar-track {
   flex: 1;
   height: 16rpx;
-  background: #f0f2e6;
+  background: #f1ecfa;
   border-radius: 8rpx;
   overflow: hidden;
   margin: 0 16rpx;
@@ -155,7 +155,7 @@
   display: flex;
   align-items: center;
   padding: 18rpx 0;
-  border-bottom: 1rpx solid #f0f2e6;
+  border-bottom: 1rpx solid #f1ecfa;
 }
 .rank-row:last-child {
   border-bottom: none;
@@ -164,7 +164,7 @@
   width: 48rpx;
   height: 48rpx;
   border-radius: 12rpx;
-  background: #f0f2e6;
+  background: #f1ecfa;
   color: #9b9b93;
   font-size: 24rpx;
   display: flex;
