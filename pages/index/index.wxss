@@ -225,11 +225,14 @@
 }
 .gcard-cat {
   font-size: 22rpx;
-  color: #a8a8a0;
   margin: 4rpx 0 20rpx;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.item-meta .sep,
+.gcard-cat .sep {
+  color: #c8c8c0;
 }
 .gcard-daily-big {
   font-size: 44rpx;

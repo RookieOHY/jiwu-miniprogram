@@ -75,6 +75,29 @@ page {
 .cat-opt.cat-sport     { background: rgba(241, 154, 126, 0.16); color: #d97048; }
 .cat-opt.cat-other     { background: rgba(196, 187, 168, 0.18); color: #8a8378; }
 
+/* 分类/渠道文字色（副标题内联着色用） */
+.tcat-food        { color: #a87d00; }
+.tcat-electronic  { color: #4a7ab5; }
+.tcat-clothing    { color: #d47a72; }
+.tcat-home        { color: #6f9a5c; }
+.tcat-study       { color: #7e57c2; }
+.tcat-sport       { color: #d97048; }
+.tcat-other       { color: #8a8378; }
+.tpf-jd     { color: #d43a2f; }
+.tpf-tb     { color: #e8541c; }
+.tpf-pdd    { color: #d43a2f; }
+.tpf-vip    { color: #c9006f; }
+.tpf-xy     { color: #9c8a00; }
+.tpf-wx     { color: #129a52; }
+.tpf-dy     { color: #161823; }
+.tpf-off    { color: #8a6d3b; }
+.tpf-amazon { color: #b36b00; }
+.tpf-ebay   { color: #0064d2; }
+.tpf-iherb  { color: #2e7d32; }
+.tpf-shein  { color: #111111; }
+.tpf-temu   { color: #d96a00; }
+.tpf-ali    { color: #e62e04; }
+
 /* 平台纯色（圆点 / 条形图用） */
 .pfc-jd   { background: #e1251b; }
 .pfc-tb   { background: #ff5000; }
