@@ -1,5 +1,25 @@
 <view class="page">
 
+  <!-- 更多添加方式（默认折叠，展开后三个功能入口，暂不接逻辑） -->
+  <view class="sec-toggle" bindtap="toggleMore">
+    <text>更多添加方式</text>
+    <view class="chev {{moreWays ? 'up' : ''}}"></view>
+  </view>
+  <view wx:if="{{moreWays}}" class="more-ways">
+    <view class="more-item">
+      <text>详细添加</text>
+      <view class="more-arrow">›</view>
+    </view>
+    <view class="more-item">
+      <text>识别添加</text>
+      <view class="more-arrow">›</view>
+    </view>
+    <view class="more-item">
+      <text>CSV 添加</text>
+      <view class="more-arrow">›</view>
+    </view>
+  </view>
+
   <!-- 基本信息 -->
   <view class="sec-title">基本信息</view>
   <view class="card form basics">
@@ -31,6 +51,31 @@
       <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
         <view class="date-chip">{{buyDateCN}}</view>
       </picker>
+    </view>
+  </view>
+
+  <!-- 可选补充（暂为界面占位，不接逻辑） -->
+  <view class="sec-title">可选补充</view>
+  <view class="opt-grid">
+    <view class="opt-chip">
+      <view class="opt-ico ico-cat"></view>
+      <text>选择分类</text>
+    </view>
+    <view class="opt-chip" bindtap="openIconPanel">
+      <view class="opt-ico ico-img"></view>
+      <text>选择图标</text>
+    </view>
+    <view class="opt-chip">
+      <view class="opt-ico ico-pin"></view>
+      <text>存放位置</text>
+    </view>
+    <view class="opt-chip">
+      <view class="opt-ico ico-bag"></view>
+      <text>购买渠道</text>
+    </view>
+    <view class="opt-chip">
+      <view class="opt-ico ico-tag"></view>
+      <text>标签</text>
     </view>
   </view>
 

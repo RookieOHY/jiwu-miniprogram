@@ -498,3 +498,36 @@
   padding: 0 24rpx;
   box-sizing: border-box;
 }
+
+/* 更多添加方式展开列表 */
+.more-ways {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 8rpx 24rpx;
+  margin: 0 8rpx 32rpx;
+  box-shadow: var(--shadow-1);
+}
+.more-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26rpx 8rpx;
+  font-size: 28rpx;
+  color: var(--text-1);
+  border-bottom: 1rpx solid var(--border);
+}
+.more-item:last-child {
+  border-bottom: none;
+}
+.more-arrow {
+  color: var(--text-3);
+  font-size: 32rpx;
+}
+
+/* 存放位置 / 标签 图标 */
+.ico-pin {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+}
+.ico-tag {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'/%3E%3Ccircle cx='7.5' cy='7.5' r='.5' fill='%238e8e93'/%3E%3C/svg%3E");
+}
