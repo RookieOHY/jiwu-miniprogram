@@ -62,14 +62,16 @@
       <text class="note-text">{{item.alternative}}</text>
     </view>
 
-    <!-- 底部 meta：日期 · 日均 · 链接 · 剁手 -->
+    <!-- 底部 meta：日期 · 日均 · 链接 ｜ 右侧操作：评审 · 剁手 -->
     <view class="wish-foot">
-      <view class="foot-meta">{{item.time}}{{item.daily !== '' ? ' · 日均 ¥' + item.daily : ''}}</view>
-      <view class="foot-actions">
-        <view wx:if="{{item.url}}" class="foot-link" data-url="{{item.url}}" catchtap="copyLink">
+      <view class="foot-meta">
+        {{item.time}}{{item.daily !== '' ? ' · 日均 ¥' + item.daily : ''}}
+        <text wx:if="{{item.url}}" class="foot-link" data-url="{{item.url}}" catchtap="copyLink">
           <view class="note-icon icon-link"></view>
           <text>链接</text>
-        </view>
+        </text>
+      </view>
+      <view class="foot-actions">
         <view wx:if="{{cloudOn}}" class="foot-review" data-id="{{item.id}}" catchtap="onReview">评审</view>
         <view class="foot-buy" data-id="{{item.id}}" catchtap="goDuoshou">剁手</view>
       </view>

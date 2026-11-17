@@ -137,14 +137,14 @@
   color: var(--text-3);
 }
 .foot-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6rpx;
   font-size: 22rpx;
-  font-weight: 600;
-  color: #7c4fe0;
-  padding: 4rpx 8rpx;
-  margin-right: -8rpx;
+  font-weight: 500;
+  color: var(--accent);
+  padding: 0 0 0 6rpx;
+  margin-right: -6rpx;
 }
 .foot-link .note-icon {
   margin-top: 0;
