@@ -13,7 +13,6 @@ Page({
     showAllPlatforms: false,
     currency: 'CNY',
     currencies: store.CURRENCIES,
-    uses: '',
     note: '',
     maxDate: '',
     canSave: false,
@@ -50,7 +49,6 @@ Page({
           currency: it.currency || 'CNY',
           note: it.note || '',
           icon: it.icon || null,
-          uses: it.uses ? String(it.uses) : '',
           targetDaily: it.targetDaily > 0 ? String(it.targetDaily) : '',
           canSave: true,
           isEdit: true
@@ -169,10 +167,6 @@ Page({
     this.setData({ currency: e.currentTarget.dataset.key })
   },
 
-  onUses(e) {
-    this.setData({ uses: e.detail.value })
-  },
-
   onTargetDaily(e) {
     this.setData({ targetDaily: e.detail.value }, () => this._updateNeed())
   },
@@ -199,7 +193,7 @@ Page({
   },
 
   save() {
-    const { name, price, buyDate, category, platform, currency, note, icon, targetDaily, uses } = this.data
+    const { name, price, buyDate, category, platform, currency, note, icon, targetDaily } = this.data
     const p = parseFloat(price)
     if (!name.trim()) {
       wx.showToast({ title: '请填写物品名称', icon: 'none' })
@@ -211,17 +205,12 @@ Page({
     }
     const target = Number(targetDaily) > 0 ? Number(targetDaily) : 0
     if (this.data.isEdit && this.editId) {
-      const patch = {
+      store.updateItem(this.editId, {
         name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target
-      }
-      // 使用次数：填了才覆盖，留空保留已有计数
-      if (uses !== '') {
-        patch.uses = parseInt(uses) || 0
-      }
-      store.updateItem(this.editId, patch)
+      })
       wx.showToast({ title: '已保存修改', icon: 'success' })
     } else {
-      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target, uses })
+      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target })
       wx.showToast({ title: '已记录', icon: 'success' })
     }
     setTimeout(() => wx.navigateBack(), 500)

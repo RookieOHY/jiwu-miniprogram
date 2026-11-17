@@ -50,26 +50,6 @@
     </view>
   </view>
 
-  <!-- 使用统计 -->
-  <view class="card usage">
-    <view class="usage-row">
-      <view class="usage-item">
-        <view class="usage-num">{{uses}}</view>
-        <view class="usage-label">已使用（次）</view>
-      </view>
-      <view class="usage-item">
-        <view class="usage-num">{{perUse ? item.symbol + perUse : '—'}}</view>
-        <view class="usage-label">次均成本</view>
-      </view>
-      <view class="usage-item">
-        <view class="usage-num usage-date">{{lastUseDate || '—'}}</view>
-        <view class="usage-label">上次使用</view>
-      </view>
-    </view>
-    <button class="btn-primary usage-btn" bindtap="recordUse">记一次使用</button>
-    <view class="usage-tip" wx:if="{{!uses}}">还没记录过使用——买完没用过的东西，次均成本是无底洞</view>
-  </view>
-
   <!-- 操作 -->
   <view class="ops">
     <button class="op-btn op-plain" bindtap="edit">编辑</button>

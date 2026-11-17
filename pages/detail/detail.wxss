@@ -62,43 +62,6 @@
   display: flex;
   gap: 20rpx;
 }
-
-/* 使用统计 */
-.usage {
-  margin-bottom: 24rpx;
-}
-.usage-row {
-  display: flex;
-  margin-bottom: 28rpx;
-}
-.usage-item {
-  flex: 1;
-  text-align: center;
-}
-.usage-num {
-  font-size: 40rpx;
-  font-weight: 700;
-  font-family: "DIN Alternate", sans-serif;
-  color: var(--text-1);
-}
-.usage-num.usage-date {
-  font-size: 26rpx;
-  padding-top: 10rpx;
-}
-.usage-label {
-  font-size: 22rpx;
-  color: var(--text-2);
-  margin-top: 4rpx;
-}
-.usage-btn {
-  border-radius: 44rpx;
-}
-.usage-tip {
-  font-size: 22rpx;
-  color: var(--text-2);
-  text-align: center;
-  margin-top: 16rpx;
-}
 .op-btn {
   flex: 1;
   font-size: 30rpx;
