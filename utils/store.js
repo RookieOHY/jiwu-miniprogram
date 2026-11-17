@@ -273,6 +273,12 @@ function pullWish(id) {
   return item
 }
 
+/** TabBar 文本显示配置：未设置过时默认隐藏文本 */
+function getTabbarHideText() {
+  const v = wx.getStorageSync('tabbarHideText')
+  return v === '' || v === undefined || v === null ? true : !!v
+}
+
 module.exports = {
   CATEGORIES,
   PLATFORMS,

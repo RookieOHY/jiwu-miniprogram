@@ -5,8 +5,9 @@
 Component({
   lifetimes: {
     attached() {
-      // 读取用户的文本显示配置（默认隐藏文本）
-      this.setData({ hideText: !!wx.getStorageSync('tabbarHideText') })
+      // 读取用户的文本显示配置（未设置过默认隐藏）
+      const store = require('../utils/store')
+      this.setData({ hideText: store.getTabbarHideText() })
     }
   },
   data: {
