@@ -308,5 +308,6 @@ module.exports = {
   monthlyCost,
   breakEven,
   fmtMoney,
-  spendByDate
+  spendByDate,
+  getTabbarHideText
 }
