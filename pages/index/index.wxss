@@ -476,3 +476,23 @@
   opacity: 0.8;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235856d6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8'/%3E%3Cpath d='M21 3v5h-5'/%3E%3Cpath d='M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16'/%3E%3Cpath d='M3 21v-5h5'/%3E%3C/svg%3E");
 }
+
+/* 总览三列标签等高：带图标的行与纯文本行同高 */
+.hero-num-label-row,
+.hero-num-label {
+  height: 34rpx;
+  line-height: 34rpx;
+  margin-top: 8rpx;
+  box-sizing: border-box;
+}
+.hero-num-label-row {
+  display: flex;
+  align-items: center;
+}
+.eye,
+.period-cycle {
+  width: 26rpx;
+  height: 26rpx;
+  background-size: 26rpx 26rpx;
+  margin-top: 0;
+}
