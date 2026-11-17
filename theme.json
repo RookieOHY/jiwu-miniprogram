@@ -4,8 +4,8 @@
     "navTxt": "black",
     "bg": "#F2F2F7",
     "bgTxt": "dark",
-    "tabColor": "#a29aad",
-    "tabSelected": "#2b2b2b",
+    "tabColor": "#8e8e93",
+    "tabSelected": "#5856D6",
     "tabBg": "#ffffff",
     "tabBorder": "white"
   },
@@ -14,7 +14,7 @@
     "navTxt": "white",
     "bg": "#000000",
     "bgTxt": "light",
-    "tabColor": "#8d85a0",
+    "tabColor": "#98989d",
     "tabSelected": "#5E5CE6",
     "tabBg": "#1C1C1E",
     "tabBorder": "black"
