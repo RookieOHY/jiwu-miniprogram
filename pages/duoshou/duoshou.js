@@ -101,7 +101,6 @@ Page({
   /** 点一下屏幕 = 数一个数 */
   tapCount() {
     const c = this.data.count + 1
-    if (c % 10 === 0 && c < this.data.target) wx.vibrateShort({ type: 'light' })
     if (c >= this.data.target) {
       this.setData({ count: c, left: 0 })
       this._finish()
