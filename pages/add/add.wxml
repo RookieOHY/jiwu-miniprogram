@@ -1,49 +1,5 @@
 <view class="page">
 
-  <!-- 更多添加方式（收起/展开详细字段） -->
-  <view class="sec-toggle" bindtap="toggleMore">
-    <text>更多添加方式</text>
-    <view class="chev {{moreWays ? 'up' : ''}}"></view>
-  </view>
-  <view wx:if="{{moreWays}}" class="card form extra-card">
-    <view class="field">
-      <view class="label">目标日均（可选）</view>
-      <input
-        class="input"
-        type="digit"
-        placeholder="每天想摊到多少？如 1 = 每天低于 ¥1"
-        placeholder-class="ph"
-        value="{{targetDaily}}"
-        bindinput="onTargetDaily"
-      />
-      <view class="target-hint" wx:if="{{needDays}}">按这个目标，第 {{needDays}} 天回本（{{dueDate}}），到时提醒你庆祝</view>
-    </view>
-
-    <view class="field">
-      <view class="label">币种</view>
-      <view class="cur-seg">
-        <view
-          wx:for="{{currencies}}"
-          wx:key="key"
-          class="cur-opt {{currency === item.key ? 'on' : ''}}"
-          data-key="{{item.key}}"
-          bindtap="onCurrency"
-        >{{item.symbol}} {{item.name}}</view>
-      </view>
-    </view>
-
-    <view class="field">
-      <view class="label">备注（可选）</view>
-      <input
-        class="input"
-        placeholder="型号、渠道、感受…"
-        placeholder-class="ph"
-        value="{{note}}"
-        bindinput="onNote"
-      />
-    </view>
-  </view>
-
   <!-- 基本信息 -->
   <view class="sec-title">基本信息</view>
   <view class="card form basics">
@@ -75,58 +31,6 @@
       <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
         <view class="date-chip">{{buyDateCN}}</view>
       </picker>
-    </view>
-  </view>
-
-  <!-- 可选补充 -->
-  <view class="sec-title">可选补充</view>
-  <view class="opt-grid">
-    <view class="opt-chip {{showCat ? 'open' : ''}}" bindtap="toggleCatSec">
-      <view class="opt-ico ico-cat"></view>
-      <text>分类{{showCat ? '·' + catName : ''}}</text>
-    </view>
-    <view class="opt-chip" bindtap="openIconPanel">
-      <view class="opt-ico ico-img"></view>
-      <text>图标</text>
-    </view>
-    <view class="opt-chip {{showPlatform ? 'open' : ''}}" bindtap="togglePlatformSec">
-      <view class="opt-ico ico-bag"></view>
-      <text>渠道{{showPlatform ? '·' + platformName : ''}}</text>
-    </view>
-  </view>
-
-  <!-- 分类展开区 -->
-  <view wx:if="{{showCat}}" class="card form">
-    <view class="cat-grid">
-      <view
-        wx:for="{{categories}}"
-        wx:key="key"
-        class="cat-opt cat-{{item.key}} {{category === item.key ? 'on' : ''}}"
-        data-key="{{item.key}}"
-        bindtap="onCat"
-      >
-        <view class="cat-icon cat-icon-{{item.key}}"></view>
-        {{item.name}}
-      </view>
-    </view>
-  </view>
-
-  <!-- 渠道展开区 -->
-  <view wx:if="{{showPlatform}}" class="card form">
-    <view class="cat-grid">
-      <view
-        wx:for="{{platformChips}}"
-        wx:key="key"
-        class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
-        data-key="{{item.key}}"
-        bindtap="onPlatform"
-      >
-        <view class="pf-char pfc-{{item.key}}">{{item.char}}</view>
-        {{item.name}}
-      </view>
-      <view class="cat-opt more-opt" bindtap="togglePlatforms">
-        {{showAllPlatforms ? '收起 ▴' : '更多 ▾'}}
-      </view>
     </view>
   </view>
 
