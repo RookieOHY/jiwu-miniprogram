@@ -1,60 +1,11 @@
 <view class="page">
 
-  <!-- 物品图标预览（图标在物品之上） -->
-  <view class="icon-hero">
-    <view class="icon-preview">
-      <text wx:if="{{icon && icon.type === 'emoji'}}" class="icon-preview-emoji">{{icon.value}}</text>
-      <image wx:elif="{{icon && (icon.type === 'photo' || icon.type === '3d')}}" class="icon-preview-img" src="{{icon.value}}"/>
-      <text wx:else class="icon-preview-emoji">📦</text>
-      <view wx:if="{{icon}}" class="icon-clear" catchtap="clearIcon">×</view>
-    </view>
-    <view class="icon-change" bindtap="openIconPanel">
-      <text class="icon-change-txt">⇄ 更换图标</text>
-    </view>
+  <!-- 更多添加方式（收起/展开详细字段） -->
+  <view class="sec-toggle" bindtap="toggleMore">
+    <text>更多添加方式</text>
+    <view class="chev {{moreWays ? 'up' : ''}}"></view>
   </view>
-
-  <view class="card form">
-
-    <view class="field">
-      <view class="label">物品名称</view>
-      <input
-        class="input"
-        placeholder="例如：iPhone 15 / 人体工学椅"
-        placeholder-class="ph"
-        value="{{name}}"
-        bindinput="onName"
-        focus
-      />
-    </view>
-
-    <view class="field">
-      <view class="label">花费</view>
-      <input
-        class="input"
-        type="digit"
-        placeholder="0.00"
-        placeholder-class="ph"
-        value="{{price}}"
-        bindinput="onPrice"
-      />
-      <view class="cur-seg">
-        <view
-          wx:for="{{currencies}}"
-          wx:key="key"
-          class="cur-opt {{currency === item.key ? 'on' : ''}}"
-          data-key="{{item.key}}"
-          bindtap="onCurrency"
-        >{{item.symbol}} {{item.name}}</view>
-      </view>
-    </view>
-
-    <view class="field">
-      <view class="label">购买日期</view>
-      <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
-        <view class="input picker-val">{{buyDate}}</view>
-      </picker>
-    </view>
-
+  <view wx:if="{{moreWays}}" class="card form extra-card">
     <view class="field">
       <view class="label">目标日均（可选）</view>
       <input
@@ -69,37 +20,15 @@
     </view>
 
     <view class="field">
-      <view class="label">分类</view>
-      <view class="cat-grid">
+      <view class="label">币种</view>
+      <view class="cur-seg">
         <view
-          wx:for="{{categories}}"
+          wx:for="{{currencies}}"
           wx:key="key"
-          class="cat-opt cat-{{item.key}} {{category === item.key ? 'on' : ''}}"
+          class="cur-opt {{currency === item.key ? 'on' : ''}}"
           data-key="{{item.key}}"
-          bindtap="onCat"
-        >
-          <view class="cat-icon cat-icon-{{item.key}}"></view>
-          {{item.name}}
-        </view>
-      </view>
-    </view>
-
-    <view class="field">
-      <view class="label">购买渠道</view>
-      <view class="cat-grid">
-        <view
-          wx:for="{{platformChips}}"
-          wx:key="key"
-          class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
-          data-key="{{item.key}}"
-          bindtap="onPlatform"
-        >
-          <view class="pf-char pfc-{{item.key}}">{{item.char}}</view>
-          {{item.name}}
-        </view>
-        <view class="cat-opt more-opt" bindtap="togglePlatforms">
-          {{showAllPlatforms ? '收起 ▴' : '更多 ▾'}}
-        </view>
+          bindtap="onCurrency"
+        >{{item.symbol}} {{item.name}}</view>
       </view>
     </view>
 
@@ -115,9 +44,124 @@
     </view>
   </view>
 
+  <!-- 基本信息 -->
+  <view class="sec-title">基本信息</view>
+  <view class="card form basics">
+    <view class="field plain">
+      <input
+        class="input"
+        placeholder="请输入物品名称"
+        placeholder-class="ph"
+        value="{{name}}"
+        bindinput="onName"
+        focus
+      />
+    </view>
+
+    <view class="field plain price-field">
+      <input
+        class="input"
+        type="digit"
+        placeholder="请输入购买价格"
+        placeholder-class="ph"
+        value="{{price}}"
+        bindinput="onPrice"
+      />
+      <view class="calc-icon" catchtap="openCalc"></view>
+    </view>
+
+    <view class="field plain date-field">
+      <view class="date-label">购买日期</view>
+      <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
+        <view class="date-chip">{{buyDateCN}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 可选补充 -->
+  <view class="sec-title">可选补充</view>
+  <view class="opt-grid">
+    <view class="opt-chip {{showCat ? 'open' : ''}}" bindtap="toggleCatSec">
+      <view class="opt-ico ico-cat"></view>
+      <text>分类{{showCat ? '·' + catName : ''}}</text>
+    </view>
+    <view class="opt-chip" bindtap="openIconPanel">
+      <view class="opt-ico ico-img"></view>
+      <text>图标</text>
+    </view>
+    <view class="opt-chip {{showPlatform ? 'open' : ''}}" bindtap="togglePlatformSec">
+      <view class="opt-ico ico-bag"></view>
+      <text>渠道{{showPlatform ? '·' + platformName : ''}}</text>
+    </view>
+  </view>
+
+  <!-- 分类展开区 -->
+  <view wx:if="{{showCat}}" class="card form">
+    <view class="cat-grid">
+      <view
+        wx:for="{{categories}}"
+        wx:key="key"
+        class="cat-opt cat-{{item.key}} {{category === item.key ? 'on' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onCat"
+      >
+        <view class="cat-icon cat-icon-{{item.key}}"></view>
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 渠道展开区 -->
+  <view wx:if="{{showPlatform}}" class="card form">
+    <view class="cat-grid">
+      <view
+        wx:for="{{platformChips}}"
+        wx:key="key"
+        class="cat-opt pf-{{item.key}} {{platform === item.key ? 'on' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onPlatform"
+      >
+        <view class="pf-char pfc-{{item.key}}">{{item.char}}</view>
+        {{item.name}}
+      </view>
+      <view class="cat-opt more-opt" bindtap="togglePlatforms">
+        {{showAllPlatforms ? '收起 ▴' : '更多 ▾'}}
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-gap"></view>
   <button class="btn-primary save-btn {{canSave ? '' : 'dim'}}" disabled="{{!canSave}}" bindtap="save">
     {{isEdit ? '保存修改' : '记一笔'}}
   </button>
+</view>
+
+<!-- 计算器底部弹层 -->
+<view wx:if="{{showCalc}}" class="calc-mask" bindtap="closeCalc">
+  <view class="calc-panel" catchtap="noop">
+    <view class="calc-display">{{calcDisplay}}</view>
+    <view class="calc-grid">
+      <view class="calc-key key-fn span2" data-k="C" bindtap="calcKey">C</view>
+      <view class="calc-key key-fn" data-k="÷" bindtap="calcKey">÷</view>
+      <view class="calc-key key-fn" data-k="×" bindtap="calcKey">×</view>
+      <view class="calc-key key-num" data-k="7" bindtap="calcKey">7</view>
+      <view class="calc-key key-num" data-k="8" bindtap="calcKey">8</view>
+      <view class="calc-key key-num" data-k="9" bindtap="calcKey">9</view>
+      <view class="calc-key key-fn" data-k="−" bindtap="calcKey">−</view>
+      <view class="calc-key key-num" data-k="4" bindtap="calcKey">4</view>
+      <view class="calc-key key-num" data-k="5" bindtap="calcKey">5</view>
+      <view class="calc-key key-num" data-k="6" bindtap="calcKey">6</view>
+      <view class="calc-key key-fn" data-k="+" bindtap="calcKey">+</view>
+      <view class="calc-key key-num" data-k="1" bindtap="calcKey">1</view>
+      <view class="calc-key key-num" data-k="2" bindtap="calcKey">2</view>
+      <view class="calc-key key-num" data-k="3" bindtap="calcKey">3</view>
+      <view class="calc-key key-eq" data-k="=" bindtap="calcKey">=</view>
+      <view class="calc-key key-num span2" data-k="0" bindtap="calcKey">0</view>
+      <view class="calc-key key-num" data-k="." bindtap="calcKey">.</view>
+      <view class="calc-key key-fn" data-k="back" bindtap="calcKey">⌫</view>
+    </view>
+    <button class="calc-fill" bindtap="applyCalc">填入价格</button>
+  </view>
 </view>
 
 <!-- 图标选择面板（半屏弹层） -->
@@ -150,7 +194,6 @@
     </view>
 
     <scroll-view scroll-y class="icon-grid-scroll">
-      <!-- Emoji 网格 -->
       <view wx:if="{{iconTab === 'emoji'}}" class="icon-grid">
         <view
           wx:for="{{emojiList}}"
@@ -165,7 +208,6 @@
         <view wx:if="{{!emojiList.length}}" class="icon-empty">没有匹配的 emoji</view>
       </view>
 
-      <!-- 3D 图标网格 -->
       <view wx:else class="icon-grid">
         <view
           wx:for="{{icon3dList}}"

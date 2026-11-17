@@ -1,4 +1,22 @@
 const store = require('../../utils/store')
+
+function fmtCN(s) {
+  if (!s) return ''
+  const p = s.split('-')
+  return p[0] + '年' + Number(p[1]) + '月' + Number(p[2]) + '日'
+}
+function round10(n) {
+  return Math.round(n * 1e10) / 1e10
+}
+function calcApply(a, b, op) {
+  switch (op) {
+    case '+': return a + b
+    case '−': return a - b
+    case '×': return a * b
+    case '÷': return b === 0 ? 0 : a / b
+  }
+  return b
+}
 const icons = require('../../utils/icons')
 
 Page({
@@ -26,14 +44,27 @@ Page({
     iconTab: 'emoji', // emoji | 3d
     iconKeyword: '',
     emojiList: [],
-    icon3dList: []
+    icon3dList: [],
+    // 快捷添加布局
+    moreWays: false,
+    showCat: false,
+    showPlatform: false,
+    buyDateCN: '',
+    catName: '其他',
+    platformName: '其他',
+    // 计算器
+    showCalc: false,
+    calcDisplay: '0',
+    calcAcc: null,
+    calcOp: null,
+    calcFresh: true
   },
 
   onLoad(query) {
     const d = new Date()
     const p = (n) => (n < 10 ? '0' + n : '' + n)
     const today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
-    this.setData({ buyDate: today, maxDate: today })
+    this.setData({ buyDate: today, maxDate: today, buyDateCN: fmtCN(today) })
 
     // 编辑模式：预填物品数据
     if (query.id) {
@@ -51,11 +82,16 @@ Page({
           icon: it.icon || null,
           targetDaily: it.targetDaily > 0 ? String(it.targetDaily) : '',
           canSave: true,
-          isEdit: true
+          isEdit: true,
+          buyDateCN: fmtCN(it.buyDate),
+          catName: store.getCategoryName(it.category),
+          platformName: store.getPlatformName(it.platform || 'other')
         })
         wx.setNavigationBarTitle({ title: '编辑物品' })
         this._updateNeed()
       }
+    } else {
+      wx.setNavigationBarTitle({ title: '快捷添加' })
     }
 
     this.updatePlatformChips()
@@ -152,15 +188,15 @@ Page({
   },
 
   onDate(e) {
-    this.setData({ buyDate: e.detail.value }, () => this._updateNeed())
+    this.setData({ buyDate: e.detail.value, buyDateCN: fmtCN(e.detail.value) }, () => this._updateNeed())
   },
 
   onCat(e) {
-    this.setData({ category: e.currentTarget.dataset.key })
+    this.setData({ category: e.currentTarget.dataset.key, catName: store.getCategoryName(e.currentTarget.dataset.key) })
   },
 
   onPlatform(e) {
-    this.setData({ platform: e.currentTarget.dataset.key }, () => this.updatePlatformChips())
+    this.setData({ platform: e.currentTarget.dataset.key, platformName: store.getPlatformName(e.currentTarget.dataset.key) }, () => this.updatePlatformChips())
   },
 
   onCurrency(e) {
@@ -190,6 +226,91 @@ Page({
 
   onNote(e) {
     this.setData({ note: e.detail.value })
+  },
+
+  /* ---------- 快捷添加布局 ---------- */
+
+  toggleMore() {
+    this.setData({ moreWays: !this.data.moreWays })
+  },
+
+  toggleCatSec() {
+    this.setData({ showCat: !this.data.showCat, showPlatform: false })
+  },
+
+  togglePlatformSec() {
+    this.setData({ showPlatform: !this.data.showPlatform, showCat: false })
+  },
+
+  /* ---------- 计算器 ---------- */
+
+  openCalc() {
+    const v = parseFloat(this.data.price)
+    this.setData({
+      showCalc: true,
+      calcDisplay: v > 0 ? String(v) : '0',
+      calcAcc: null,
+      calcOp: null,
+      calcFresh: true
+    })
+  },
+
+  closeCalc() {
+    this.setData({ showCalc: false })
+  },
+
+  calcKey(e) {
+    const k = e.currentTarget.dataset.k
+    const st = this.data
+    let d = st.calcDisplay
+
+    if (k === 'C') {
+      this.setData({ calcDisplay: '0', calcAcc: null, calcOp: null, calcFresh: true })
+      return
+    }
+    if (k === 'back') {
+      if (!st.calcFresh) {
+        d = d.length > 1 ? d.slice(0, -1) : '0'
+        if (d === '-' || d === '') d = '0'
+        this.setData({ calcDisplay: d })
+      }
+      return
+    }
+    if ('+−×÷'.indexOf(k) >= 0) {
+      const cur = parseFloat(d) || 0
+      const base = (st.calcAcc !== null && st.calcOp) ? round10(calcApply(st.calcAcc, cur, st.calcOp)) : cur
+      this.setData({ calcAcc: base, calcOp: k, calcFresh: true, calcDisplay: String(base) })
+      return
+    }
+    if (k === '=') {
+      if (st.calcOp !== null && st.calcAcc !== null) {
+        const cur = parseFloat(d) || 0
+        const r = round10(calcApply(st.calcAcc, cur, st.calcOp))
+        this.setData({ calcDisplay: String(r), calcAcc: null, calcOp: null, calcFresh: true })
+      }
+      return
+    }
+    // 数字 / 小数点
+    if (st.calcFresh) {
+      this.setData({ calcDisplay: k === '.' ? '0.' : k, calcFresh: false })
+      return
+    }
+    if (k === '.') {
+      if (d.indexOf('.') >= 0) return
+      d += '.'
+    } else {
+      if (d === '0') d = k
+      else if (d.replace('-', '').replace('.', '').length < 10) d += k
+    }
+    this.setData({ calcDisplay: d })
+  },
+
+  applyCalc() {
+    const v = parseFloat(this.data.calcDisplay) || 0
+    this.setData({ price: v > 0 ? String(v) : '', showCalc: false }, () => {
+      this.setData({ canSave: !!this.data.name.trim() && v > 0 })
+      this._updateNeed()
+    })
   },
 
   save() {
