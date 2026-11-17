@@ -227,13 +227,15 @@
 }
 
 /* 卡片视图网格 */
+/* 注意：不用 calc(50% - rpx) —— 部分真机 WebView 解析 calc 混合单位会失败，导致卡片一行只剩一个 */
 .grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx;
+  justify-content: space-between;
 }
 .gcard {
-  width: calc(50% - 10rpx);
+  width: 48.5%;
+  margin-bottom: 20rpx;
   box-sizing: border-box;
   background: var(--card);
   border-radius: 28rpx;
@@ -324,4 +326,108 @@
   font-size: 20rpx;
   color: var(--text-3);
   flex-shrink: 0;
+}
+
+/* ---------- 值回票价日庆祝卡 ---------- */
+.cele-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 17, 24, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 48rpx;
+}
+.cele-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(160deg, #8b5cf6 0%, #a855f7 45%, #5b3d9e 100%);
+  border-radius: 40rpx;
+  padding: 56rpx 44rpx 44rpx;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 16rpx 64rpx rgba(0, 0, 0, 0.5), 0 8rpx 32rpx rgba(168, 85, 247, 0.4);
+}
+.cele-emoji {
+  font-size: 88rpx;
+  line-height: 1;
+}
+.cele-badge {
+  display: inline-block;
+  margin-top: 24rpx;
+  padding: 6rpx 24rpx;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+}
+.cele-name {
+  font-size: 44rpx;
+  font-weight: 700;
+  margin-top: 20rpx;
+  line-height: 1.4;
+}
+.cele-line {
+  font-size: 26rpx;
+  opacity: 0.85;
+  margin-top: 10rpx;
+  font-family: "DIN Alternate", sans-serif;
+}
+.cele-big {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-top: 40rpx;
+}
+.cele-sub {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-top: 10rpx;
+}
+.cele-actions {
+  margin-top: 48rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+.cele-share {
+  background: #ffffff;
+  color: #7c3aed;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  padding: 22rpx 0;
+  line-height: 1.4;
+}
+.cele-share::after {
+  border: none;
+}
+.cele-close {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 12rpx 0;
+}
+
+/* 保存海报按钮（庆祝卡内，白色描边幽灵款） */
+.cele-save {
+  background: transparent;
+  color: #ffffff;
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 20rpx 0;
+  line-height: 1.4;
+}
+.cele-save::after {
+  border: none;
+}
+
+/* 海报绘制用离屏画布，视觉上不可见 */
+.cele-canvas {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 640px;
+  height: 800px;
 }

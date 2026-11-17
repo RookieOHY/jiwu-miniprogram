@@ -170,6 +170,26 @@ page {
 .badge-sport       { background-color: rgba(241, 154, 126, 0.22); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d97048' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E"); }
 .badge-other       { background-color: rgba(196, 187, 168, 0.25); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a8378' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7.5 4.27 9 5.15'/%3E%3Cpath d='M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z'/%3E%3Cpath d='m3.3 7 8.7 5 8.7-5'/%3E%3Cpath d='M12 22V12'/%3E%3C/svg%3E"); }
 
+/* ============ 胶囊 Tab 切换动画（页面内容方向感知滑入） ============ */
+.tab-anim-fade {
+  animation: tabFade 0.22s ease;
+}
+.tab-anim-right {
+  animation: tabRight 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.tab-anim-left {
+  animation: tabLeft 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes tabFade {
+  from { opacity: 0; }
+}
+@keyframes tabRight {
+  from { opacity: 0.3; transform: translateX(28rpx); }
+}
+@keyframes tabLeft {
+  from { opacity: 0.3; transform: translateX(-28rpx); }
+}
+
 /* ============ 夜间模式：只翻转变量 ============ */
 @media (prefers-color-scheme: dark) {
   page {

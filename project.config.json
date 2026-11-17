@@ -28,8 +28,9 @@
     "condition": false
   },
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.0.0",
-  "appid": "wxddde2c9529390108",
+  "appid": "wx215c7597bf7b56b2",
   "projectname": "jiwu",
   "condition": {},
   "editorSetting": {

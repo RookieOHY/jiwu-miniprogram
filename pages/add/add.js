@@ -16,6 +16,9 @@ Page({
     note: '',
     maxDate: '',
     canSave: false,
+    targetDaily: '',
+    needDays: '',
+    dueDate: '',
     // 物品图标：{ type: 'emoji'|'photo'|'3d', value }  value 为 emoji 文本或图片路径
     icon: null,
     // 选择面板
@@ -46,10 +49,12 @@ Page({
           currency: it.currency || 'CNY',
           note: it.note || '',
           icon: it.icon || null,
+          targetDaily: it.targetDaily > 0 ? String(it.targetDaily) : '',
           canSave: true,
           isEdit: true
         })
         wx.setNavigationBarTitle({ title: '编辑物品' })
+        this._updateNeed()
       }
     }
 
@@ -143,11 +148,11 @@ Page({
 
   onPrice(e) {
     const price = e.detail.value
-    this.setData({ price, canSave: !!this.data.name.trim() && !!price })
+    this.setData({ price, canSave: !!this.data.name.trim() && !!price }, () => this._updateNeed())
   },
 
   onDate(e) {
-    this.setData({ buyDate: e.detail.value })
+    this.setData({ buyDate: e.detail.value }, () => this._updateNeed())
   },
 
   onCat(e) {
@@ -162,12 +167,33 @@ Page({
     this.setData({ currency: e.currentTarget.dataset.key })
   },
 
+  onTargetDaily(e) {
+    this.setData({ targetDaily: e.detail.value }, () => this._updateNeed())
+  },
+
+  /** 目标日均实时预览：第 N 天回本 + 日期 */
+  _updateNeed() {
+    const t = Number(this.data.targetDaily)
+    const p = parseFloat(this.data.price)
+    if (!(t > 0) || !(p > 0) || !this.data.buyDate) {
+      this.setData({ needDays: '', dueDate: '' })
+      return
+    }
+    const need = Math.max(1, Math.ceil(p / t))
+    const d = new Date(this.data.buyDate + 'T00:00:00')
+    d.setDate(d.getDate() + need - 1)
+    this.setData({
+      needDays: need,
+      dueDate: (d.getMonth() + 1) + '月' + d.getDate() + '日'
+    })
+  },
+
   onNote(e) {
     this.setData({ note: e.detail.value })
   },
 
   save() {
-    const { name, price, buyDate, category, platform, currency, note, icon } = this.data
+    const { name, price, buyDate, category, platform, currency, note, icon, targetDaily } = this.data
     const p = parseFloat(price)
     if (!name.trim()) {
       wx.showToast({ title: '请填写物品名称', icon: 'none' })
@@ -177,13 +203,14 @@ Page({
       wx.showToast({ title: '请填写有效价格', icon: 'none' })
       return
     }
+    const target = Number(targetDaily) > 0 ? Number(targetDaily) : 0
     if (this.data.isEdit && this.editId) {
       store.updateItem(this.editId, {
-        name: name.trim(), price: p, buyDate, category, platform, currency, note, icon
+        name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target
       })
       wx.showToast({ title: '已保存修改', icon: 'success' })
     } else {
-      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon })
+      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target })
       wx.showToast({ title: '已记录', icon: 'success' })
     }
     setTimeout(() => wx.navigateBack(), 500)

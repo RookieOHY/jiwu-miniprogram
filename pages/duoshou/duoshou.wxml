@@ -1,0 +1,49 @@
+<!-- 全屏冥想式计数器：黑底白字，越克制越有仪式感 -->
+<view class="ds">
+
+  <!-- 选模式 -->
+  <view wx:if="{{phase === 'mode'}}" class="wrap">
+    <view class="close" bindtap="close">✕</view>
+    <view class="title">剁手之前，先数个数</view>
+    <view class="wish-name">{{wish.name}}</view>
+    <view class="price">¥{{priceText}}</view>
+    <view class="sub">第 {{sessionNo}} 次数数{{wish.maxReached > 0 ? ' · 上次最远数到 ' + wish.maxReached : ''}}</view>
+
+    <!-- 数钱 -->
+    <view class="mode-card" bindtap="chooseMoney">
+      <view class="mode-name">数钱</view>
+      <view class="mode-desc">1 元 = 1 个数，从 1 数到 {{moneyTarget}}</view>
+      <view class="mode-est">{{moneyEst}}</view>
+    </view>
+  </view>
+
+  <!-- 数数中 -->
+  <view wx:if="{{phase === 'count'}}" class="wrap counting" bindtap="tapCount">
+    <view class="count-label">目标 {{target}} 个</view>
+    <view class="big-num">{{count}}</view>
+    <view class="count-sub">还剩 {{left}} 个 · 已用时 {{elapsed}}</view>
+    <view class="hint">每数一个，点一下屏幕</view>
+
+    <view class="giveup" catchtap="giveUp">放弃，数到这为止</view>
+  </view>
+
+  <!-- 数完了 -->
+  <view wx:if="{{phase === 'done'}}" class="wrap result">
+    <view class="result-icon">✓</view>
+    <view class="result-title">数完了</view>
+    <view class="result-text">{{doneText}}</view>
+    <view class="result-name">「{{wish.name}}」</view>
+    <view class="btn-ghost" bindtap="keepGrass">先不买，留着草</view>
+    <view class="btn-solid" bindtap="pullGrass">拔草 · 转入物品清单</view>
+  </view>
+
+  <!-- 放弃 -->
+  <view wx:if="{{phase === 'quit'}}" class="wrap result">
+    <view class="result-icon quit">…</view>
+    <view class="result-title">{{quitText === 0 ? '一个数都没数' : '数到 ' + quitText + '，停下了'}}</view>
+    <view class="result-text">冲动余额不足。数字赢了这一回，草还在。</view>
+    <view class="btn-ghost" bindtap="dropGrass">干脆拔掉这株草</view>
+    <view class="btn-solid" bindtap="keepCooled">标记冷静中，留着</view>
+  </view>
+
+</view>

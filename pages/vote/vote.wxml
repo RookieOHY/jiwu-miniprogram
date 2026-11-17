@@ -1,0 +1,63 @@
+<view class="page">
+
+  <!-- 加载中 -->
+  <view wx:if="{{state === 'loading'}}" class="empty">
+    <view class="empty-icon">💬</view>
+    <view>评审加载中…</view>
+  </view>
+
+  <!-- 错误 -->
+  <view wx:elif="{{state === 'error'}}" class="empty">
+    <view class="empty-icon">🥀</view>
+    <view>{{error}}</view>
+    <view class="empty-tip" bindtap="goHome">去看看「记物」是什么 ›</view>
+  </view>
+
+  <!-- 评审正文 -->
+  <block wx:elif="{{state === 'ready'}}">
+
+    <view class="head-tip">你的朋友正在纠结，帮你把把关</view>
+
+    <!-- 物品摘要 -->
+    <view class="card wish">
+      <view class="wish-name">{{poll.name}}</view>
+      <view wx:if="{{priceText}}" class="wish-price">¥{{priceText}}</view>
+      <view wx:if="{{poll.reason}}" class="wish-note">{{poll.reason}}</view>
+      <view wx:if="{{poll.url}}" class="wish-url" bindtap="copyUrl">复制商品链接</view>
+    </view>
+
+    <!-- 投票 -->
+    <view class="card vote-card">
+      <view class="vote-title">买不买？</view>
+      <view class="vote-row">
+        <view class="vote-opt buy {{mine === 'buy' ? 'on' : ''}}" data-c="buy" bindtap="vote">买！</view>
+        <view class="vote-opt think {{mine === 'think' ? 'on' : ''}}" data-c="think" bindtap="vote">再想想</view>
+        <view class="vote-opt no {{mine === 'no' ? 'on' : ''}}" data-c="no" bindtap="vote">别买</view>
+      </view>
+
+      <!-- 票数 -->
+      <view class="tally" wx:if="{{total > 0}}">
+        <view class="tally-row">
+          <text class="tally-label">买！</text>
+          <view class="tally-bar"><view class="tally-fill buy" style="width: {{total ? tally.buy / total * 100 : 0}}%"></view></view>
+          <text class="tally-num">{{tally.buy}}</text>
+        </view>
+        <view class="tally-row">
+          <text class="tally-label">再想想</text>
+          <view class="tally-bar"><view class="tally-fill think" style="width: {{total ? tally.think / total * 100 : 0}}%"></view></view>
+          <text class="tally-num">{{tally.think}}</text>
+        </view>
+        <view class="tally-row">
+          <text class="tally-label">别买</text>
+          <view class="tally-bar"><view class="tally-fill no" style="width: {{total ? tally.no / total * 100 : 0}}%"></view></view>
+          <text class="tally-num">{{tally.no}}</text>
+        </view>
+        <view class="tally-total">{{total}} 人已投票{{mine ? ' · 你投的是「' + (mine === 'buy' ? '买！' : mine === 'think' ? '再想想' : '别买') + '」' : ''}}</view>
+      </view>
+      <view class="tally tally-empty" wx:else>还没有人投票，你是第一个</view>
+    </view>
+
+    <view class="foot-tip">改主意了？随时点其他选项换票 · 也可转发给更多人评理</view>
+
+  </block>
+</view>

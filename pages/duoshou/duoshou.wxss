@@ -1,0 +1,203 @@
+/* 剁手计数器：固定深色（与系统夜色无关，这里是一个「空间」） */
+page {
+  background: #141118;
+}
+
+.ds {
+  min-height: 100vh;
+  background: #141118;
+  color: #f2eef8;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 顶部 200rpx：避开右上角胶囊按钮区域 */
+  padding: calc(env(safe-area-inset-top) + 200rpx) 48rpx calc(env(safe-area-inset-bottom) + 60rpx);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 数数中 / 结果页：内容整体垂直居中，天然避开胶囊 */
+.wrap.counting,
+.wrap.result {
+  justify-content: center;
+  padding-top: calc(env(safe-area-inset-top) + 60rpx);
+}
+
+.close {
+  align-self: flex-start;
+  font-size: 40rpx;
+  color: #6e6580;
+  padding: 8rpx 16rpx;
+  margin: -8rpx 0 40rpx -16rpx;
+}
+
+/* ---------- 模式选择 ---------- */
+.title {
+  font-size: 30rpx;
+  color: #8d85a0;
+  margin-bottom: 40rpx;
+}
+.wish-name {
+  font-size: 44rpx;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+}
+.price {
+  font-size: 96rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+  margin-top: 12rpx;
+}
+.sub {
+  font-size: 24rpx;
+  color: #8d85a0;
+  margin-top: 8rpx;
+}
+
+.mode-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #221e2d;
+  border: 1rpx solid #352e44;
+  border-radius: 28rpx;
+  padding: 36rpx 40rpx;
+  margin-top: 32rpx;
+}
+.mode-name {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+.mode-desc {
+  font-size: 26rpx;
+  color: #a79bc4;
+  margin-top: 10rpx;
+  line-height: 1.5;
+}
+.mode-est {
+  font-size: 24rpx;
+  color: #6e6580;
+  margin-top: 8rpx;
+}
+
+
+/* ---------- 数数中 ---------- */
+.counting {
+  justify-content: center;
+}
+.count-label {
+  font-size: 24rpx;
+  color: #6e6580;
+  letter-spacing: 4rpx;
+}
+.big-num {
+  font-size: 200rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+  line-height: 1.1;
+  margin: 32rpx 0 24rpx;
+}
+.count-sub {
+  font-size: 26rpx;
+  color: #8d85a0;
+}
+.hint {
+  font-size: 24rpx;
+  color: #6e6580;
+  margin-top: 64rpx;
+}
+
+.type-box {
+  margin-top: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  width: 100%;
+}
+.type-toggle {
+  font-size: 24rpx;
+  color: #6e6580;
+  padding: 8rpx 24rpx;
+}
+.type-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #221e2d;
+  border: 1rpx solid #352e44;
+  border-radius: 20rpx;
+  padding: 20rpx 28rpx;
+  font-size: 28rpx;
+  color: #f2eef8;
+  text-align: center;
+}
+
+.giveup {
+  font-size: 26rpx;
+  color: #e08579;
+  padding: 20rpx 40rpx;
+  margin-top: 48rpx;
+  border: 1rpx solid #3a2b33;
+  border-radius: 48rpx;
+}
+
+/* ---------- 结果 ---------- */
+.result-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  font-weight: 700;
+  margin-bottom: 48rpx;
+}
+.result-icon.quit {
+  background: #2c2640;
+  color: #a79bc4;
+  letter-spacing: 8rpx;
+}
+.result-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  text-align: center;
+}
+.result-text {
+  font-size: 27rpx;
+  color: #a79bc4;
+  text-align: center;
+  line-height: 1.7;
+  margin-top: 20rpx;
+}
+.result-name {
+  font-size: 26rpx;
+  color: #6e6580;
+  margin-top: 16rpx;
+}
+
+.btn-solid,
+.btn-ghost {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 24rpx 0;
+  margin-top: 32rpx;
+}
+.btn-solid {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #c084fc 100%);
+  color: #ffffff;
+  box-shadow: 0 6rpx 24rpx rgba(168, 85, 247, 0.4);
+}
+.btn-ghost {
+  background: transparent;
+  color: #a79bc4;
+  border: 1rpx solid #352e44;
+}

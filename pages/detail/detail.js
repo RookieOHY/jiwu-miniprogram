@@ -34,6 +34,7 @@ Page({
     const retired = it.retired
     const sold = !!it.sold
     const profit = sold ? it.soldPrice - it.price : 0
+    const be = store.breakEven(it)
     this.setData({
       item: {
         id: it.id,
@@ -59,9 +60,46 @@ Page({
       daily30: store.fmtMoney(it.price / 30),
       daily365: store.fmtMoney(it.price / 365),
       endDate: it.retired && it.retiredDate ? it.retiredDate : today,
-      maxDate: this.maxDate
+      maxDate: this.maxDate,
+      // 回本进度（未设目标时 be 为 null）
+      be: be ? {
+        symbol: store.currencySymbol(it.currency),
+        target: store.fmtMoney(be.target),
+        need: be.need,
+        due: be.due,
+        pct: be.pct,
+        reached: be.reached,
+        left: Math.max(0, be.need - be.held)
+      } : null
     })
     wx.setNavigationBarTitle({ title: it.name })
+  },
+
+  /** 设置 / 修改目标日均 */
+  setTarget() {
+    const it = store.getById(this.id)
+    const cur = it.targetDaily > 0 ? String(it.targetDaily) : ''
+    wx.showModal({
+      title: '目标日均',
+      editable: true,
+      placeholderText: '每天想摊到多少？如 1',
+      content: cur,
+      confirmText: '保存',
+      success: (r) => {
+        if (!r.confirm) return
+        const t = Number(r.content)
+        if (!(t > 0)) {
+          wx.showToast({ title: '填个大于 0 的数字', icon: 'none' })
+          return
+        }
+        // 设置时已达标的老物品：静默标记已庆祝，避免以后弹窗突袭
+        const be = store.breakEven(Object.assign({}, it, { targetDaily: t }))
+        const patch = { targetDaily: t }
+        if (be && be.reached) patch.celebrated = true
+        store.updateItem(this.id, patch)
+        this.refresh()
+      }
+    })
   },
 
   /** 退役：结束计时，锁定最终日均 */

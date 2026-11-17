@@ -1,0 +1,9 @@
+{
+  "name": "poll",
+  "version": "1.0.0",
+  "description": "剁手评审：发起/查询/投票/汇总",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

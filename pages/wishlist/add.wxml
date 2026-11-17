@@ -64,6 +64,6 @@
   </view>
 
   <button class="btn-primary save-btn {{canSave ? '' : 'dim'}}" disabled="{{!canSave}}" bindtap="save">
-    先种一株 🌱
+    {{isEdit ? '保存修改' : '先种一株 🌱'}}
   </button>
 </view>

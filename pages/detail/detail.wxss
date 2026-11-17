@@ -81,3 +81,50 @@
   color: var(--danger-text);
   flex: 1;
 }
+
+/* ---------- 回本进度 ---------- */
+.be-card {
+  margin-bottom: 24rpx;
+}
+.be-card.be-none {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 28rpx;
+  border: 1rpx dashed var(--line);
+  box-shadow: none;
+}
+.be-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.be-title {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.be-edit {
+  font-size: 22rpx;
+  color: var(--text-2);
+}
+.be-bar {
+  height: 14rpx;
+  border-radius: 8rpx;
+  background: var(--track);
+  overflow: hidden;
+}
+.be-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  background: linear-gradient(90deg, #8b5cf6, #a855f7);
+}
+.be-bar-fill.reached {
+  background: linear-gradient(90deg, #34a853, #6fba6f);
+}
+.be-sub {
+  font-size: 24rpx;
+  color: var(--text-2);
+  margin-top: 16rpx;
+  line-height: 1.6;
+}

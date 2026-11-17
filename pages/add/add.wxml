@@ -56,6 +56,19 @@
     </view>
 
     <view class="field">
+      <view class="label">目标日均（可选）</view>
+      <input
+        class="input"
+        type="digit"
+        placeholder="每天想摊到多少？如 1 = 每天低于 ¥1"
+        placeholder-class="ph"
+        value="{{targetDaily}}"
+        bindinput="onTargetDaily"
+      />
+      <view class="target-hint" wx:if="{{needDays}}">按这个目标，第 {{needDays}} 天回本（{{dueDate}}），到时提醒你庆祝</view>
+    </view>
+
+    <view class="field">
       <view class="label">分类</view>
       <view class="cat-grid">
         <view

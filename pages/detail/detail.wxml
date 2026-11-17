@@ -8,6 +8,21 @@
     <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
   </view>
 
+  <!-- 回本进度：目标日均 -->
+  <view class="card be-card" wx:if="{{be}}">
+    <view class="be-head" bindtap="setTarget">
+      <text class="be-title">回本进度</text>
+      <text class="be-edit">目标日均 ¥{{be.target}} · 改 ›</text>
+    </view>
+    <view class="be-bar"><view class="be-bar-fill {{be.reached ? 'reached' : ''}}" style="width: {{be.pct}}%"></view></view>
+    <view class="be-sub" wx:if="{{be.reached}}">🎉 第 {{be.need}} 天已回本，之后每天都比目标便宜</view>
+    <view class="be-sub" wx:else>已持有 {{days}} 天 / 还差 {{be.left}} 天 · 预计 {{be.due}} 回本</view>
+  </view>
+  <view class="card be-card be-none" wx:elif="{{!item.retired}}" bindtap="setTarget">
+    <text class="be-title">设个目标日均，开始攒回本进度</text>
+    <text class="be-edit">如「每天低于 ¥1」· 点击设置 ›</text>
+  </view>
+
   <!-- 基本信息 -->
   <view class="card info">
     <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>

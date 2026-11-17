@@ -1,4 +1,4 @@
-<view class="page">
+<view class="page {{tabAnim}}">
 
   <!-- 顶部汇总（上滑自动收起） -->
   <view class="hero card {{heroHidden ? 'hero-hidden' : ''}}">
@@ -27,10 +27,10 @@
   <!-- 筛选 + 视图切换 -->
   <view class="toolbar">
     <view class="filters">
-      <view class="filter-chip {{filter === 'all' ? 'on' : ''}}" data-f="all" bindtap="setFilter">全部 {{count}}</view>
-      <view class="filter-chip {{filter === '持有中' ? 'on' : ''}}" data-f="持有中" bindtap="setFilter">持有中 {{heldCount}}</view>
-      <view class="filter-chip {{filter === '已退役' ? 'on' : ''}}" data-f="已退役" bindtap="setFilter">已退役 {{retiredCount}}</view>
-      <view class="filter-chip {{filter === '已卖出' ? 'on' : ''}}" data-f="已卖出" bindtap="setFilter">已卖出 {{soldCount}}</view>
+      <view class="filter-chip {{filter === 'all' ? 'on' : ''}}" data-f="all" bindtap="setFilter">全部</view>
+      <view class="filter-chip {{filter === '持有中' ? 'on' : ''}}" data-f="持有中" bindtap="setFilter">持有中</view>
+      <view class="filter-chip {{filter === '已退役' ? 'on' : ''}}" data-f="已退役" bindtap="setFilter">已退役</view>
+      <view class="filter-chip {{filter === '已卖出' ? 'on' : ''}}" data-f="已卖出" bindtap="setFilter">已卖出</view>
     </view>
     <view class="view-toggle {{viewMode === 'list' ? 'to-card' : 'to-list'}}" bindtap="toggleView"></view>
   </view>
@@ -127,3 +127,23 @@
 
   <view class="bottom-space"></view>
 </view>
+
+<!-- 值回票价日：全屏庆祝卡 -->
+<view wx:if="{{celebrating}}" class="cele-mask">
+  <view class="cele-card">
+    <view class="cele-emoji">🎉</view>
+    <view class="cele-badge">值回票价日</view>
+    <view class="cele-name">{{celebrating.name}}</view>
+    <view class="cele-line">{{celebrating.symbol}}{{celebrating.price}} · 用了 {{celebrating.days}} 天</view>
+    <view class="cele-big">今天起，每个使用日都是赚的</view>
+    <view class="cele-sub">第 {{celebrating.need}} 天，日均已降到目标以下</view>
+    <view class="cele-actions">
+      <button class="cele-share" open-type="share">转发炫耀</button>
+      <button class="cele-save" bindtap="savePoster">保存图片 · 发朋友圈</button>
+      <view class="cele-close" bindtap="closeCelebration">先收下</view>
+    </view>
+  </view>
+</view>
+
+<!-- 海报绘制用离屏画布 -->
+<canvas type="2d" id="celeCanvas" class="cele-canvas"></canvas>

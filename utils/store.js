@@ -101,6 +101,8 @@ function addItem(data) {
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
     icon: data.icon || null,
     note: data.note || '',
+    targetDaily: Number(data.targetDaily) || 0,
+    celebrated: false,
     pinned: false,
     retired: false,
     retiredDate: null,
@@ -142,6 +144,30 @@ function monthlyCost(item) {
   return dailyCost(item) * 30
 }
 
+/**
+ * 回本进度：目标日均（item 自身币种）
+ * 目标日均 ¥t，共需 ceil(price / t) 天回本，回本日 = 购买日 + need - 1 天
+ * 未设目标（targetDaily <= 0）返回 null
+ */
+function breakEven(item, now = new Date()) {
+  const target = Number(item.targetDaily) || 0
+  if (!(target > 0)) return null
+  const need = Math.max(1, Math.ceil(item.price / target))
+  const start = new Date(item.buyDate + 'T00:00:00')
+  const due = new Date(start)
+  due.setDate(due.getDate() + need - 1)
+  const p = (n) => (n < 10 ? '0' + n : '' + n)
+  const held = daysHeld(item, now)
+  return {
+    target,
+    need,
+    due: due.getFullYear() + '-' + p(due.getMonth() + 1) + '-' + p(due.getDate()),
+    held,
+    pct: Math.min(100, Math.round((held / need) * 100)),
+    reached: held >= need
+  }
+}
+
 /** 金额格式化：统一两位小数 */
 function fmtMoney(n) {
   if (!isFinite(n)) return '0.00'
@@ -165,7 +191,9 @@ function pinnedCount() {
 // ---------- 种草清单 ----------
 
 function getWishes() {
-  return wx.getStorageSync(WISH_KEY) || []
+  return (wx.getStorageSync(WISH_KEY) || []).map((w) =>
+    Object.assign({ sessions: [], maxReached: 0, status: '' }, w)
+  )
 }
 
 function saveWishes(wishes) {
@@ -202,6 +230,49 @@ function removeWish(id) {
   saveWishes(getWishes().filter((w) => w.id !== id))
 }
 
+// ---------- 剁手计数器 ----------
+
+/** 记录一次剁手计数：{ target, reached, done, seconds } */
+/** 数完 → 草恢复正常；数到一半放弃 → 草标记「冷静中」，放弃点写入 maxReached */
+function addDuoshouSession(wishId, session) {
+  const wishes = getWishes()
+  const idx = wishes.findIndex((w) => w.id === wishId)
+  if (idx < 0) return null
+  const w = wishes[idx]
+  w.sessions = (w.sessions || []).concat([
+    {
+      ts: Date.now(),
+      target: session.target,
+      reached: session.reached,
+      done: !!session.done,
+      seconds: session.seconds || 0
+    }
+  ])
+  w.maxReached = Math.max(w.maxReached || 0, session.reached || 0)
+  w.status = session.done ? '' : 'cooled'
+  wishes[idx] = w
+  saveWishes(wishes)
+  return w
+}
+
+/** 拔草：种草转入物品清单，继承价格与理由，购买日为今天，返回新物品 */
+function pullWish(id) {
+  const w = getWishes().find((w) => w.id === id)
+  if (!w) return null
+  const d = new Date()
+  const p = (n) => (n < 10 ? '0' + n : '' + n)
+  const item = addItem({
+    name: w.name,
+    price: w.price,
+    buyDate: d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()),
+    category: 'other',
+    platform: 'other',
+    note: w.reason || ''
+  })
+  removeWish(id)
+  return item
+}
+
 module.exports = {
   CATEGORIES,
   PLATFORMS,
@@ -224,9 +295,12 @@ module.exports = {
   addWish,
   updateWish,
   removeWish,
+  addDuoshouSession,
+  pullWish,
   daysHeld,
   dailyCost,
   monthlyCost,
+  breakEven,
   fmtMoney,
   spendByDate
 }

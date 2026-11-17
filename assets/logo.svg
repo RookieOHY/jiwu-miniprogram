@@ -1,66 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 144 144">
   <defs>
-    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#C084FC"/>
-      <stop offset="1" stop-color="#8B5CF6"/>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="0.55" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#7c3aed"/>
     </linearGradient>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FAF7FF"/>
-      <stop offset="1" stop-color="#F1E8FE"/>
-    </linearGradient>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="20" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="soft" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="28"/>
-    </filter>
   </defs>
-
-  <!-- 白色圆角底板，淡紫渐变 -->
-  <rect x="16" y="16" width="480" height="480" rx="118" fill="url(#bg)"/>
-  <rect x="16" y="16" width="480" height="480" rx="118" fill="none" stroke="#EDE4FD" stroke-width="3"/>
-
-  <!-- 背景光斑 -->
-  <ellipse cx="256" cy="290" rx="150" ry="130" fill="#A855F7" opacity="0.14" filter="url(#soft)"/>
-
-  <!-- 耳朵（先画，被头盖住底部） -->
-  <polygon points="172,128 148,58 226,96" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="4"/>
-  <polygon points="340,128 364,58 286,96" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="4"/>
-  <polygon points="180,116 166,78 212,100" fill="#D8BDFB"/>
-  <polygon points="332,116 346,78 300,100" fill="#D8BDFB"/>
-
-  <!-- Q 版大脑袋 -->
-  <ellipse cx="256" cy="190" rx="108" ry="96" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
-
-  <!-- 表情：眯眯眼 + ω嘴 + 腮红 -->
-  <path d="M196 182 Q210 198 224 182" fill="none" stroke="#4A4238" stroke-width="7" stroke-linecap="round"/>
-  <path d="M288 182 Q302 198 316 182" fill="none" stroke="#4A4238" stroke-width="7" stroke-linecap="round"/>
-  <path d="M244 218 Q250 226 256 220 Q262 226 268 218" fill="none" stroke="#4A4238" stroke-width="5" stroke-linecap="round"/>
-  <ellipse cx="178" cy="216" rx="17" ry="11" fill="#D8BDFB" opacity="0.75"/>
-  <ellipse cx="334" cy="216" rx="17" ry="11" fill="#D8BDFB" opacity="0.75"/>
-
-  <!-- 抱着的纸箱 -->
-  <g filter="url(#glow)">
-    <!-- 向外翻开的两片盖子 -->
-    <polygon points="170,262 106,236 106,266 170,286" fill="#E4D2FE"/>
-    <polygon points="342,262 406,236 406,266 342,286" fill="#E4D2FE"/>
-    <!-- 箱体 -->
-    <rect x="168" y="256" width="176" height="142" rx="14" fill="url(#purple)"/>
-    <!-- 箱口沿 -->
-    <rect x="168" y="248" width="176" height="20" rx="10" fill="#E4D2FE"/>
-    <!-- 封箱胶带 -->
-    <rect x="238" y="252" width="36" height="146" rx="4" fill="#7C3AED" opacity="0.85"/>
-    <!-- 箱体高光 -->
-    <rect x="184" y="286" width="10" height="92" rx="5" fill="#FFFFFF" opacity="0.3"/>
+  <rect width="288" height="288" fill="url(#g)"/>
+  <g transform="translate(28,28) scale(3.75)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+    <path d="m3.3 7 8.7 5 8.7-5"/>
+    <path d="M12 22V12"/>
+    <path d="m7.5 4.27 9 5.15"/>
   </g>
-
-  <!-- 扒在箱子上的两只爪子 -->
-  <ellipse cx="200" cy="268" rx="30" ry="24" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
-  <ellipse cx="312" cy="268" rx="30" ry="24" fill="#FFFFFF" stroke="#E9DBFC" stroke-width="5"/>
-  <path d="M192 262 v12 M206 262 v12" stroke="#E9DBFC" stroke-width="4" stroke-linecap="round"/>
-  <path d="M304 262 v12 M318 262 v12" stroke="#E9DBFC" stroke-width="4" stroke-linecap="round"/>
 </svg>

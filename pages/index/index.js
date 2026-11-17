@@ -1,4 +1,6 @@
 const store = require('../../utils/store')
+const poster = require('../../utils/poster')
+const tabAnim = require('../../utils/tabAnim')
 
 Page({
   data: {
@@ -30,6 +32,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 })
     }
+    tabAnim(this)
     this.refresh()
   },
 
@@ -103,6 +106,94 @@ Page({
       totalSpend: store.fmtMoney(totalSpend),
       totalDaily: store.fmtMoney(totalDaily)
     })
+    // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
+    this.checkCelebration()
+  },
+
+  /** 值回票价日：扫一遍持有中物品，找到第一个刚达标未庆祝的 */
+  checkCelebration() {
+    const all = store.getAll()
+    for (const it of all) {
+      if (it.retired || !(it.targetDaily > 0) || it.celebrated) continue
+      const be = store.breakEven(it)
+      if (!be || !be.reached) continue
+      store.updateItem(it.id, { celebrated: true })
+      this.setData({
+        celebrating: {
+          id: it.id,
+          name: it.name,
+          price: store.fmtMoney(it.price),
+          symbol: store.currencySymbol(it.currency),
+          days: be.held,
+          need: be.need,
+          due: be.due
+        }
+      })
+      this._poster = null
+      this._ensurePoster()
+      return
+    }
+  },
+
+  closeCelebration() {
+    this.setData({ celebrating: null })
+  },
+
+  /** 生成庆祝海报（离屏 canvas，一次生成，分享和保存共用） */
+  _ensurePoster() {
+    if (this._poster || !this.data.celebrating) return
+    wx.createSelectorQuery()
+      .select('#celeCanvas')
+      .fields({ node: true, size: true })
+      .exec((res) => {
+        if (!res || !res[0] || !res[0].node) return
+        poster.drawCelebration(res[0].node, this.data.celebrating, (path) => {
+          if (path) this._poster = path
+        })
+      })
+  },
+
+  /** 保存海报到相册（发朋友圈用） */
+  savePoster() {
+    if (!this._poster) {
+      wx.showToast({ title: '海报生成中，再点一次', icon: 'none' })
+      return
+    }
+    wx.saveImageToPhotosAlbum({
+      filePath: this._poster,
+      success: () => wx.showToast({ title: '已保存，发朋友圈吧', icon: 'none' }),
+      fail: (r) => {
+        // 首次会拒授权，引导去设置里开
+        if (r.errMsg && r.errMsg.includes('auth')) {
+          wx.showModal({
+            title: '需要相册权限',
+            content: '去设置里允许保存到相册，再来保存这张海报',
+            confirmText: '去设置',
+            success: (m) => {
+              if (m.confirm) wx.openSetting()
+            }
+          })
+        }
+      }
+    })
+  },
+
+  /** 转发：庆祝中的物品走专属文案 + 海报图 */
+  onShareAppMessage() {
+    const c = this.data.celebrating
+    if (c) {
+      return {
+        title: '「' + c.name + '」今天回本了！' + c.symbol + c.price + ' 用了 ' + c.days + ' 天，之后每个使用日都是赚的',
+        path: '/pages/detail/detail?id=' + c.id,
+        imageUrl: this._poster || undefined
+      }
+    }
+    return { title: '记物 · 一件东西用得越久，每天就越便宜', path: '/pages/index/index' }
+  },
+
+  /** 分享朋友圈（快照形式，精细图走「保存图片」） */
+  onShareTimeline() {
+    return { title: '记物 · 一件东西用得越久，每天就越便宜' }
   },
 
   fmtDate(d) {

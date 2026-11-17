@@ -1,8 +1,15 @@
-<view class="page">
+<view class="page {{tabAnim}}">
 
   <!-- 数据 -->
   <view class="card">
     <view class="sec-title">数据</view>
+    <view class="row" bindtap="loadDemo" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">载入示例数据</view>
+        <view class="row-sub">体验用：含各状态物品与种草，可随时删除</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
     <view class="row" bindtap="exportData" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">导出全部数据</view>
