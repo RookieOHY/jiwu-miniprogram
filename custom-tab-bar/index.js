@@ -8,8 +8,31 @@ Component({
       // 读取用户的文本显示配置（未设置过默认隐藏）
       const store = require('../utils/store')
       this.setData({ hideText: store.getTabbarHideText() })
+      this._syncFromRoute()
     }
   },
+  pageLifetimes: {
+    /** 组件所在页面显示时：按当前页面路径自动同步选中态（不依赖各页 onShow） */
+    show() {
+      this._syncFromRoute()
+    }
+  },
+  methods: {
+    /** 用页面栈顶的真实路径反推选中索引，彻底避免时序竞态 */
+    _syncFromRoute() {
+      const pages = getCurrentPages()
+      const cur = pages.length ? '/' + pages[pages.length - 1].route : ''
+      const idx = this.data.list.findIndex((it) => it.pagePath === cur)
+      const store = require('../utils/store')
+      if (idx >= 0 && idx !== this.data.selected) {
+        this.setData({ selected: idx })
+      }
+      const hideText = store.getTabbarHideText()
+      if (hideText !== this.data.hideText) {
+        this.setData({ hideText })
+      }
+    },
+
   data: {
     selected: 0,
     hideText: true,
