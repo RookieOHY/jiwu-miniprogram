@@ -30,7 +30,7 @@
   padding: 0 8rpx;
   background: var(--card);
   border-radius: 54rpx;
-  box-shadow: var(--shadow-1);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
 
 /* 滑动高亮块：切换时在 tab 间平滑滑动 */
@@ -126,7 +126,7 @@
   width: 108rpx;
   height: 108rpx;
   border-radius: 50%;
-  background: var(--accent);
+  background: #5856D6;
   color: #ffffff;
   font-size: 56rpx;
   display: flex;
@@ -144,11 +144,24 @@
 @media (prefers-color-scheme: dark) {
   .tabbar-wrap {
     --card: #1C1C1E;
-    --text-1: #ffffff;
-    --chip-text: #98989d;
-    --accent: #5E5CE6;
-    --accent-soft: rgba(94, 92, 230, 0.25);
-    --shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
-    --tabbar-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.5);
+  }
+  .capsule {
+    background: #1C1C1E;
+    box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.5);
+  }
+  .tab-label {
+    color: #98989d;
+  }
+  .tab.on {
+    background: rgba(94, 92, 230, 0.25);
+  }
+  .tab-press {
+    background: rgba(94, 92, 230, 0.25);
+  }
+  .tab.on .tab-label {
+    color: #8E8EF7;
+  }
+  .plus {
+    background: #5E5CE6;
   }
 }
