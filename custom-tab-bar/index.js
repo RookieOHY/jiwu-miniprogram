@@ -1,37 +1,24 @@
 /**
- * 自定义胶囊 TabBar：左侧 3 个 tab 收进一个胶囊，右侧独立的 ➕ 圆钮
- * 每个 tab 页需在 onShow 里调用 getTabBar().setData({ selected }) 同步选中态
+ * 自定义胶囊 TabBar：左侧胶囊（滑动高亮块 + 图标），右侧独立的 ➕ 圆钮
+ * 选中态由组件自感知：pageLifetimes.show 里按页面栈顶路由反推，无需各页 onShow 手动同步
  */
+const store = require('../utils/store')
+
 Component({
   lifetimes: {
     attached() {
       // 读取用户的文本显示配置（未设置过默认隐藏）
-      const store = require('../utils/store')
       this.setData({ hideText: store.getTabbarHideText() })
       this._syncFromRoute()
     }
   },
+
   pageLifetimes: {
-    /** 组件所在页面显示时：按当前页面路径自动同步选中态（不依赖各页 onShow） */
+    /** 组件所在页面显示时：按当前页面路径自动同步选中态（不依赖各页 onShow，避免时序竞态） */
     show() {
       this._syncFromRoute()
     }
   },
-  methods: {
-    /** 用页面栈顶的真实路径反推选中索引，彻底避免时序竞态 */
-    _syncFromRoute() {
-      const pages = getCurrentPages()
-      const cur = pages.length ? '/' + pages[pages.length - 1].route : ''
-      const idx = this.data.list.findIndex((it) => it.pagePath === cur)
-      const store = require('../utils/store')
-      if (idx >= 0 && idx !== this.data.selected) {
-        this.setData({ selected: idx })
-      }
-      const hideText = store.getTabbarHideText()
-      if (hideText !== this.data.hideText) {
-        this.setData({ hideText })
-      }
-    },
 
   data: {
     selected: 0,
@@ -44,6 +31,20 @@ Component({
   },
 
   methods: {
+    /** 用页面栈顶的真实路径反推选中索引 */
+    _syncFromRoute() {
+      const pages = getCurrentPages()
+      const cur = pages.length ? '/' + pages[pages.length - 1].route : ''
+      const idx = this.data.list.findIndex((it) => it.pagePath === cur)
+      if (idx >= 0 && idx !== this.data.selected) {
+        this.setData({ selected: idx })
+      }
+      const hideText = store.getTabbarHideText()
+      if (hideText !== this.data.hideText) {
+        this.setData({ hideText })
+      }
+    },
+
     switchTab(e) {
       const index = e.currentTarget.dataset.index
       wx.switchTab({ url: this.data.list[index].pagePath })
