@@ -28,7 +28,7 @@
   align-items: center;
   height: 108rpx;
   padding: 0 8rpx;
-  background: var(--card);
+  background: #ffffff;
   border-radius: 54rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
@@ -103,10 +103,10 @@
 .tab-label {
   font-size: 22rpx;
   line-height: 1.2;
-  color: var(--text-2);
+  color: #8e8e93;
 }
 .tab.on .tab-label {
-  color: var(--text-1);
+  color: #1c1c1e;
   font-weight: 600;
 }
 
