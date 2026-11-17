@@ -9,11 +9,14 @@
       </view>
       <view class="hero-nums">
         <view class="hero-num-item">
-          <view class="hero-num">¥{{totalSpend}}</view>
-          <view class="hero-num-label">总投入</view>
+          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view>
+          <view class="hero-num-label-row">
+            <text class="hero-num-label">总投入</text>
+            <view class="eye {{amountHidden ? 'eye-off' : ''}}" catchtap="toggleHide"></view>
+          </view>
         </view>
         <view class="hero-num-item">
-          <view class="hero-num">¥{{totalDaily}}</view>
+          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalDaily}}</view>
           <view class="hero-num-label">总日均</view>
         </view>
         <view class="hero-num-item">

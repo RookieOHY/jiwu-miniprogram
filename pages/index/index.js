@@ -13,7 +13,8 @@ Page({
     filter: 'all', // all | 持有中 | 已退役 | 已卖出
     viewMode: 'list', // list | card
     heroHidden: false,
-    totalDaily: '0'
+    totalDaily: '0',
+    amountHidden: false
   },
   /** 上滑收起顶部绿色汇总卡（迟滞阈值防抖动：>300 收起，<20 展开） */
   onPageScroll(e) {
@@ -40,6 +41,8 @@ Page({
     // 记住用户的视图偏好
     const saved = wx.getStorageSync('viewMode')
     if (saved) this.setData({ viewMode: saved })
+    // 恢复金额隐私模式
+    this.setData({ amountHidden: !!wx.getStorageSync('amountHidden') })
   },
 
   /** 切换列表/卡片视图，图标显示将要切过去的视图 */
@@ -108,6 +111,14 @@ Page({
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
     this.checkCelebration()
+  },
+
+  /** 隐藏/显示金额（隐私模式，记忆状态） */
+  toggleHide() {
+    const amountHidden = !this.data.amountHidden
+    this.setData({ amountHidden })
+    wx.setStorageSync('amountHidden', amountHidden)
+    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
   },
 
   /** 值回票价日：扫一遍持有中物品，找到第一个刚达标未庆祝的 */
