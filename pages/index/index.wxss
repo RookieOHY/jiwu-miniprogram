@@ -389,18 +389,6 @@
   flex-direction: column;
   gap: 20rpx;
 }
-.cele-share {
-  background: #ffffff;
-  color: #7c3aed;
-  border-radius: 44rpx;
-  font-size: 30rpx;
-  font-weight: 700;
-  padding: 22rpx 0;
-  line-height: 1.4;
-}
-.cele-share::after {
-  border: none;
-}
 /* 第二行：保存图片 + 知道了 并列 */
 .cele-sub-row {
   display: flex;
@@ -424,14 +412,15 @@
 .cele-close {
   flex: 1;
   background: transparent;
-  color: rgba(255, 255, 255, 0.9);
-  border: none;
+  color: #ffffff;
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
   border-radius: 44rpx;
   font-size: 28rpx;
   font-weight: 600;
   padding: 18rpx 0;
   text-align: center;
   line-height: 1.4;
+  box-sizing: border-box;
 }
 
 /* 海报绘制用离屏画布，视觉上不可见 */

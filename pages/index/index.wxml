@@ -144,7 +144,6 @@
     <view class="cele-big">今天起，每个使用日都是赚的</view>
     <view class="cele-sub">第 {{celebrating.need}} 天，日均已降到目标以下</view>
     <view class="cele-actions">
-      <button class="cele-share" open-type="share">转发炫耀</button>
       <view class="cele-sub-row">
         <button class="cele-save" bindtap="savePoster">保存图片</button>
         <view class="cele-close" bindtap="closeCelebration">知道了</view>
