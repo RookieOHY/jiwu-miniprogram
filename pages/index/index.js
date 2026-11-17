@@ -129,7 +129,6 @@ Page({
     const amountHidden = !this.data.amountHidden
     this.setData({ amountHidden })
     wx.setStorageSync('amountHidden', amountHidden)
-    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
   },
 
   /** 切换总均周期：日 → 月 → 年 → 日 */
@@ -138,7 +137,6 @@ Page({
     const next = order[(order.indexOf(this.data.totalPeriod) + 1) % 3]
     this.setData({ totalPeriod: next })
     wx.setStorageSync('totalPeriod', next)
-    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
     this.refresh()
   },
 
