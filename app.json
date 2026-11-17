@@ -12,7 +12,7 @@
   ],
   "window": {
     "navigationBarBackgroundColor": "@navBg",
-    "navigationBarTitleText": "记物",
+    "navigationBarTitleText": "日用即值",
     "navigationBarTextStyle": "@navTxt",
     "backgroundColor": "@bg",
     "backgroundTextStyle": "@bgTxt"
