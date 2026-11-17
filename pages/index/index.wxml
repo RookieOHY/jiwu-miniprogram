@@ -16,8 +16,11 @@
           </view>
         </view>
         <view class="hero-num-item">
-          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalDaily}}</view>
-          <view class="hero-num-label">总日均</view>
+          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalPeriodValue}}</view>
+          <view class="hero-num-label-row">
+            <text class="hero-num-label">{{periodLabel}}</text>
+            <view class="period-cycle" catchtap="cyclePeriod"></view>
+          </view>
         </view>
         <view class="hero-num-item">
           <view class="hero-num">{{count}}</view>

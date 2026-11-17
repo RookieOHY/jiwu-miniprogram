@@ -14,7 +14,10 @@ Page({
     viewMode: 'list', // list | card
     heroHidden: false,
     totalDaily: '0',
-    amountHidden: false
+    amountHidden: false,
+    totalPeriod: 'day',
+    totalPeriodValue: '0',
+    periodLabel: '总日均'
   },
   /** 上滑收起顶部绿色汇总卡（迟滞阈值防抖动：>300 收起，<20 展开） */
   onPageScroll(e) {
@@ -41,8 +44,10 @@ Page({
     // 记住用户的视图偏好
     const saved = wx.getStorageSync('viewMode')
     if (saved) this.setData({ viewMode: saved })
-    // 恢复金额隐私模式
+    // 恢复金额隐私模式与周期档位
     this.setData({ amountHidden: !!wx.getStorageSync('amountHidden') })
+    const period = wx.getStorageSync('totalPeriod')
+    if (period) this.setData({ totalPeriod: period })
   },
 
   /** 切换列表/卡片视图，图标显示将要切过去的视图 */
@@ -68,6 +73,10 @@ Page({
     const totalDaily = all
       .filter((it) => !it.retired)
       .reduce((s, it) => s + store.toCNY(store.dailyCost(it), it.currency), 0)
+    // 按当前周期档位换算：日 / 月 / 年
+    const mult = this.data.totalPeriod === 'month' ? 30 : this.data.totalPeriod === 'year' ? 365 : 1
+    const totalPeriodValue = store.fmtMoney(totalDaily * mult)
+    const periodLabel = this.data.totalPeriod === 'month' ? '总月均' : this.data.totalPeriod === 'year' ? '总年均' : '总日均'
 
     const items = all
       .filter((it) => {
@@ -107,7 +116,9 @@ Page({
       retiredCount,
       soldCount,
       totalSpend: store.fmtMoney(totalSpend),
-      totalDaily: store.fmtMoney(totalDaily)
+      totalDaily: store.fmtMoney(totalDaily),
+      totalPeriodValue,
+      periodLabel
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
     this.checkCelebration()
@@ -119,6 +130,16 @@ Page({
     this.setData({ amountHidden })
     wx.setStorageSync('amountHidden', amountHidden)
     if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
+  },
+
+  /** 切换总均周期：日 → 月 → 年 → 日 */
+  cyclePeriod() {
+    const order = ['day', 'month', 'year']
+    const next = order[(order.indexOf(this.data.totalPeriod) + 1) % 3]
+    this.setData({ totalPeriod: next })
+    wx.setStorageSync('totalPeriod', next)
+    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
+    this.refresh()
   },
 
   /** 值回票价日：扫一遍持有中物品，找到第一个刚达标未庆祝的 */
