@@ -1,5 +1,13 @@
 /* 胶囊 TabBar：透明容器负责底部安全区，内部胶囊 + 独立圆钮 */
+/* 组件样式隔离会阻断 page 的 CSS 变量继承，这里自备一套（明暗各一） */
 .tabbar-wrap {
+  --card: #ffffff;
+  --text-1: #1c1c1e;
+  --chip-text: #8e8e93;
+  --accent: #5856D6;
+  --accent-soft: rgba(88, 86, 214, 0.12);
+  --shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+  --tabbar-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
   position: fixed;
   left: 0;
   right: 0;
@@ -130,4 +138,17 @@
 
 .plus-press {
   transform: scale(0.92);
+}
+
+/* ============ 夜间模式：只翻转变量 ============ */
+@media (prefers-color-scheme: dark) {
+  .tabbar-wrap {
+    --card: #1C1C1E;
+    --text-1: #ffffff;
+    --chip-text: #98989d;
+    --accent: #5E5CE6;
+    --accent-soft: rgba(94, 92, 230, 0.25);
+    --shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+    --tabbar-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.5);
+  }
 }
