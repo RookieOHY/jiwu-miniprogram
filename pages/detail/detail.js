@@ -35,6 +35,8 @@ Page({
     const sold = !!it.sold
     const profit = sold ? it.soldPrice - it.price : 0
     const be = store.breakEven(it)
+    const uses = it.uses || 0
+    const perUse = store.perUseCost(it)
     this.setData({
       item: {
         id: it.id,
@@ -61,6 +63,10 @@ Page({
       daily365: store.fmtMoney(it.price / 365),
       endDate: it.retired && it.retiredDate ? it.retiredDate : today,
       maxDate: this.maxDate,
+      // 使用统计
+      uses: uses,
+      perUse: perUse !== null ? store.fmtMoney(perUse) : '',
+      lastUseDate: it.lastUseDate || '',
       // 回本进度（未设目标时 be 为 null）
       be: be ? {
         symbol: store.currencySymbol(it.currency),
@@ -118,6 +124,20 @@ Page({
         }
       }
     })
+  },
+
+  /** 记一次使用：使用次数 +1 */
+  recordUse() {
+    const it = store.getById(this.id)
+    if (!it) return
+    const today = this.fmtDate(new Date())
+    store.updateItem(this.id, { uses: (it.uses || 0) + 1, lastUseDate: today })
+    if (wx.vibrateShort) wx.vibrateShort({ type: 'light' })
+    this.refresh()
+    const perUse = store.perUseCost(store.getById(this.id))
+    if (perUse !== null) {
+      wx.showToast({ title: '已记 1 次 · 次均 ¥' + store.fmtMoney(perUse), icon: 'none' })
+    }
   },
 
   /** 进入编辑页 */

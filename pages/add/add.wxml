@@ -49,6 +49,18 @@
     </view>
 
     <view class="field">
+      <view class="label">使用次数（可选，已有使用记录就补上）</view>
+      <input
+        class="input"
+        type="number"
+        placeholder="0"
+        placeholder-class="ph"
+        value="{{uses}}"
+        bindinput="onUses"
+      />
+    </view>
+
+    <view class="field">
       <view class="label">购买日期</view>
       <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
         <view class="input picker-val">{{buyDate}}</view>
