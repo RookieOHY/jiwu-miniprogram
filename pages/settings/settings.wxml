@@ -26,6 +26,18 @@
     </view>
   </view>
 
+  <!-- 配置 -->
+  <view class="card">
+    <view class="sec-title">配置</view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">隐藏底部胶囊文本</view>
+        <view class="row-sub">开启后底部导航仅显示图标</view>
+      </view>
+      <switch checked="{{tabbarHideText}}" color="#5856D6" bindchange="onTabbarHideText"/>
+    </view>
+  </view>
+
   <!-- 关于 -->
   <view class="card">
     <view class="sec-title">关于</view>

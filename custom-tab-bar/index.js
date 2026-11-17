@@ -3,8 +3,15 @@
  * 每个 tab 页需在 onShow 里调用 getTabBar().setData({ selected }) 同步选中态
  */
 Component({
+  lifetimes: {
+    attached() {
+      // 读取用户的文本显示配置（默认隐藏文本）
+      this.setData({ hideText: !!wx.getStorageSync('tabbarHideText') })
+    }
+  },
   data: {
     selected: 0,
+    hideText: true,
     list: [
       { pagePath: '/pages/index/index', text: '物品' },
       { pagePath: '/pages/wishlist/wishlist', text: '种草' },

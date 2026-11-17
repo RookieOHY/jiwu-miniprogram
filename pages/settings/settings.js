@@ -4,11 +4,29 @@ const demo = require('../../utils/demo')
 
 Page({
   onShow() {
-    // 同步胶囊 TabBar 选中态
+    // 同步胶囊 TabBar 选中态与文本显示配置
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 2 })
+      this.getTabBar().setData({ selected: 2, hideText: !!wx.getStorageSync('tabbarHideText') })
     }
     tabAnim(this)
+  },
+
+  data: {
+    tabbarHideText: true
+  },
+
+  onLoad() {
+    this.setData({ tabbarHideText: !!wx.getStorageSync('tabbarHideText') })
+  },
+
+  /** 配置：是否隐藏底部胶囊的文本（默认开启） */
+  onTabbarHideText(e) {
+    const v = e.detail.value
+    this.setData({ tabbarHideText: v })
+    wx.setStorageSync('tabbarHideText', v)
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ hideText: v })
+    }
   },
 
   /** 载入示例数据（固定 ID 去重，可重复点不会加重复） */

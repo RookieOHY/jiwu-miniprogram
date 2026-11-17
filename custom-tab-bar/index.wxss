@@ -161,3 +161,10 @@
     background: #5E5CE6;
   }
 }
+
+/* 隐藏文本时：图标略放大居中 */
+.tab.icon-only .tab-icon {
+  width: 44rpx;
+  height: 44rpx;
+  background-size: 44rpx 44rpx;
+}
