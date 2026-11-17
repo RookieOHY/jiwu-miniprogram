@@ -149,7 +149,7 @@ page {
   width: 120rpx;
   height: 120rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,9 +192,9 @@ page {
   margin-top: 32rpx;
 }
 .btn-solid {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #c084fc 100%);
+  background: var(--accent);
   color: #ffffff;
-  box-shadow: 0 6rpx 24rpx rgba(168, 85, 247, 0.4);
+  box-shadow: 0 4rpx 16rpx rgba(88, 86, 214, 0.3);
 }
 .btn-ghost {
   background: transparent;

@@ -6,7 +6,7 @@
 .head-card {
   display: flex;
   margin-bottom: 24rpx;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 40%, var(--hero-end) 125%);
+  background: linear-gradient(135deg, var(--accent) 0%, #6E6AE8 55%, var(--hero-end) 125%);
   color: #ffffff;
   box-shadow: var(--hero-shadow);
   padding: 40rpx 28rpx;

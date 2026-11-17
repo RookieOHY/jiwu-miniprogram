@@ -54,7 +54,7 @@
   width: 10rpx;
   min-height: 4rpx;
   border-radius: 6rpx;
-  background: linear-gradient(to top, #8b5cf6, #c084fc);
+  background: var(--accent);
   margin-bottom: 8rpx;
 }
 .bar-day {
@@ -87,7 +87,7 @@
 .mbar {
   width: 44rpx;
   border-radius: 12rpx 12rpx 4rpx 4rpx;
-  background: linear-gradient(to top, #8b5cf6, #c084fc);
+  background: var(--accent);
 }
 .mbar-label {
   font-size: 22rpx;
@@ -187,7 +187,7 @@
   flex-shrink: 0;
 }
 .rank-idx.top {
-  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+  background: var(--accent);
   color: #ffffff;
 }
 .rank-name {
@@ -206,7 +206,7 @@
   font-size: 30rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
-  color: #8b5cf6;
+  color: var(--text-1);
   flex-shrink: 0;
 }
 /* 给悬浮胶囊 TabBar 让位 */

@@ -1,24 +1,27 @@
 page {
-  /* 色彩变量：明暗两套，页面样式一律引用变量 */
-  --bg: #f7f7f2;
+  /* 色彩变量：明暗两套，页面样式一律引用变量（Apple 语义色） */
+  --bg: #F2F2F7;
   --card: #ffffff;
-  --text-1: #2b2b2b;
-  --text-2: #a8a8a0;
-  --text-3: #c8c8c0;
-  --text-dim: #b0b0a8;
-  --border: #f1ecfa;
-  --chip: #f3eefe;
-  --chip-text: #9b93a8;
-  --track: #f1ecfa;
-  --line: #d8c8f7;
-  --sep: #d5d0e4;
-  --hero-end: #ece3fd;
-  --danger-bg: #f3e5e2;
-  --danger-text: #c05a4d;
-  --shadow-1: 0 2rpx 12rpx rgba(43, 43, 43, 0.05);
-  --shadow-press: 0 4rpx 16rpx rgba(43, 43, 43, 0.1);
-  --logo-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.18);
-  --hero-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.22), 0 4rpx 24rpx rgba(168, 85, 247, 0.3);
+  --text-1: #1c1c1e;
+  --text-2: #8e8e93;
+  --text-3: #c7c7cc;
+  --text-dim: #aeaeb2;
+  --border: rgba(60, 60, 67, 0.15);
+  --chip: #F2F2F7;
+  --chip-text: #3c3c43;
+  --track: #F2F2F7;
+  --line: rgba(60, 60, 67, 0.25);
+  --sep: rgba(60, 60, 67, 0.25);
+  --hero-end: #ffffff;
+  --accent: #5856D6;
+  --accent-soft: rgba(88, 86, 214, 0.12);
+  --pos: #34C759;
+  --danger-bg: rgba(255, 59, 48, 0.1);
+  --danger-text: #FF3B30;
+  --shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
+  --shadow-press: 0 2rpx 10rpx rgba(0, 0, 0, 0.08);
+  --logo-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  --hero-shadow: var(--shadow-1);
 
   background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
@@ -35,9 +38,9 @@ page {
   box-shadow: var(--shadow-1);
 }
 
-/* 通用按钮（荧光紫渐变） */
+/* 通用按钮（Accent 实色，Apple 式克制） */
 .btn-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 55%, #c084fc 100%);
+  background: var(--accent);
   color: #ffffff;
   border-radius: 48rpx;
   font-size: 32rpx;
@@ -193,28 +196,28 @@ page {
 /* ============ 夜间模式：只翻转变量 ============ */
 @media (prefers-color-scheme: dark) {
   page {
-    --bg: #161320;
-    --card: #221e2d;
-    --text-1: #eae5f4;
-    --text-2: #8d85a0;
-    --text-3: #6e6580;
-    --text-dim: #8d85a0;
-    --border: #352e44;
-    --chip: #2c2640;
-    --chip-text: #a79bc4;
-    --track: #352e44;
-    --line: #3a3150;
-    --sep: #4a4160;
-    --hero-end: #2b2338;
-    --danger-bg: #3a2b33;
-    --danger-text: #e08579;
-    --shadow-1: 0 2rpx 12rpx rgba(0, 0, 0, 0.35);
-    --shadow-press: 0 4rpx 16rpx rgba(0, 0, 0, 0.4);
+    --bg: #000000;
+    --card: #1C1C1E;
+    --text-1: #ffffff;
+    --text-2: #98989d;
+    --text-3: #5a5a5e;
+    --text-dim: #98989d;
+    --border: rgba(84, 84, 88, 0.6);
+    --chip: #2C2C2E;
+    --chip-text: #b8b8bf;
+    --track: #2C2C2E;
+    --line: rgba(84, 84, 88, 0.6);
+    --sep: rgba(84, 84, 88, 0.6);
+    --hero-end: #1C1C1E;
+    --accent: #5E5CE6;
+    --accent-soft: rgba(94, 92, 230, 0.25);
+    --pos: #30D158;
+    --danger-bg: rgba(255, 69, 58, 0.15);
+    --danger-text: #FF453A;
+    --shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+    --shadow-press: 0 2rpx 10rpx rgba(0, 0, 0, 0.4);
     --logo-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.4);
-    --hero-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.5), 0 4rpx 24rpx rgba(168, 85, 247, 0.3);
-  }
-  .btn-primary {
-    box-shadow: 0 6rpx 24rpx rgba(168, 85, 247, 0.4);
+    --hero-shadow: var(--shadow-1);
   }
 
   /* 中性胶囊底色 */
