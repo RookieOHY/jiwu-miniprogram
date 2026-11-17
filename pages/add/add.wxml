@@ -6,7 +6,7 @@
     <view class="chev {{moreWays ? 'up' : ''}}"></view>
   </view>
   <view wx:if="{{moreWays}}" class="more-ways">
-    <view class="more-item">
+    <view class="more-item" bindtap="goFullAdd">
       <text>详细添加</text>
       <view class="more-arrow">›</view>
     </view>

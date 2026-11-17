@@ -230,6 +230,12 @@ Page({
 
   /* ---------- 快捷添加布局 ---------- */
 
+  /** 更多添加方式：详细添加 */
+  goFullAdd() {
+    wx.navigateTo({ url: '/pages/fulladd/fulladd' })
+  },
+
+
   toggleMore() {
     this.setData({ moreWays: !this.data.moreWays })
   },

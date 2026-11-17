@@ -1,0 +1,223 @@
+<view class="page">
+
+  <!-- 两个 tab -->
+  <view class="tabs">
+    <view class="tab {{tab === 'info' ? 'on' : ''}}" data-tab="info" bindtap="setTab">物品信息</view>
+    <view class="tab {{tab === 'cost' ? 'on' : ''}}" data-tab="cost" bindtap="setTab">成本与关联</view>
+  </view>
+
+  <!-- ============ 物品信息 ============ -->
+  <block wx:if="{{tab === 'info'}}">
+
+    <!-- 基本信息 -->
+    <view class="sec-title">基本信息</view>
+    <view class="card sec">
+      <!-- 图标 + 名称 -->
+      <view class="row-flex">
+        <view class="icon-slot" bindtap="setIcon">
+          <image wx:if="{{icon}}" class="icon-img" src="{{icon}}" mode="aspectFill"/>
+          <text wx:else class="icon-plus">🖼️</text>
+        </view>
+        <input class="row-input" placeholder="请输入物品名称" placeholder-class="ph" value="{{name}}" bindinput="onName"/>
+      </view>
+
+      <view class="sec-label">分类</view>
+      <view class="chip-grid">
+        <view
+          wx:for="{{categories}}"
+          wx:key="key"
+          class="chip {{category === item.key ? 'chip-on' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onCat"
+        >{{item.name}}</view>
+      </view>
+
+      <view class="sec-label">标签</view>
+      <view class="tag-row" wx:if="{{tags.length}}">
+        <view wx:for="{{tags}}" wx:key="*this" class="tag">
+          {{item}}
+          <text class="tag-x" data-i="{{index}}" catchtap="removeTag">×</text>
+        </view>
+      </view>
+      <view class="row-flex">
+        <input class="row-input" placeholder="添加标签，如：主力机 / 吃灰" placeholder-class="ph" value="{{tagInput}}" bindinput="onTagInput"/>
+        <view class="mini-btn" bindtap="addTag">添加</view>
+      </view>
+
+      <view class="field-line">
+        <text class="f-label">购买价格</text>
+        <input class="f-input price" type="digit" placeholder="0.00" placeholder-class="ph" value="{{price}}" bindinput="onPrice"/>
+        <view class="currency" wx:for="{{currencies}}" wx:for-item="c" wx:key="key"
+          class="currency {{currency === c.key ? 'on' : ''}}" data-key="{{c.key}}" bindtap="onCurrency">{{c.symbol}}</view>
+      </view>
+
+      <view class="field-line">
+        <text class="f-label">购买日期</text>
+        <picker mode="date" value="{{buyDate}}" bindchange="onDate">
+          <view class="date-chip">{{buyDate}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 计价方式 -->
+    <view class="sec-title">计价方式</view>
+    <view class="card sec">
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">日均计价</view>
+          <view class="row-sub">按持有天数摊销，默认开启</view>
+        </view>
+        <switch checked="{{pricingDaily}}" color="#5856D6" bindchange="onPricingDaily"/>
+      </view>
+      <view class="field-line" wx:if="{{pricingDaily}}">
+        <text class="f-label">日均价格</text>
+        <text class="f-auto">自动计算（买入价 ÷ 持有天数）</text>
+      </view>
+      <view class="field-line" wx:if="{{pricingDaily}}">
+        <text class="f-label">预计退役日期</text>
+        <picker mode="date" value="{{expectedRetire}}" bindchange="onExpectedRetire">
+          <view class="date-chip">{{expectedRetire || '选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">循环计价</view>
+          <view class="row-sub">订阅制按周期付费的物品（默认关闭）</view>
+        </view>
+        <switch checked="{{recycle}}" color="#5856D6" bindchange="onRecycle"/>
+      </view>
+    </view>
+
+    <!-- 使用记录 -->
+    <view class="sec-title">使用记录</view>
+    <view class="card sec">
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">记录使用次数</view>
+          <view class="row-sub">健身卡、相机这类按次用的物品（默认关闭）</view>
+        </view>
+        <switch checked="{{useEnabled}}" color="#5856D6" bindchange="onUseEnabled"/>
+      </view>
+      <view class="field-line" wx:if="{{useEnabled}}">
+        <text class="f-label">已使用次数</text>
+        <input class="f-input" type="number" placeholder="0" placeholder-class="ph" value="{{uses}}" bindinput="onUses"/>
+      </view>
+    </view>
+
+    <!-- 使用时间 -->
+    <view class="sec-title">使用时间</view>
+    <view class="card sec">
+      <view class="field-line">
+        <text class="f-label">开始使用日期</text>
+        <picker mode="date" value="{{startUseDate}}" bindchange="onStartUse">
+          <view class="date-chip">{{startUseDate || '选择日期'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 服役状态 -->
+    <view class="sec-title">服役状态</view>
+    <view class="card sec">
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">服役中</view>
+          <view class="row-sub">物品仍在正常使用（默认开启）</view>
+        </view>
+        <switch checked="{{inService}}" color="#5856D6" bindchange="onInService"/>
+      </view>
+      <view class="field-line">
+        <text class="f-label">当前估值</text>
+        <input class="f-input" type="digit" placeholder="现在还值多少（可随时更新）" placeholder-class="ph" value="{{valuation}}" bindinput="onValuation"/>
+      </view>
+    </view>
+
+    <!-- 期限信息 -->
+    <view class="sec-title">期限信息</view>
+    <view class="card sec">
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">保修 / 保质期</view>
+          <view class="row-sub">到期前可提醒（默认关闭）</view>
+        </view>
+        <switch checked="{{warrantyEnabled}}" color="#5856D6" bindchange="onWarrantyEnabled"/>
+      </view>
+      <view class="field-line" wx:if="{{warrantyEnabled}}">
+        <text class="f-label">保修到期</text>
+        <picker mode="date" value="{{warrantyDate}}" bindchange="onWarrantyDate">
+          <view class="date-chip">{{warrantyDate || '选择日期'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 额外信息 -->
+    <view class="sec-title">额外信息</view>
+    <view class="card sec">
+      <view class="sec-label">购买渠道</view>
+      <view class="chip-grid">
+        <view
+          wx:for="{{platformChips}}"
+          wx:key="key"
+          class="chip {{platform === item.key ? 'chip-on' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onPlatform"
+        >{{item.name}}</view>
+      </view>
+      <view class="field-line">
+        <text class="f-label">存放位置</text>
+        <input class="f-input" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" value="{{location}}" bindinput="onLocation"/>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="sec-title">备注</view>
+    <view class="card sec">
+      <textarea class="note-area" placeholder="补充说明…" placeholder-class="ph" value="{{note}}" bindinput="onNote" maxlength="200"/>
+      <view class="photo-row">
+        <view wx:for="{{photos}}" wx:key="*this" class="photo">
+          <image src="{{item}}" mode="aspectFill"/>
+          <text class="photo-x" data-i="{{index}}" catchtap="removePhoto">×</text>
+        </view>
+        <view wx:if="{{photos.length < 3}}" class="photo add" bindtap="addPhoto">＋</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ============ 成本与关联 ============ -->
+  <block wx:if="{{tab === 'cost'}}">
+    <view class="sec-title">附加收支</view>
+    <view class="card sec">
+      <view class="extra-type">
+        <view class="chip {{extraType === '支出' ? 'chip-on' : ''}}" data-t="支出" bindtap="setExtraType">支出</view>
+        <view class="chip {{extraType === '收入' ? 'chip-on' : ''}}" data-t="收入" bindtap="setExtraType">收入</view>
+      </view>
+      <view class="field-line">
+        <text class="f-label">名目</text>
+        <input class="f-input" placeholder="如：换电池 / 贴膜 / 二手卖出" placeholder-class="ph" value="{{extraName}}" bindinput="onExtraName"/>
+      </view>
+      <view class="field-line">
+        <text class="f-label">金额</text>
+        <input class="f-input" type="digit" placeholder="0.00" placeholder-class="ph" value="{{extraAmount}}" bindinput="onExtraAmount"/>
+      </view>
+      <view class="field-line">
+        <text class="f-label">日期</text>
+        <picker mode="date" value="{{extraDate}}" bindchange="onExtraDate">
+          <view class="date-chip">{{extraDate}}</view>
+        </picker>
+      </view>
+      <button class="mini-add" bindtap="addExtra">添加一条</button>
+
+      <view wx:if="{{extras.length}}" class="extra-list">
+        <view wx:for="{{extras}}" wx:key="index" class="extra-item">
+          <text class="extra-type-tag {{item.type === '收入' ? 'in' : 'out'}}">{{item.type}}</text>
+          <text class="extra-name">{{item.name || '未命名'}}</text>
+          <text class="extra-amount {{item.type === '收入' ? 'in' : 'out'}}">{{item.type === '收入' ? '+' : '-'}}¥{{item.amount}}</text>
+          <text class="extra-x" data-i="{{index}}" bindtap="removeExtra">×</text>
+        </view>
+      </view>
+      <view wx:else class="extra-empty">维修、配件、保养、二手卖出都记在这里，物品真实成本才算得清</view>
+    </view>
+  </block>
+
+  <view class="bottom-gap"></view>
+  <button class="btn-primary save-btn" bindtap="save">添加物品</button>
+</view>

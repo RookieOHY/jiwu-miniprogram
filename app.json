@@ -4,6 +4,7 @@
     "pages/stats/stats",
     "pages/wishlist/wishlist",
     "pages/wishlist/add",
+    "pages/fulladd/fulladd",
     "pages/duoshou/duoshou",
     "pages/vote/vote",
     "pages/settings/settings",

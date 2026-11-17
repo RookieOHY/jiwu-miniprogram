@@ -100,6 +100,7 @@ function addItem(data) {
     platform: data.platform || 'other',
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
     icon: data.icon || null,
+    ...(data.extra || {}),
     note: data.note || '',
     targetDaily: Number(data.targetDaily) || 0,
     celebrated: false,
