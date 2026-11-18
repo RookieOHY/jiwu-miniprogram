@@ -19,7 +19,10 @@ Page({
   },
 
   onShow() {
-    // TabBar 选中态：统计页是第 3 个 tab（index=... 由组件自感知路由，这里只刷新数据）
+    // 同步胶囊 TabBar 选中态（统计 = 第 3 个 tab）
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2, hideText: store.getTabbarHideText() })
+    }
     this.refresh()
   },
 
