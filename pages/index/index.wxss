@@ -46,15 +46,19 @@
 }
 .hero-nums {
   display: flex;
-  align-items: flex-end;
-  gap: 56rpx;
+  align-items: flex-start;
   margin: 4rpx 0 6rpx;
+}
+.hero-num-item {
+  flex: 1;
+  min-width: 0;
 }
 .hero-num-item .hero-num {
   font-size: 48rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
   line-height: 1.2;
+  white-space: nowrap;
 }
 .hero-num-label {
   font-size: 22rpx;
@@ -469,21 +473,18 @@
 /* 总览三列标签等高：带图标的行与纯文本行同高 */
 .hero-num-label-row,
 .hero-num-label {
-  height: 34rpx;
-  line-height: 34rpx;
   margin-top: 8rpx;
-  box-sizing: border-box;
-}
-.hero-num-label-row {
+  min-height: 30rpx;
   display: flex;
   align-items: center;
+  gap: 8rpx;
 }
 .eye,
 .period-cycle {
   width: 26rpx;
   height: 26rpx;
+  flex-shrink: 0;
   background-size: 26rpx 26rpx;
-  margin-top: 0;
 }
 
 /* 视图切换：三态图标 */

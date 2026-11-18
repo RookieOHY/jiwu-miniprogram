@@ -67,7 +67,7 @@
     >
       <!-- 时间线轨道：徽章 + 竖向虚线 -->
       <view class="tl-rail">
-        <view class="cat-badge badge-{{item.category}}"></view>
+        <image class="cat-badge" src="{{item.iconSrc}}" mode="aspectFit"/>
         <view wx:if="{{index < items.length - 1}}" class="tl-line"></view>
       </view>
 
@@ -114,7 +114,7 @@
       >
         <view class="gcard-body">
           <view class="gcard-head">
-            <view class="cat-badge badge-{{item.category}}"></view>
+            <image class="cat-badge" src="{{item.iconSrc}}" mode="aspectFit"/>
             <view class="tape" wx:if="{{item.pinned}}"></view>
             <view class="gcard-headright">
               <text wx:if="{{item.sold}}" class="tag-sold">已卖出</text>

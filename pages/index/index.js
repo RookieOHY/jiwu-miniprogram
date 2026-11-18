@@ -162,6 +162,7 @@ Page({
         category: it.category,
         categoryGroup: it.categoryGroup || '',
         catName: store.getCategoryName(it.category),
+        iconSrc: cats.getSubIcon(it.category, (cats.getGroups().find((g) => g.name === (it.categoryGroup || '')) || {}).icon || '') || '/assets/3d/package.png',
         platform: it.platform,
         platformName: store.getPlatformName(it.platform),
         symbol: store.currencySymbol(it.currency),
