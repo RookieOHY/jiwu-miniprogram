@@ -15,10 +15,11 @@
       <view class="dual-num">{{item.symbol}}{{daily}}</view>
       <view class="dual-label">日均成本 / 天</view>
     </view>
-    <view class="dual-item">
+    <view class="dual-item" bindtap="editUses">
       <view class="dual-num">{{perUse ? item.symbol + perUse : '—'}}</view>
-      <view class="dual-label">次均成本 / 次{{uses ? '（' + uses + '次）' : '（未记录）'}}</view>
+      <view class="dual-label">次均成本 / 次{{uses ? '（' + uses + '次）' : '（未记录）'}}<text class="ed-inline">›</text></view>
     </view>
+    <view class="use-add" catchtap="addUse">＋1</view>
   </view>
 
   <!-- 回本进度：目标日均 -->
@@ -43,9 +44,9 @@
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
     <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>
-    <view class="row" wx:if="{{item.startUseDate}}"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text></view>
+    <view class="row ed" wx:if="{{item.startUseDate}}" data-f="startUseDate" bindtap="openDate"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text><text class="ed-go">›</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
-    <view class="row" wx:if="{{item.note}}"><text class="k">备注</text><text class="v">{{item.note}}</text></view>
+    <view class="row ed" wx:if="{{item.note}}" bindtap="editNote"><text class="k">备注</text><text class="v">{{item.note}}</text><text class="ed-go">›</text></view>
     <view class="row" wx:if="{{item.sold}}">
       <text class="k">卖出日期</text><text class="v">{{item.soldDate}}</text>
     </view>
@@ -74,21 +75,21 @@
     <view class="sec-head">计价与服役</view>
     <view class="row"><text class="k">计价方式</text><text class="v">{{item.pricingDaily ? '日均计价' : '一次性'}}</text></view>
     <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
-    <view class="row" wx:if="{{item.expectedRetireDate}}"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text></view>
+    <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
     <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
-    <view class="row" wx:if="{{item.valuation}}"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text></view>
+    <view class="row ed" wx:if="{{item.valuation}}" bindtap="editValuation"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text><text class="ed-go">›</text></view>
   </view>
 
   <!-- 期限信息 -->
   <view class="card info" wx:if="{{item.warrantyEnabled}}">
     <view class="sec-head">期限信息</view>
-    <view class="row"><text class="k">保修到期</text><text class="v">{{item.warrantyDate || '未设置'}}</text></view>
+    <view class="row ed" data-f="warrantyDate" bindtap="openDate"><text class="k">保修到期</text><text class="v">{{item.warrantyDate || '点击设置'}}</text><text class="ed-go">›</text></view>
   </view>
 
   <!-- 额外信息 -->
   <view class="card info" wx:if="{{item.location}}">
     <view class="sec-head">额外信息</view>
-    <view class="row"><text class="k">存放位置</text><text class="v">{{item.location}}</text></view>
+    <view class="row ed" bindtap="editLocation"><text class="k">存放位置</text><text class="v">{{item.location}}</text><text class="ed-go">›</text></view>
   </view>
 
   <!-- 附加收支 -->
@@ -131,3 +132,6 @@
     <button class="op-btn op-danger" bindtap="remove">删除</button>
   </view>
 </view>
+
+<!-- 行内日期编辑：日历组件 -->
+<cal-picker visible="{{showDate}}" value="{{dateValue}}" bindselect="onDateSelect" bindclose="closeDate"/>

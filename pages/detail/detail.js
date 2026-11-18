@@ -6,7 +6,11 @@ Page({
     daily: '',
     monthly: '',
     days: 0,
-    endDate: ''
+    endDate: '',
+    // 行内日期编辑
+    showDate: false,
+    dateField: '',
+    dateValue: ''
   },
 
   onLoad(query) {
@@ -141,9 +145,105 @@ Page({
     })
   },
 
+  /* ---------- 行内编辑：数值 / 文本 ---------- */
+
+  _editText(field, title, placeholder, isNumber) {
+    const it = store.getById(this.id)
+    if (!it) return
+    const cur = it[field] === undefined || it[field] === null ? '' : String(it[field])
+    wx.showModal({
+      title: title,
+      editable: true,
+      placeholderText: placeholder,
+      content: cur,
+      confirmText: '保存',
+      success: (r) => {
+        if (!r.confirm) return
+        const raw = (r.content || '').trim()
+        let val = raw
+        if (isNumber) {
+          const n = parseFloat(raw)
+          if (raw === '' || !(n >= 0)) {
+            wx.showToast({ title: '请填写有效数字', icon: 'none' })
+            return
+          }
+          val = n
+        }
+        const patch = {}
+        patch[field] = val
+        if (field === 'uses') patch.useCountEnabled = true
+        store.updateItem(this.id, patch)
+        this.refresh()
+        wx.showToast({ title: '已更新', icon: 'success' })
+      }
+    })
+  },
+
+  editNote() {
+    this._editText('note', '备注', '写点使用感受、成色、注意事项', false)
+  },
+
+  editLocation() {
+    this._editText('location', '存放位置', '如：书房抽屉 / 客厅电视柜', false)
+  },
+
+  editValuation() {
+    this._editText('valuation', '当前估值（¥）', '现在还值多少钱', true)
+  },
+
+  editUses() {
+    this._editText('uses', '已使用次数', '一共用过多少次', true)
+  },
+
+  /** 快捷记一次使用（今天用了一次） */
+  addUse() {
+    const it = store.getById(this.id)
+    if (!it) return
+    const today = this.fmtDate(new Date())
+    store.updateItem(this.id, { uses: (it.uses || 0) + 1, useCountEnabled: true, lastUseDate: today })
+    this.refresh()
+    const nu = store.getById(this.id)
+    const per = store.perUseCost(nu)
+    wx.showToast({
+      title: per !== null ? '已记 1 次 · 次均 ' + store.currencySymbol(nu.currency) + store.fmtMoney(per) : '已记 1 次',
+      icon: 'none'
+    })
+  },
+
+  /* ---------- 行内编辑：日期（复用日历组件） ---------- */
+
+  openDate(e) {
+    const field = e.currentTarget.dataset.f
+    const it = store.getById(this.id)
+    if (!it) return
+    this.setData({
+      showDate: true,
+      dateField: field,
+      dateValue: it[field] || this.fmtDate(new Date())
+    })
+  },
+
+  closeDate() {
+    this.setData({ showDate: false })
+  },
+
+  onDateSelect(e) {
+    const field = this.data.dateField
+    if (!field) return
+    const patch = {}
+    patch[field] = e.detail.date
+    if (field === 'warrantyDate') patch.warrantyEnabled = true
+    store.updateItem(this.id, patch)
+    this.setData({ showDate: false })
+    this.refresh()
+    wx.showToast({ title: '已更新', icon: 'success' })
+  },
+
+  noop() {},
+
   /** 进入编辑页 */
   edit() {
-    wx.navigateTo({ url: '/pages/add/add?id=' + this.id })
+    wx.navigateTo({ url: '/pages/fulladd/fulladd?id=' + this.id })
   },
 
   /** 标记卖出：记录卖出价与日期，日均锁定，可复盘真实成本 */

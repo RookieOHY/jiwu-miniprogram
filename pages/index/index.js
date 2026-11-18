@@ -489,7 +489,7 @@ Page({
           this.refresh()
           wx.showToast({ title: it.pinned ? '已取消置顶' : '已置顶', icon: 'none' })
         } else if (r.tapIndex === 1) {
-          wx.navigateTo({ url: '/pages/add/add?id=' + id })
+          wx.navigateTo({ url: '/pages/fulladd/fulladd?id=' + id })
         } else if (r.tapIndex === 2) {
           wx.showModal({
             title: '删除物品',

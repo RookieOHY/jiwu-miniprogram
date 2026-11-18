@@ -170,3 +170,33 @@
   color: var(--text-2);
   margin-top: 6rpx;
 }
+
+/* 行内可编辑 */
+.row.ed {
+  cursor: pointer;
+}
+.ed-go {
+  color: var(--text-3);
+  font-size: 32rpx;
+  margin-left: 12rpx;
+}
+.ed-inline {
+  color: var(--text-3);
+  font-size: 22rpx;
+  margin-left: 4rpx;
+}
+.use-add {
+  flex-shrink: 0;
+  align-self: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(88, 86, 214, 0.12);
+  color: var(--accent);
+  font-size: 26rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+}
