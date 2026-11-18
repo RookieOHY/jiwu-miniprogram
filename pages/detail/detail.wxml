@@ -40,7 +40,7 @@
   <!-- 基本信息 -->
   <view class="card info">
     <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>
-    <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}</text></view>
+    <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}{{item.qty > 1 ? ' ×' + item.qty + '件（单件 ' + item.symbol + item.unitPrice + '）' : ''}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
     <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>

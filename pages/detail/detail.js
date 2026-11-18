@@ -44,6 +44,8 @@ Page({
         id: it.id,
         name: it.name,
         price: store.fmtMoney(it.price),
+        qty: Math.max(1, parseInt(it.qty) || 1),
+        unitPrice: store.fmtMoney(store.unitPrice(it)),
         buyDate: it.buyDate,
         category: it.category,
         catName: store.getCategoryName(it.category),

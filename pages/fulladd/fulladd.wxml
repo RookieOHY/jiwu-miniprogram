@@ -50,6 +50,13 @@
         <text class="f-label">购买日期</text>
         <view class="date-chip" bindtap="openDate" data-f="buyDate">{{buyDate}}</view>
       </view>
+
+      <view class="field-line">
+        <text class="f-label">数量</text>
+        <input class="f-input" type="number" placeholder="1" placeholder-class="ph" value="{{qty}}" bindinput="onQty"/>
+        <text class="qty-unit">件</text>
+        <text class="qty-per" wx:if="{{qty > 1 && price > 0}}">单件 ¥{{unitPriceText}}</text>
+      </view>
     </view>
 
     <!-- 计价方式 -->

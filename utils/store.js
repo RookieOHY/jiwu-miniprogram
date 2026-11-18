@@ -111,6 +111,7 @@ function addItem(data) {
     platform: data.platform || 'other',
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
     icon: data.icon || null,
+    qty: Math.max(1, parseInt(data.qty) || 1),
     ...(data.extra || {}),
     note: data.note || '',
     targetDaily: Number(data.targetDaily) || 0,
@@ -161,6 +162,12 @@ function dailyCost(item) {
 /** 月均成本（按 30 天折算） */
 function monthlyCost(item) {
   return dailyCost(item) * 30
+}
+
+/** 单件价 = 买入价 / 数量（一次买多件时看单件成本） */
+function unitPrice(item) {
+  const q = Math.max(1, parseInt(item.qty) || 1)
+  return item.price / q
 }
 
 /** 次均成本 = 总成本 / 使用次数（未使用返回 null） */
@@ -341,6 +348,7 @@ module.exports = {
   daysHeld,
   totalCost,
   dailyCost,
+  unitPrice,
   perUseCost,
   monthlyCost,
   breakEven,

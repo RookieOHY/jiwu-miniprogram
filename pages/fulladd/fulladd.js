@@ -33,6 +33,8 @@ Page({
     currencies: store.CURRENCIES,
     buyDate: '',
     maxDate: '',
+    qty: '1',
+    unitPriceText: '',
     category: '手机通讯',
     categoryGroup: '电子数码',
     catName: '手机通讯',
@@ -129,6 +131,7 @@ Page({
           currency: it.currency || 'CNY',
           symbol: store.currencySymbol(it.currency || 'CNY'),
           buyDate: it.buyDate,
+          qty: String(it.qty || 1),
           category: it.category,
           categoryGroup: group,
           tags: it.tags || [],
@@ -149,6 +152,7 @@ Page({
           photos: it.photos || [],
           extras: it.extras || []
         })
+        this._syncUnit()
         wx.setNavigationBarTitle({ title: '编辑物品' })
       }
     }
@@ -299,8 +303,19 @@ Page({
     this.setData({ name: e.detail.value })
   },
 
+  onQty(e) {
+    this.setData({ qty: e.detail.value }, () => this._syncUnit())
+  },
+
+  /** 单件价 = 总价 / 数量（数量>1 时显示） */
+  _syncUnit() {
+    const q = Math.max(1, parseInt(this.data.qty) || 1)
+    const p = parseFloat(this.data.price) || 0
+    this.setData({ unitPriceText: q > 1 && p > 0 ? store.fmtMoney(p / q) : '' })
+  },
+
   onPrice(e) {
-    this.setData({ price: e.detail.value })
+    this.setData({ price: e.detail.value }, () => this._syncUnit())
   },
 
   onCurrency(e) {
@@ -688,6 +703,7 @@ Page({
       store.updateItem(d.editId, {
         name: d.name.trim(),
         price: p,
+        qty: Math.max(1, parseInt(d.qty) || 1),
         buyDate: d.buyDate,
         category: d.category,
         platform: d.platform,
@@ -701,6 +717,7 @@ Page({
       store.addItem({
         name: d.name.trim(),
         price: p,
+        qty: Math.max(1, parseInt(d.qty) || 1),
         buyDate: d.buyDate,
         category: d.category,
         platform: d.platform,

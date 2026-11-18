@@ -822,3 +822,16 @@ page {
 .calc-fill::after {
   border: none;
 }
+
+/* 数量行 */
+.qty-unit {
+  font-size: 26rpx;
+  color: var(--text-2);
+  margin-left: 8rpx;
+}
+.qty-per {
+  font-size: 22rpx;
+  color: var(--accent);
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
