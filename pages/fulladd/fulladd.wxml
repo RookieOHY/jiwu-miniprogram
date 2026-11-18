@@ -21,15 +21,12 @@
         <input class="row-input" placeholder="请输入物品名称" placeholder-class="ph" value="{{name}}" bindinput="onName"/>
       </view>
 
-      <view class="sec-label">分类</view>
-      <view class="chip-grid">
-        <view
-          wx:for="{{categories}}"
-          wx:key="key"
-          class="chip {{category === item.key ? 'chip-on' : ''}}"
-          data-key="{{item.key}}"
-          bindtap="onCat"
-        >{{item.name}}</view>
+      <view class="field-line">
+        <text class="f-label">分类</text>
+        <view class="cat-open" bindtap="openCatPanel">
+          <text>{{catName}}</text>
+          <text class="cat-chev">›</text>
+        </view>
       </view>
 
       <view class="sec-label">标签</view>
@@ -257,6 +254,51 @@
           </view>
         </block>
         <view wx:if="{{!iconGroups.length}}" class="ip-empty">没有匹配的图标</view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+
+<!-- 选择分类面板（两级：大分类 → 子分类） -->
+<view wx:if="{{showCatPanel}}" class="ccp-mask" bindtap="closeCatPanel">
+  <view class="ccp-panel" catchtap="noop">
+    <view class="ccp-head">
+      <view class="ccp-back" bindtap="closeCatPanel">‹</view>
+      <text class="ccp-title">选择分类</text>
+      <view class="ccp-manage" bindtap="goCatManage">分类管理</view>
+    </view>
+    <view class="ccp-search">
+      <input class="ccp-search-input" placeholder="搜索子分类" placeholder-class="ph" value="{{catKeyword}}" bindinput="onCatSearch"/>
+    </view>
+    <view class="ccp-body">
+      <scroll-view scroll-y class="ccp-left">
+        <view
+          wx:for="{{catGroups}}"
+          wx:key="name"
+          class="ccp-group {{(!catKeyword && (categoryGroup === item.name || (!categoryGroup && index === 0))) ? 'on' : ''}}"
+        >
+          <image class="ccp-gicon" src="{{item.icon}}" mode="aspectFit"/>
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+      <scroll-view scroll-y class="ccp-right">
+        <block wx:for="{{catGroups}}" wx:key="name" wx:for-item="g">
+          <block wx:if="{{catKeyword || categoryGroup === g.name || (!categoryGroup && index === 0)}}">
+            <view
+              wx:for="{{g.subs}}"
+              wx:for-item="s"
+              wx:key="*this"
+              class="ccp-sub {{category === s ? 'on' : ''}}"
+              data-sub="{{s}}"
+              data-group="{{g.name}}"
+              bindtap="setSub"
+            >
+              <text>{{s}}</text>
+              <text wx:if="{{category === s}}" class="ccp-check">✓</text>
+            </view>
+          </block>
+        </block>
+        <view class="ccp-empty" wx:if="{{!catGroups.length}}">没有匹配的分类</view>
       </scroll-view>
     </view>
   </view>

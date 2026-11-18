@@ -74,7 +74,8 @@ function getPlatformChar(key) {
 
 function getCategoryName(key) {
   const c = CATEGORIES.find((c) => c.key === key)
-  return c ? c.name : '其他'
+  // 新版两级分类：子分类直接存中文名，原样返回
+  return c ? c.name : key || '其他'
 }
 
 function getAll() {

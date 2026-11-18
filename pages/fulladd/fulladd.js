@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const cats = require('../../utils/cats')
 const icons = require('../../utils/icons')
 
 function today() {
@@ -18,8 +19,13 @@ Page({
     currencies: store.CURRENCIES,
     buyDate: '',
     maxDate: '',
-    category: 'other',
+    category: '其他',
+    categoryGroup: '其他',
+    catName: '其他',
     categories: store.CATEGORIES,
+    showCatPanel: false,
+    catKeyword: '',
+    catGroups: [],
     tags: [],
     tagInput: '',
     // 计价方式
@@ -65,9 +71,54 @@ Page({
       buyDate: t,
       maxDate: '',
       extraDate: t,
+      catGroups: cats.getGroups(),
       platformChips: store.PLATFORMS.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
     })
     this.filterIcons()
+  },
+
+  /* ---------- 选择分类面板（大分类 → 子分类） ---------- */
+
+  openCatPanel() {
+    this.setData({ showCatPanel: true, catKeyword: '', catGroups: cats.getGroups() })
+  },
+
+  closeCatPanel() {
+    this.setData({ showCatPanel: false })
+  },
+
+  noop() {},
+
+  onCatSearch(e) {
+    const q = (e.detail.value || '').trim()
+    const groups = cats.getGroups()
+    if (!q) {
+      this.setData({ catKeyword: '', catGroups: groups })
+      return
+    }
+    this.setData({
+      catKeyword: q,
+      catGroups: groups
+        .map((g) => ({ name: g.name, icon: g.icon, subs: g.subs.filter((x) => x.includes(q)) }))
+        .filter((g) => g.subs.length)
+    })
+  },
+
+  /** 点子分类：选中并关闭 */
+  setSub(e) {
+    const sub = e.currentTarget.dataset.sub
+    const group = e.currentTarget.dataset.group
+    this.setData({
+      category: sub,
+      categoryGroup: group,
+      catName: sub,
+      showCatPanel: false
+    })
+  },
+
+  /** 跳转分类管理 */
+  goCatManage() {
+    wx.navigateTo({ url: '/pages/catmanage/catmanage' })
   },
 
   /* ---------- 图标选择面板 ---------- */
@@ -307,6 +358,7 @@ Page({
       return
     }
     const extra = {
+      categoryGroup: d.categoryGroup || '其他',
       tags: d.tags,
       pricingDaily: d.pricingDaily,
       expectedRetireDate: d.expectedRetire,

@@ -439,3 +439,118 @@ page {
   padding: 100rpx 0;
   font-size: 26rpx;
 }
+
+/* ============ 选择分类面板 ============ */
+.cat-open {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  color: var(--text-1);
+}
+.cat-chev {
+  color: var(--text-3);
+  font-size: 32rpx;
+}
+.ccp-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 130;
+  display: flex;
+  align-items: flex-end;
+}
+.ccp-panel {
+  width: 100%;
+  height: 86vh;
+  background: var(--card);
+  border-radius: 40rpx 40rpx 0 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ccp-head {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx 16rpx;
+}
+.ccp-back {
+  font-size: 44rpx;
+  color: var(--text-2);
+  width: 80rpx;
+}
+.ccp-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.ccp-manage {
+  font-size: 28rpx;
+  color: var(--accent);
+}
+.ccp-search {
+  padding: 8rpx 28rpx 20rpx;
+}
+.ccp-search-input {
+  background: var(--track);
+  border-radius: 40rpx;
+  padding: 16rpx 30rpx;
+  font-size: 28rpx;
+}
+.ccp-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+.ccp-left {
+  width: 240rpx;
+  flex-shrink: 0;
+  background: var(--chip);
+}
+.ccp-group {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 30rpx 20rpx;
+  font-size: 28rpx;
+  color: var(--text-1);
+}
+.ccp-group.on {
+  background: var(--card);
+  font-weight: 600;
+  border-left: 6rpx solid var(--accent);
+}
+.ccp-gicon {
+  width: 44rpx;
+  height: 44rpx;
+}
+.ccp-right {
+  flex: 1;
+  min-height: 0;
+  background: var(--card);
+}
+.ccp-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 32rpx;
+  font-size: 28rpx;
+  color: var(--text-1);
+  border-bottom: 1rpx solid var(--border);
+}
+.ccp-sub.on {
+  color: var(--accent);
+  font-weight: 600;
+}
+.ccp-check {
+  color: var(--accent);
+}
+.ccp-empty {
+  text-align: center;
+  color: var(--text-3);
+  padding: 100rpx 0;
+  font-size: 26rpx;
+}
