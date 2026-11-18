@@ -323,3 +323,6 @@
     </scroll-view>
   </view>
 </view>
+
+<!-- 日历选择组件 -->
+<cal-picker visible="{{showCal}}" value="{{calValue}}" bindselect="onCalSelect" bindclose="closeCal"/>
