@@ -5,6 +5,7 @@ const preview = require('../../utils/preview')
 const reminders = require('../../utils/reminders')
 const prefs = require('../../utils/prefs')
 const lock = require('../../utils/lock')
+const notify = require('../../utils/notify')
 
 const VIEW_OPTS = [
   { key: 'list', name: '列表' },
@@ -36,6 +37,14 @@ Page({
     lockOn: false,
     lockBg: true,
     hasPin: false,
+    // 微信提醒（订阅消息）
+    notifyOn: false,
+    tmplEditing: false,
+    tmplValue: '',
+    notifyTmplId: '',
+    notifyQuota: 0,
+    notifyErr: '',
+    notifyReady: false,
     // 汇率
     rateOpen: false,
     rates: []
@@ -71,6 +80,11 @@ Page({
       lockOn: lock.enabled(),
       lockBg: lock.onBackground(),
       hasPin: lock.hasPin(),
+      notifyTmplId: notify.tmplId(),
+      notifyQuota: notify.quota(),
+      notifyOn: !!notify.tmplId(),
+      notifyReady: notify.ready(),
+      notifyErr: notify.get().lastErr || '',
       rates: store.CURRENCIES.filter((c) => c.key !== 'CNY').map((c) => ({
         code: c.key,
         label: c.name,
@@ -163,6 +177,68 @@ Page({
         '· 应用锁防的是随手翻看，口令为本地哈希，不是加密存储\n' +
         '· 忘记口令可直接重置，物品数据不会丢失\n' +
         '· 备份文件是明文，导出后请勿发送到群聊',
+      showCancel: false,
+      confirmText: '知道了'
+    })
+  },
+
+  /* ---------------- 微信提醒（订阅消息） ---------------- */
+
+  /** 模板 ID 行内编辑 */
+  startTmpl() {
+    this.setData({ tmplEditing: true, tmplValue: notify.tmplId() })
+  },
+
+  onTmplInput(e) {
+    this.setData({ tmplValue: e.detail.value })
+  },
+
+  commitTmpl() {
+    if (!this.data.tmplEditing) return
+    const id = notify.setTmplId(this.data.tmplValue)
+    this.setData({ tmplEditing: false, notifyTmplId: id, notifyOn: !!id, notifyReady: notify.ready() })
+    wx.showToast({ title: id ? '模板已保存' : '已清除，微信提醒关闭', icon: 'none' })
+  },
+
+  /** 攒一次推送额度 */
+  askNotify() {
+    notify.ask((r) => {
+      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '', notifyReady: notify.ready() })
+      wx.showToast({ title: r.msg, icon: r.ok ? 'success' : 'none' })
+    })
+  },
+
+  /** 试发最紧急的一条，用来验证模板字段是否对得上 */
+  testNotify() {
+    wx.showLoading({ title: '发送中' })
+    notify.send(null, (r) => {
+      wx.hideLoading()
+      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '' })
+      if (r.needAuth) {
+        wx.showModal({
+          title: '需要先授权',
+          content: '微信规定：每授权一次，才能推送一条。要现在授权吗？',
+          confirmText: '授权',
+          success: (m) => {
+            if (m.confirm) this.askNotify()
+          }
+        })
+        return
+      }
+      wx.showToast({ title: r.msg, icon: r.ok ? 'success' : 'none' })
+    })
+  },
+
+  notifyHelp() {
+    wx.showModal({
+      title: '怎么开通微信提醒',
+      content:
+        '1. 小程序后台 → 订阅消息 → 从公共模板库选一个到期提醒类模板\n' +
+        '2. 模板字段建议包含：物品名称(thing1)、提醒类型(thing2)、到期日期(date3)\n' +
+        '3. 复制模板 ID 填到上面这一行\n' +
+        '4. 右键 cloudfunctions/notify → 上传并部署：云端安装依赖\n' +
+        '5. 点「攒一次授权」，之后到期当天就能收到服务通知\n\n' +
+        '注意：微信限制每次授权只能发一条，用完需要再点一次。',
       showCancel: false,
       confirmText: '知道了'
     })

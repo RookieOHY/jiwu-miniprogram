@@ -39,3 +39,33 @@ page { background: var(--bg); color: var(--text-1); }
 .empty-icon { font-size: 88rpx; margin-bottom: 20rpx; }
 .empty-tip { font-size: 22rpx; margin-top: 8rpx; }
 .bottom-space { height: 40rpx; }
+
+/* 推送条 */
+.push-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  background: rgba(88, 86, 214, 0.1);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+}
+.push-txt {
+  flex: 1;
+  min-width: 0;
+  font-size: 26rpx;
+  color: var(--text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.push-btn {
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: var(--accent);
+  font-weight: 600;
+}
+.row-press {
+  opacity: 0.6;
+}

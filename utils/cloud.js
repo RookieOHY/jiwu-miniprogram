@@ -29,6 +29,13 @@ function ready() {
   return wx.cloud
 }
 
+/** 通用云函数调用（notify 等复用） */
+function callFn(name, data) {
+  const c = ready()
+  if (!c) return Promise.reject(new Error('CLOUD_OFF'))
+  return c.callFunction({ name, data })
+}
+
 /** 调用 poll 云函数，data: { action, ... } */
 function call(data) {
   const c = ready()
@@ -36,4 +43,4 @@ function call(data) {
   return c.callFunction({ name: 'poll', data })
 }
 
-module.exports = { isReady, call }
+module.exports = { isReady, call, callFn }

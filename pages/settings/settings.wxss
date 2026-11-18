@@ -74,3 +74,28 @@
   color: var(--accent);
   padding: 20rpx 0 4rpx;
 }
+
+/* 微信提醒 */
+.sec-label {
+  font-size: 24rpx;
+  color: var(--text-2);
+  padding: 20rpx 0 4rpx;
+}
+.tmpl-input {
+  flex: 1;
+  text-align: right;
+  font-size: 26rpx;
+  font-family: "DIN Alternate", sans-serif;
+  border-bottom: 1rpx solid var(--accent);
+  padding: 4rpx 0;
+}
+.notify-err {
+  font-size: 22rpx;
+  color: var(--danger-text);
+  padding: 12rpx 0 4rpx;
+  line-height: 1.5;
+}
+.ph {
+  color: var(--text-dim);
+  font-weight: 400;
+}

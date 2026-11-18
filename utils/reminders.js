@@ -65,7 +65,7 @@ function getReminders(todayStr) {
         const id = it.id + '|dust|' + it.lastUseDate
         if (!dismissed[id]) {
           out.push({
-            id, itemId: it.id, name: it.name, type: '吃灰预警', tag: '🕳',
+            id, itemId: it.id, name: it.name, type: '吃灰预警', tag: '🕳', kind: 'dust',
             date: it.lastUseDate, left: -idle, overdue: true,
             text: '已 ' + idle + ' 天没使用'
           })

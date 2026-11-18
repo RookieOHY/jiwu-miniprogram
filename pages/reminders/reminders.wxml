@@ -6,6 +6,11 @@
     <view class="empty-tip">保修期、预计退役日临近 30 天内会出现在这里</view>
   </view>
 
+  <view wx:if="{{notifyReady && list.length}}" class="push-bar" bindtap="pushWeChat" hover-class="row-press" hover-stay-time="80">
+    <text class="push-txt">📣 把「{{list[0].name}}」推到微信</text>
+    <text class="push-btn">{{pushing ? '发送中' : '推送（剩 ' + notifyQuota + ' 次）'}}</text>
+  </view>
+
   <view wx:for="{{list}}" wx:key="id" class="card rm-row">
     <view class="rm-main" data-id="{{item.itemId}}" data-kind="{{item.kind}}" bindtap="goDetail">
       <view class="rm-top">
