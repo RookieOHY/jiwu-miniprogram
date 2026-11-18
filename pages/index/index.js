@@ -245,9 +245,9 @@ Page({
           String(store.fmtMoney(totalDaily * mult)).length + 1,
           String(all.length).length
         )
-        if (maxLen <= 7) return 'num-lg'
-        if (maxLen <= 9) return 'num-md'
-        if (maxLen <= 11) return 'num-sm'
+        if (maxLen <= 6) return 'num-lg'
+        if (maxLen <= 8) return 'num-md'
+        if (maxLen <= 10) return 'num-sm'
         return 'num-xs'
       })()
     })

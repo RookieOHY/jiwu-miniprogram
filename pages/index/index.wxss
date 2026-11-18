@@ -27,6 +27,11 @@
   font-size: 24rpx;
   opacity: 0.75;
 }
+.hero-main {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
 .hero-brand {
   display: flex;
   align-items: center;
@@ -47,11 +52,13 @@
 .hero-nums {
   display: flex;
   align-items: flex-start;
+  width: 100%;
   margin: 4rpx 0 6rpx;
 }
 .hero-num-item {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 .hero-num-item {
   text-align: center;
@@ -63,9 +70,9 @@
   white-space: nowrap;
 }
 .hero-num.num-lg { font-size: 44rpx; }
-.hero-num.num-md { font-size: 36rpx; }
-.hero-num.num-sm { font-size: 30rpx; }
-.hero-num.num-xs { font-size: 25rpx; }
+.hero-num.num-md { font-size: 32rpx; }
+.hero-num.num-sm { font-size: 26rpx; }
+.hero-num.num-xs { font-size: 22rpx; }
 .hero-num-label {
   font-size: 22rpx;
   opacity: 0.8;
