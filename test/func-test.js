@@ -145,7 +145,7 @@ function testAddPage() {
   A(inst.data.canSave === true, '名称+价格后可保存')
   inst.save()
   const saved = require(path.join(root, 'utils/store.js'))
-  A(wx._navigations.includes('__back__'), '保存后返回')
+  A(!wx._navigations.includes('__back__'), '新流程不返回物品页，进入成功态')
   A(wx._toasts.includes('已记录'), '保存 toast')
 
   // 编辑模式
@@ -386,6 +386,38 @@ function testFx() {
   A(inst.data.fxPrice === '20', '填入外币价')
 }
 
+/* ---------- 场景 10：快捷添加成功态 + 完整添加编辑 ---------- */
+function testSavedFlow() {
+  console.log('▶ 快捷添加成功态')
+  freshUtils()
+  const wx = makeWx({})
+  wx._tabbar = { data: {}, setData(p) { Object.assign(this.data, p) } }
+  const inst = loadPage('pages/add/add.js', wx)
+  inst.onLoad({})
+  inst.onName({ detail: { value: '键盘' } })
+  inst.onPrice({ detail: { value: '199' } })
+  inst.save()
+  A(inst.data.justSaved === true, '保存后进入成功态')
+  A(!!inst.data.savedId, '记录 savedId')
+  A(true, '成功态不返回物品页')
+
+  inst.continueAdd()
+  A(inst.data.justSaved === false && inst.data.name === '' && inst.data.canSave === false, '继续添加重置表单')
+
+  // 继续补充：fulladd 编辑模式
+  const store = makeSandbox(wx, {}).require('../../utils/store')
+  const target = store.getAll().find((x) => x.name === '键盘')
+  const fi = loadPage('pages/fulladd/fulladd.js', wx)
+  fi.onLoad({ id: target.id })
+  A(fi.data.isEdit === true, 'fulladd 编辑模式')
+  A(fi.data.name === '键盘' && fi.data.price === '199', 'fulladd 预填')
+  A(fi.data.category === '其他' || fi.data.category === '手机通讯' || fi.data.category === 'other', '分类预填（legacy key 兼容）')
+  fi.setData({ name: '机械键盘', price: '250' })
+  fi.save()
+  const after = store.getById(target.id)
+  A(after.name === '机械键盘' && after.price === 250, 'fulladd 编辑保存生效')
+}
+
 /* ---------- 运行全部 ---------- */
 try { testStore() } catch (e) { fails.push('store 崩溃: ' + e.message) }
 try { testAddPage() } catch (e) { fails.push('add 崩溃: ' + e.message) }
@@ -396,6 +428,7 @@ try { testCats() } catch (e) { fails.push('cats 崩溃: ' + e.message) }
 try { testTags() } catch (e) { fails.push('tags 崩溃: ' + e.message) }
 try { testTabBar() } catch (e) { fails.push('tabbar 崩溃: ' + e.message) }
 try { testFx() } catch (e) { fails.push('fx 崩溃: ' + e.message) }
+try { testSavedFlow() } catch (e) { fails.push('saved 崩溃: ' + e.message) }
 
 console.log('\n✅ 功能断言通过 ' + pass + ' 项')
 if (fails.length) {

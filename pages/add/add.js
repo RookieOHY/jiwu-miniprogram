@@ -61,7 +61,12 @@ Page({
     calcDisplay: '0',
     calcAcc: null,
     calcOp: null,
-    calcFresh: true
+    calcFresh: true,
+    // 保存后的成功态
+    justSaved: false,
+    savedId: '',
+    savedName: '',
+    savedPrice: ''
   },
 
   onLoad(query) {
@@ -232,6 +237,32 @@ Page({
     this.setData({ note: e.detail.value })
   },
 
+  /** 成功态：继续补充 → 完整添加页（编辑模式） */
+  goFullAddSaved() {
+    wx.redirectTo({ url: '/pages/fulladd/fulladd?id=' + this.data.savedId })
+  },
+
+  /** 成功态：继续添加 → 重置表单记下一件 */
+  continueAdd() {
+    const d = new Date()
+    const p = (n) => (n < 10 ? '0' + n : '' + n)
+    const today = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+    this.setData({
+      justSaved: false,
+      savedId: '',
+      name: '',
+      price: '',
+      category: 'other',
+      catName: '其他',
+      icon: null,
+      note: '',
+      targetDaily: '',
+      buyDate: today,
+      buyDateCN: fmtCN(today),
+      canSave: false
+    })
+  },
+
   /* ---------- 快捷添加布局 ---------- */
 
   /** 更多添加方式：详细添加 */
@@ -354,10 +385,17 @@ Page({
         name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target
       })
       wx.showToast({ title: '已保存修改', icon: 'success' })
-    } else {
-      store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target })
-      wx.showToast({ title: '已记录', icon: 'success' })
+      setTimeout(() => wx.navigateBack(), 500)
+      return
     }
-    setTimeout(() => wx.navigateBack(), 500)
+    // 快捷添加：留在本页，给出“继续补充 / 继续添加”
+    const item = store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target })
+    wx.showToast({ title: '已记录', icon: 'success' })
+    this.setData({
+      justSaved: true,
+      savedId: item.id,
+      savedName: item.name,
+      savedPrice: store.fmtMoney(item.price)
+    })
   }
 })

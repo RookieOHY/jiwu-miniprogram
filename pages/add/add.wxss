@@ -531,3 +531,99 @@
 .ico-tag {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z'/%3E%3Ccircle cx='7.5' cy='7.5' r='.5' fill='%238e8e93'/%3E%3C/svg%3E");
 }
+
+/* 已记录成功态 */
+.saved-card {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+.saved-check {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 50%;
+  background: rgba(88, 86, 214, 0.12);
+  color: var(--accent);
+  font-size: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24rpx;
+}
+.saved-name {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+.saved-price {
+  font-size: 30rpx;
+  color: var(--text-2);
+  margin: 8rpx 0 20rpx;
+  font-family: "DIN Alternate", sans-serif;
+}
+.saved-tip {
+  font-size: 24rpx;
+  color: var(--text-3);
+  margin-bottom: 40rpx;
+}
+.saved-btn2 {
+  background: transparent;
+  color: var(--accent);
+  border: 1rpx solid rgba(88, 86, 214, 0.4);
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 20rpx 0;
+  width: 100%;
+  margin-top: 20rpx;
+  line-height: 1.4;
+}
+.saved-btn2::after {
+  border: none;
+}
+
+/* 已记录成功态 */
+.saved-card {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+.saved-check {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 50%;
+  background: rgba(88, 86, 214, 0.12);
+  color: var(--accent);
+  font-size: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24rpx;
+}
+.saved-name {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+.saved-price {
+  font-size: 30rpx;
+  color: var(--text-2);
+  margin: 8rpx 0 20rpx;
+  font-family: "DIN Alternate", sans-serif;
+}
+.saved-tip {
+  font-size: 24rpx;
+  color: var(--text-3);
+  margin-bottom: 40rpx;
+}
+.saved-btn2 {
+  background: transparent;
+  color: var(--accent);
+  border: 1rpx solid rgba(88, 86, 214, 0.4);
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 20rpx 0;
+  width: 100%;
+  margin-top: 20rpx;
+  line-height: 1.4;
+}
+.saved-btn2::after {
+  border: none;
+}

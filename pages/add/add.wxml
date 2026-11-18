@@ -1,5 +1,17 @@
 <view class="page">
 
+  <!-- 已记录成功态 -->
+  <view wx:if="{{justSaved}}" class="card saved-card">
+    <view class="saved-check">✓</view>
+    <view class="saved-name">{{savedName}}</view>
+    <view class="saved-price">¥{{savedPrice}}</view>
+    <view class="saved-tip">可以继续完善信息，或直接记下一件</view>
+    <button class="btn-primary saved-btn" bindtap="goFullAddSaved">继续补充</button>
+    <button class="saved-btn2" bindtap="continueAdd">继续添加</button>
+  </view>
+
+  <block wx:if="{{!justSaved}}">
+
   <!-- 更多添加方式（默认折叠，展开后三个功能入口，暂不接逻辑） -->
   <view class="sec-toggle" bindtap="toggleMore">
     <text>更多添加方式</text>
@@ -81,6 +93,7 @@
   <button class="btn-primary save-btn {{canSave ? '' : 'dim'}}" disabled="{{!canSave}}" bindtap="save">
     {{isEdit ? '保存修改' : '记一笔'}}
   </button>
+  </block>
 </view>
 
 <!-- 计算器底部弹层 -->

@@ -81,6 +81,8 @@ Page({
     iconAllGroups: [],
     // 成本与关联（附加收支）
     extras: [],
+    isEdit: false,
+    editId: '',
     extraType: '支出',
     extraName: '',
     extraAmount: '',
@@ -101,7 +103,7 @@ Page({
     calcFresh: true
   },
 
-  onLoad() {
+  onLoad(query) {
     const t = today()
     this.setData({
       buyDate: t,
@@ -111,6 +113,45 @@ Page({
       platformChips: store.PLATFORMS.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
     })
     this.filterIcons()
+
+    // 编辑模式：预填已保存的物品
+    if (query && query.id) {
+      const it = store.getById(query.id)
+      if (it) {
+        this.editId = it.id
+        const group = it.categoryGroup || (cats.getGroups().find((g) => g.subs.indexOf(it.category) >= 0) || { name: '电子数码' }).name
+        this.setData({
+          isEdit: true,
+          editId: it.id,
+          icon: it.icon || null,
+          name: it.name,
+          price: String(it.price),
+          currency: it.currency || 'CNY',
+          symbol: store.currencySymbol(it.currency || 'CNY'),
+          buyDate: it.buyDate,
+          category: it.category,
+          categoryGroup: group,
+          tags: it.tags || [],
+          pricingDaily: it.pricingDaily !== false,
+          expectedRetire: it.expectedRetireDate || '',
+          recycle: !!it.recycle,
+          useEnabled: it.useCountEnabled !== undefined ? it.useCountEnabled : (it.uses || 0) > 0,
+          uses: it.uses ? String(it.uses) : '',
+          startUseDate: it.startUseDate || '',
+          inService: it.inService !== undefined ? it.inService : true,
+          valuation: it.valuation ? String(it.valuation) : '',
+          warrantyEnabled: !!it.warrantyEnabled,
+          warrantyDate: it.warrantyDate || '',
+          platform: it.platform || 'other',
+          platformName: store.getPlatformName(it.platform || 'other'),
+          location: it.location || '',
+          note: it.note || '',
+          photos: it.photos || [],
+          extras: it.extras || []
+        })
+        wx.setNavigationBarTitle({ title: '编辑物品' })
+      }
+    }
   },
 
   /* ---------- 日历选择 ---------- */
@@ -643,18 +684,33 @@ Page({
       photos: d.photos,
       extras: d.extras
     }
-    store.addItem({
-      name: d.name.trim(),
-      price: p,
-      buyDate: d.buyDate,
-      category: d.category,
-      platform: d.platform,
-      currency: d.currency,
-      icon: d.icon,
-      note: d.note,
-      extra
-    })
-    wx.showToast({ title: '已详细记录', icon: 'success' })
+    if (d.isEdit && d.editId) {
+      store.updateItem(d.editId, {
+        name: d.name.trim(),
+        price: p,
+        buyDate: d.buyDate,
+        category: d.category,
+        platform: d.platform,
+        currency: d.currency,
+        icon: d.icon,
+        note: d.note,
+        extra
+      })
+      wx.showToast({ title: '已保存修改', icon: 'success' })
+    } else {
+      store.addItem({
+        name: d.name.trim(),
+        price: p,
+        buyDate: d.buyDate,
+        category: d.category,
+        platform: d.platform,
+        currency: d.currency,
+        icon: d.icon,
+        note: d.note,
+        extra
+      })
+      wx.showToast({ title: '已详细记录', icon: 'success' })
+    }
     setTimeout(() => wx.navigateBack(), 500)
   }
 })
