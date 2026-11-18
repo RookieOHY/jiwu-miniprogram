@@ -224,8 +224,11 @@ function testCalendar() {
 
   cal.init('2026-11-18')
   cal.tapQuick({ currentTarget: { dataset: { d: '7' } } })
-  A(/2026-11-1[01]/.test(cal._events.select.date), '近7天快选')
-  A(cal._events.select.date === '2026-11-11', '快选日期正确')
+  const d7 = new Date()
+  d7.setDate(d7.getDate() - 7)
+  const p2 = (x) => (x < 10 ? '0' + x : '' + x)
+  const expect7 = d7.getFullYear() + '-' + p2(d7.getMonth() + 1) + '-' + p2(d7.getDate())
+  A(cal._events.select.date === expect7, '近7天快选（' + expect7 + '）')
 
   // 禁未来
   const cal2 = loadComponent('components/calpicker/calpicker.js', wx)
