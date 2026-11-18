@@ -21,7 +21,6 @@
     <view class="empty-icon">🌱</view>
     <view>还没有种草</view>
     <view class="empty-tip">看到心动的先记一笔，冷静几天再决定</view>
-    <button class="btn-primary first-add" bindtap="goAdd">种第一株</button>
   </view>
 
   <!-- 草单 -->

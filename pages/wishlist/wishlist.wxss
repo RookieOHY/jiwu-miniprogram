@@ -33,11 +33,6 @@
   font-size: 24rpx;
   margin-top: 8rpx;
 }
-.first-add {
-  margin: 40rpx auto 0;
-  width: 360rpx;
-  font-size: 28rpx;
-}
 
 /* 草卡 */
 .wish {
