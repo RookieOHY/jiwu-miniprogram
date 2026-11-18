@@ -5,6 +5,11 @@
       <view class="cal-title">{{titleText}}</view>
       <view class="cal-nav" catchtap="next">›</view>
     </view>
+    <view class="cal-quick">
+      <view class="cal-q" data-d="0" bindtap="tapQuick">今天</view>
+      <view class="cal-q" data-d="7" bindtap="tapQuick">近7天</view>
+      <view class="cal-q" data-d="14" bindtap="tapQuick">近14天</view>
+    </view>
     <view class="cal-week">
       <view wx:for="{{week}}" wx:key="*this" class="cal-wd">{{item}}</view>
     </view>

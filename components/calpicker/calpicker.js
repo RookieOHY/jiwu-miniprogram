@@ -71,6 +71,20 @@ Component({
       this.setData({ year, month })
       this.build()
     },
+    /** 快选：今天 / 近N天 */
+    tapQuick(e) {
+      const n = Number(e.currentTarget.dataset.d) || 0
+      const d = new Date()
+      d.setDate(d.getDate() - n)
+      const p = (x) => (x < 10 ? '0' + x : '' + x)
+      const date = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+      this.setData({ sel: date })
+      // 同步日历视图到所选月份
+      this.setData({ year: d.getFullYear(), month: d.getMonth() + 1 })
+      this.build()
+      this.triggerEvent('select', { date })
+    },
+
     tapDay(e) {
       const d = e.currentTarget.dataset
       if (!d.date) return

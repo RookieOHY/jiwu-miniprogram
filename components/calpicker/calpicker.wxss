@@ -74,3 +74,16 @@
   width: calc(100% / 7);
   height: 88rpx;
 }
+
+.cal-quick {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 16rpx 20rpx;
+}
+.cal-q {
+  font-size: 26rpx;
+  color: var(--accent, #5856D6);
+  background: rgba(88, 86, 214, 0.1);
+  border-radius: 32rpx;
+  padding: 12rpx 28rpx;
+}
