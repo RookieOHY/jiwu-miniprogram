@@ -4,7 +4,7 @@
   <!-- 概览 -->
   <view class="card overview">
     <view class="ov-item"><view class="ov-num">{{totalCount}}</view><view class="ov-label">总件数</view></view>
-    <view class="ov-item"><view class="ov-num">¥{{totalSpend}}</view><view class="ov-label">总投入</view></view>
+    <view class="ov-item"><view class="ov-num">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view><view class="ov-label">总投入</view></view>
   </view>
 
   <!-- 趋势 -->
@@ -18,7 +18,7 @@
   <view class="card trend">
     <view wx:for="{{months}}" wx:key="key" class="trend-col">
       <view class="trend-bar-wrap"><view class="trend-bar" style="height: {{item.h}}rpx;"></view></view>
-      <view class="trend-val">{{item.spend || ''}}</view>
+      <view class="trend-val">{{amountHidden ? '' : (item.spend || '')}}</view>
       <view class="trend-label">{{item.label}}</view>
     </view>
   </view>
@@ -32,7 +32,7 @@
         <view class="cat-top"><text class="cat-name">{{item.name}}</text><text class="cat-pct">{{item.pct}}%</text></view>
         <view class="cat-bar-track"><view class="cat-bar" style="width: {{item.pct}}%;"></view></view>
       </view>
-      <text class="cat-val">¥{{item.value}}</text>
+      <text class="cat-val">{{amountHidden ? '****' : '¥' + item.value}}</text>
     </view>
     <view wx:if="{{!catStats.length}}" class="empty-mini">还没有物品数据</view>
   </view>
@@ -52,7 +52,7 @@
     <view wx:for="{{topDaily}}" wx:key="id" class="rank-row">
       <view class="rank-no {{index < 3 ? 'hot' : ''}}">{{index + 1}}</view>
       <text class="rank-name">{{item.name}}</text>
-      <text class="rank-val">{{item.symbol}}{{item.daily}}/天</text>
+      <text class="rank-val">{{amountHidden ? '****' : item.symbol + item.daily}}/天</text>
     </view>
     <view wx:if="{{!topDaily.length}}" class="empty-mini">还没有持有中的物品</view>
   </view>

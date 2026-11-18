@@ -228,3 +228,42 @@
 .more-press {
   opacity: 0.6;
 }
+
+/* 行内编辑输入框 */
+.inline-in {
+  flex: 1;
+  min-width: 0;
+  font-size: 28rpx;
+  color: var(--text-1);
+  background: var(--chip);
+  border-radius: 12rpx;
+  padding: 10rpx 18rpx;
+  box-sizing: border-box;
+}
+.be-in {
+  flex: none;
+  width: 190rpx;
+  text-align: right;
+  font-size: 26rpx;
+  background: transparent;
+  border-bottom: 1rpx solid var(--border);
+  border-radius: 0;
+  padding: 2rpx 4rpx;
+}
+.dual-in {
+  width: 150rpx;
+  flex: none;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+  background: transparent;
+  border-bottom: 2rpx solid var(--accent);
+  border-radius: 0;
+  padding: 2rpx 4rpx;
+}
+.ph {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 26rpx;
+}

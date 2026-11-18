@@ -91,8 +91,8 @@
       </view>
 
       <view class="item-right">
-        <view class="item-daily-big">{{item.symbol}}{{item.daily}}<text class="per">/天</text></view>
-        <view class="item-buy">买入 {{item.symbol}}{{item.price}}</view>
+        <view class="item-daily-big">{{amountHidden ? '****' : item.symbol + item.daily}}<text class="per">/天</text></view>
+        <view class="item-buy">{{amountHidden ? '买入 ****' : '买入 ' + item.symbol + item.price}}</view>
       </view>
     </view>
   </block>
@@ -132,10 +132,10 @@
             <text class="tpf-{{item.platform}}">{{item.platformName}}</text>
           </view>
           <view class="gcard-daily-row">
-            <view class="gcard-daily-big">{{item.symbol}}{{item.daily}}<text class="per">/天</text></view>
+            <view class="gcard-daily-big">{{amountHidden ? '****' : item.symbol + item.daily}}<text class="per">/天</text></view>
             <text class="gcard-days">{{item.days}} 天</text>
           </view>
-          <view class="gcard-price">买入 {{item.symbol}}{{item.price}}</view>
+          <view class="gcard-price">{{amountHidden ? '买入 ****' : '买入 ' + item.symbol + item.price}}</view>
         </view>
       </view>
     </view>
@@ -175,8 +175,8 @@
           <view class="item-meta">已持有 {{it.days}} 天</view>
         </view>
         <view class="item-right">
-          <view class="item-daily-big">{{it.symbol}}{{it.daily}}<text class="per">/天</text></view>
-          <view class="item-buy">买入 {{it.symbol}}{{it.price}}</view>
+          <view class="item-daily-big">{{amountHidden ? '****' : it.symbol + it.daily}}<text class="per">/天</text></view>
+          <view class="item-buy">{{amountHidden ? '买入 ****' : '买入 ' + it.symbol + it.price}}</view>
         </view>
       </view>
     </view>

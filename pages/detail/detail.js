@@ -9,6 +9,11 @@ Page({
     monthly: '',
     days: 0,
     endDate: '',
+    // 行内编辑
+    editField: '',
+    editValue: '',
+    editNum: false,
+    amountHidden: false,
     // 更多信息折叠（默认收起，有到期项时自动展开一次）
     showMore: false,
     moreCount: 0,
@@ -43,10 +48,12 @@ Page({
     }
     const today = this.fmtDate(new Date())
     const retired = it.retired
+    const amountHidden = !!wx.getStorageSync('amountHidden')
     const sold = !!it.sold
     const profit = sold ? it.soldPrice - it.price : 0
     const be = store.breakEven(it)
     this.setData({
+      amountHidden,
       item: {
         id: it.id,
         name: it.name,
@@ -124,32 +131,6 @@ Page({
   },
 
   /** 设置 / 修改目标日均 */
-  setTarget() {
-    const it = store.getById(this.id)
-    const cur = it.targetDaily > 0 ? String(it.targetDaily) : ''
-    wx.showModal({
-      title: '目标日均',
-      editable: true,
-      placeholderText: '每天想摊到多少？如 1',
-      content: cur,
-      confirmText: '保存',
-      success: (r) => {
-        if (!r.confirm) return
-        const t = Number(r.content)
-        if (!(t > 0)) {
-          wx.showToast({ title: '填个大于 0 的数字', icon: 'none' })
-          return
-        }
-        // 设置时已达标的老物品：静默标记已庆祝，避免以后弹窗突袭
-        const be = store.breakEven(Object.assign({}, it, { targetDaily: t }))
-        const patch = { targetDaily: t }
-        if (be && be.reached) patch.celebrated = true
-        store.updateItem(this.id, patch)
-        this.refresh()
-      }
-    })
-  },
-
   /** 退役：结束计时，锁定最终日均 */
   retire() {
     const it = store.getById(this.id)
@@ -174,52 +155,58 @@ Page({
 
   /* ---------- 行内编辑：数值 / 文本 ---------- */
 
-  _editText(field, title, placeholder, isNumber) {
+  /** 点字段原地变输入框（数据单一来源：editField） */
+  startEdit(e) {
+    const field = e.currentTarget.dataset.f
     const it = store.getById(this.id)
-    if (!it) return
+    if (!it || !field) return
+    if (field === this.data.editField) return // 输入框冒泡上来的点击，忽略
     const cur = it[field] === undefined || it[field] === null ? '' : String(it[field])
-    wx.showModal({
-      title: title,
-      editable: true,
-      placeholderText: placeholder,
-      content: cur,
-      confirmText: '保存',
-      success: (r) => {
-        if (!r.confirm) return
-        const raw = (r.content || '').trim()
-        let val = raw
-        if (isNumber) {
-          const n = parseFloat(raw)
-          if (raw === '' || !(n >= 0)) {
-            wx.showToast({ title: '请填写有效数字', icon: 'none' })
-            return
-          }
-          val = n
-        }
-        const patch = {}
-        patch[field] = val
-        if (field === 'uses') patch.useCountEnabled = true
-        store.updateItem(this.id, patch)
-        this.refresh()
-        wx.showToast({ title: '已更新', icon: 'success' })
-      }
+    this.setData({
+      editField: field,
+      editValue: cur,
+      editNum: e.currentTarget.dataset.n === '1'
     })
   },
 
-  editNote() {
-    this._editText('note', '备注', '写点使用感受、成色、注意事项', false)
+  onEditInput(e) {
+    this.setData({ editValue: e.detail.value })
   },
 
-  editLocation() {
-    this._editText('location', '存放位置', '如：书房抽屉 / 客厅电视柜', false)
-  },
+  /** blur 与 confirm 都会触发，靠 editField 去重 */
+  commitEdit(e) {
+    const field = e.currentTarget.dataset.f
+    if (!field || field !== this.data.editField) return
+    const raw = String(this.data.editValue === undefined ? '' : this.data.editValue).trim()
+    const patch = {}
 
-  editValuation() {
-    this._editText('valuation', '当前估值（¥）', '现在还值多少钱', true)
-  },
+    if (this.data.editNum) {
+      if (raw === '') {
+        patch[field] = 0
+      } else {
+        const n = parseFloat(raw)
+        if (!(n >= 0)) {
+          wx.showToast({ title: '填个不小于 0 的数字', icon: 'none' })
+          this.setData({ editField: '', editValue: '' })
+          return
+        }
+        patch[field] = field === 'uses' ? parseInt(n, 10) : n
+      }
+    } else {
+      patch[field] = raw
+    }
+    if (field === 'uses' && patch.uses > 0) patch.useCountEnabled = true
+    if (field === 'targetDaily') {
+      // 设目标时已达标的老物品：静默标记已庆祝，避免以后弹窗突袭
+      const it = store.getById(this.id)
+      const be = store.breakEven(Object.assign({}, it, { targetDaily: patch.targetDaily }))
+      if (be && be.reached) patch.celebrated = true
+    }
 
-  editUses() {
-    this._editText('uses', '已使用次数', '一共用过多少次', true)
+    this.setData({ editField: '', editValue: '' })
+    store.updateItem(this.id, patch)
+    this.refresh()
+    wx.showToast({ title: raw === '' ? '已清除' : '已更新', icon: 'success' })
   },
 
   /** 快捷记一次使用（今天用了一次） */

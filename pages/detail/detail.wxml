@@ -4,19 +4,20 @@
   <!-- 日均成本主展示 -->
   <view class="hero card">
     <view class="hero-label">{{item.sold ? '卖出后真实日均成本' : (item.retired ? '最终日均成本' : '当前日均成本')}}</view>
-    <view class="hero-num">{{item.symbol}}<text class="hero-num-big">{{daily}}</text></view>
-    <view class="hero-sub" wx:if="{{!item.retired}}">已持有 {{days}} 天 · 30 天后日均 ¥{{daily30}} · 一年后 ¥{{daily365}}</view>
+    <view class="hero-num">{{item.symbol}}<text class="hero-num-big">{{amountHidden ? '****' : daily}}</text></view>
+    <view class="hero-sub" wx:if="{{!item.retired}}">{{amountHidden ? '已持有 ' + days + ' 天' : '已持有 ' + days + ' 天 · 30 天后日均 ¥' + daily30 + ' · 一年后 ¥' + daily365}}</view>
     <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
   </view>
 
   <!-- 双引擎：日均 / 次均 -->
   <view class="card dual-card">
     <view class="dual-item">
-      <view class="dual-num">{{item.symbol}}{{daily}}</view>
+      <view class="dual-num">{{amountHidden ? '¥****' : item.symbol + daily}}</view>
       <view class="dual-label">日均成本 / 天</view>
     </view>
-    <view class="dual-item" bindtap="editUses">
-      <view class="dual-num">{{perUse ? item.symbol + perUse : '—'}}</view>
+    <view class="dual-item" bindtap="startEdit" data-f="uses" data-n="1">
+      <input wx:if="{{editField === 'uses'}}" class="inline-in dual-in" type="number" focus="{{true}}" value="{{editValue}}" placeholder="次数" placeholder-class="ph" data-f="uses" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/>
+      <view wx:else class="dual-num">{{amountHidden ? '¥****' : (perUse ? item.symbol + perUse : '—')}}</view>
       <view class="dual-label">次均成本 / 次{{uses ? '（' + uses + '次）' : '（未记录）'}}<text class="ed-inline">›</text></view>
     </view>
     <view class="use-add" catchtap="addUse">＋1</view>
@@ -24,38 +25,40 @@
 
   <!-- 回本进度：目标日均 -->
   <view class="card be-card" wx:if="{{be}}">
-    <view class="be-head" bindtap="setTarget">
+    <view class="be-head" bindtap="startEdit" data-f="targetDaily" data-n="1">
       <text class="be-title">回本进度</text>
-      <text class="be-edit">目标日均 ¥{{be.target}} · 改 ›</text>
+      <input wx:if="{{editField === 'targetDaily'}}" class="inline-in be-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="如 1" placeholder-class="ph" data-f="targetDaily" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/>
+      <text wx:else class="be-edit">{{amountHidden ? '目标日均 ****' : '目标日均 ¥' + be.target}} · 改 ›</text>
     </view>
     <view class="be-bar"><view class="be-bar-fill {{be.reached ? 'reached' : ''}}" style="width: {{be.pct}}%"></view></view>
     <view class="be-sub" wx:if="{{be.reached}}">🎉 第 {{be.need}} 天已回本，之后每天都比目标便宜</view>
     <view class="be-sub" wx:else>已持有 {{days}} 天 / 还差 {{be.left}} 天 · 预计 {{be.due}} 回本</view>
   </view>
-  <view class="card be-card be-none" wx:elif="{{!item.retired}}" bindtap="setTarget">
+  <view class="card be-card be-none" wx:elif="{{!item.retired}}" bindtap="startEdit" data-f="targetDaily" data-n="1">
     <text class="be-title">设个目标日均，开始攒回本进度</text>
-    <text class="be-edit">如「每天低于 ¥1」· 点击设置 ›</text>
+    <input wx:if="{{editField === 'targetDaily'}}" class="inline-in be-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="如 1" placeholder-class="ph" data-f="targetDaily" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/>
+    <text wx:else class="be-edit">如「每天低于 ¥1」· 点击设置 ›</text>
   </view>
 
   <!-- 基本信息 -->
   <view class="card info">
     <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>
-    <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}{{item.qty > 1 ? ' ×' + item.qty + '件（单件 ' + item.symbol + item.unitPrice + '）' : ''}}</text></view>
+    <view class="row"><text class="k">花费</text><text class="v price">{{amountHidden ? '****' : item.symbol + item.price + (item.qty > 1 ? ' ×' + item.qty + '件（单件 ' + item.symbol + item.unitPrice + '）' : '')}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
     <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>
     <view class="row ed" wx:if="{{item.startUseDate}}" data-f="startUseDate" bindtap="openDate"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text><text class="ed-go">›</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
-    <view class="row ed" wx:if="{{item.note}}" bindtap="editNote"><text class="k">备注</text><text class="v">{{item.note}}</text><text class="ed-go">›</text></view>
+    <view class="row ed" bindtap="startEdit" data-f="note"><text class="k">备注</text><input class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="写点使用感受，清空即删除" placeholder-class="ph" data-f="note" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.note || '点击添加'}}</text><text class="ed-go">›</text></block></view>
     <view class="row" wx:if="{{item.sold}}">
       <text class="k">卖出日期</text><text class="v">{{item.soldDate}}</text>
     </view>
     <view class="row" wx:if="{{item.sold}}">
-      <text class="k">卖出价格</text><text class="v price">{{item.symbol}}{{item.soldPrice}}</text>
+      <text class="k">卖出价格</text><text class="v price">{{amountHidden ? '****' : item.symbol + item.soldPrice}}</text>
     </view>
     <view class="row" wx:if="{{item.sold}}">
       <text class="k">回收差价</text>
-      <text class="v price {{item.profitSign === '+' ? 'profit-pos' : 'profit-neg'}}">{{item.profitSign}}{{item.symbol}}{{item.profit}}</text>
+      <text class="v price {{item.profitSign === '+' ? 'profit-pos' : 'profit-neg'}}">{{amountHidden ? '****' : item.profitSign + item.symbol + item.profit}}</text>
     </view>
     <view class="row" wx:if="{{item.retired && !item.sold}}">
       <text class="k">退役日期</text><text class="v">{{item.retiredDate}}</text>
@@ -79,7 +82,7 @@
       <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
       <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
       <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
-      <view class="row ed" wx:if="{{item.valuation}}" bindtap="editValuation"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text><text class="ed-go">›</text></view>
+      <view class="row ed" bindtap="startEdit" data-f="valuation" data-n="1"><text class="k">当前估值</text><input class="inline-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="现在还值多少钱" placeholder-class="ph" data-f="valuation" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v price">{{amountHidden ? '****' : '¥' + item.valuation}}</text><text class="ed-go">›</text></block></view>
     </view>
 
     <!-- 期限信息 -->
@@ -89,9 +92,9 @@
     </view>
 
     <!-- 额外信息 -->
-    <view class="card info" wx:if="{{item.location}}">
+    <view class="card info">
       <view class="sec-head">额外信息</view>
-      <view class="row ed" bindtap="editLocation"><text class="k">存放位置</text><text class="v">{{item.location}}</text><text class="ed-go">›</text></view>
+      <view class="row ed" bindtap="startEdit" data-f="location"><text class="k">存放位置</text><input class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" data-f="location" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.location || '点击添加'}}</text><text class="ed-go">›</text></block></view>
     </view>
 
     <!-- 附加收支 -->
@@ -100,9 +103,9 @@
       <view wx:for="{{item.extras}}" wx:key="index" class="row">
         <text class="k">{{item.type}}</text>
         <text class="v">{{item.name || '未命名'}} · {{item.date}}</text>
-        <text class="v price {{item.type === '收入' ? 'profit-pos' : 'profit-neg'}}">{{item.type === '收入' ? '+' : '-'}}¥{{item.amount}}</text>
+        <text class="v price {{item.type === '收入' ? 'profit-pos' : 'profit-neg'}}">{{amountHidden ? '****' : (item.type === '收入' ? '+' : '-') + '¥' + item.amount}}</text>
       </view>
-      <view class="row"><text class="k">收支合计</text><text class="v price">{{item.extrasTotal}}</text></view>
+      <view class="row"><text class="k">收支合计</text><text class="v price">{{amountHidden ? '****' : item.extrasTotal}}</text></view>
     </view>
 
     <!-- 备注与图片 -->

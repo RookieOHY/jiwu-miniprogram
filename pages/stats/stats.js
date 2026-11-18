@@ -10,6 +10,7 @@ function today() {
 
 Page({
   data: {
+    amountHidden: false,
     months: [],
     catStats: [],
     statusStats: [],
@@ -25,6 +26,7 @@ Page({
     // 同步胶囊 TabBar 选中态（统计 = 第 3 个 tab）
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2, hideText: store.getTabbarHideText() })
+    this.setData({ amountHidden: !!wx.getStorageSync('amountHidden') })
     }
     this.refresh()
   },
