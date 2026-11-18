@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const icons = require('../../utils/icons')
 
 function today() {
   const d = new Date()
@@ -44,6 +45,11 @@ Page({
     // 备注
     note: '',
     photos: [],
+    // 图标选择面板
+    showIconPanel: false,
+    iconCat: 'all',
+    iconKeyword: '',
+    iconGroups: [],
     // 成本与关联（附加收支）
     extras: [],
     extraType: '支出',
@@ -60,18 +66,45 @@ Page({
       extraDate: t,
       platformChips: store.PLATFORMS.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
     })
+    this.filterIcons()
   },
 
-  setTab(e) {
-    this.setData({ tab: e.currentTarget.dataset.tab })
+  /* ---------- 图标选择面板 ---------- */
+
+  openIconPanel() {
+    this.setData({ showIconPanel: true, iconKeyword: '' }, () => this.filterIcons())
   },
 
-  /* ---------- 基本信息 ---------- */
-  setIcon() {
+  closeIconPanel() {
+    this.setData({ showIconPanel: false })
+  },
+
+  noop() {},
+
+  setIconCat(e) {
+    this.setData({ iconCat: e.currentTarget.dataset.name }, () => this.filterIcons())
+  },
+
+  onIconSearch(e) {
+    this.setData({ iconKeyword: e.detail.value }, () => this.filterIcons())
+  },
+
+  filterIcons() {
+    const q = this.data.iconKeyword
+    let groups = icons.searchGroups(q)
+    if (!q && this.data.iconCat !== 'all') {
+      groups = groups.filter((g) => g.name === this.data.iconCat)
+    }
+    this.setData({ iconGroups: groups })
+  },
+
+  /** 图库 / 拍照 */
+  pickPhoto(e) {
+    const src = e.currentTarget.dataset.src === 'camera' ? ['camera'] : ['album']
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
-      sourceType: ['album', 'camera'],
+      sourceType: src,
       sizeType: ['compressed'],
       success: (r) => {
         const tmp = r.tempFiles[0].tempFilePath
@@ -79,13 +112,23 @@ Page({
         wx.getFileSystemManager().saveFile({
           tempFilePath: tmp,
           filePath: saved,
-          success: () => this.setData({ icon: saved }),
-          fail: () => this.setData({ icon: tmp })
+          success: () => this.setData({ icon: saved, showIconPanel: false }),
+          fail: () => this.setData({ icon: tmp, showIconPanel: false })
         })
       }
     })
   },
 
+  /** 选中 3D 图标 */
+  pickIcon(e) {
+    this.setData({ icon: e.currentTarget.dataset.src, showIconPanel: false })
+  },
+
+  setTab(e) {
+    this.setData({ tab: e.currentTarget.dataset.tab })
+  },
+
+  /* ---------- 基本信息 ---------- */
   onName(e) {
     this.setData({ name: e.detail.value })
   },

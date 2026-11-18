@@ -14,7 +14,7 @@
     <view class="card sec">
       <!-- 图标 + 名称 -->
       <view class="row-flex">
-        <view class="icon-slot" bindtap="setIcon">
+        <view class="icon-slot" bindtap="openIconPanel">
           <image wx:if="{{icon}}" class="icon-img" src="{{icon}}" mode="aspectFill"/>
           <text wx:else class="icon-plus">🖼️</text>
         </view>
@@ -220,4 +220,44 @@
 
   <view class="bottom-gap"></view>
   <button class="btn-primary save-btn" bindtap="save">添加物品</button>
+</view>
+
+<!-- 图标选择面板（图库/拍照/搜索/分类侧栏） -->
+<view wx:if="{{showIconPanel}}" class="ip-mask" bindtap="closeIconPanel">
+  <view class="ip-panel" catchtap="noop">
+    <view class="ip-handle"></view>
+    <view class="ip-actions">
+      <view class="ip-action" data-src="album" bindtap="pickPhoto">🖼️ 从图库选择</view>
+      <view class="ip-action" data-src="camera" bindtap="pickPhoto">📷 拍照</view>
+    </view>
+    <view class="ip-search">
+      <input class="ip-search-input" placeholder="搜索图标" placeholder-class="ph" value="{{iconKeyword}}" bindinput="onIconSearch"/>
+    </view>
+    <view class="ip-body">
+      <!-- 侧栏分类 -->
+      <scroll-view scroll-y class="ip-side">
+        <view class="ip-side-item {{iconCat === 'all' && !iconKeyword ? 'on' : ''}}" data-name="all" bindtap="setIconCat">基础图标</view>
+        <block wx:for="{{iconGroups}}" wx:key="name">
+          <view
+            wx:if="{{!iconKeyword}}"
+            class="ip-side-item {{iconCat === item.name ? 'on' : ''}}"
+            data-name="{{item.name}}"
+            bindtap="setIconCat"
+          >{{item.name}}</view>
+        </block>
+      </scroll-view>
+      <!-- 右侧网格 -->
+      <scroll-view scroll-y class="ip-grid-scroll">
+        <block wx:for="{{iconGroups}}" wx:key="name" wx:for-item="g">
+          <view class="ip-group" wx:if="{{iconKeyword || iconCat === 'all' || iconCat === g.name}}">
+            <view wx:for="{{g.icons}}" wx:for-item="ic" wx:key="key" class="ip-cell" data-src="{{ic.src}}" bindtap="pickIcon">
+              <image class="ip-cell-img" src="{{ic.src}}" mode="aspectFit"/>
+              <text class="ip-cell-name">{{ic.name}}</text>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!iconGroups.length}}" class="ip-empty">没有匹配的图标</view>
+      </scroll-view>
+    </view>
+  </view>
 </view>

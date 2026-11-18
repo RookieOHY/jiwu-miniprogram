@@ -121,8 +121,8 @@ Page({
   filterIcons() {
     const q = this.data.iconKeyword
     this.setData({
-      emojiList: icons.search(icons.EMOJIS, q, (it) => it.kw),
-      icon3dList: icons.search(icons.ICONS_3D, q, (it) => it.kw)
+      emojiList: icons.searchEmoji(icons.EMOJIS, q, (it) => it.kw),
+      icon3dList: icons.searchGroups(q).flatMap((g) => g.icons)
     })
   },
 
