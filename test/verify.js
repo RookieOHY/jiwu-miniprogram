@@ -51,7 +51,6 @@ function loadModule(rel) {
     if (r.endsWith('utils/icons')) return loadUtils('utils/icons.js')
     if (r.endsWith('utils/tags')) return loadUtils('utils/tags.js')
     if (r.endsWith('utils/cloud')) return {}
-    if (r.endsWith('utils/demo')) return { seed: () => ({}) }
     if (r.endsWith('utils/tabAnim')) return () => {}
     if (r.endsWith('utils/poster')) return {}
     return {}
@@ -81,7 +80,7 @@ function loadUtils(rel) {
 /* ---------- 1. 语法检查所有 JS ---------- */
 function syntaxAll() {
   const files = ['app.js', 'utils/store.js', 'utils/cats.js', 'utils/icons.js', 'utils/tags.js',
-    'utils/cloud.js', 'utils/demo.js', 'utils/tabAnim.js', 'utils/poster.js',
+    'utils/cloud.js', 'utils/tabAnim.js', 'utils/poster.js',
     'custom-tab-bar/index.js']
   listPages().forEach((p) => files.push(p + '.js'))
   files.push('components/calpicker/calpicker.js')

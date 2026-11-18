@@ -1,6 +1,5 @@
 const store = require('../../utils/store')
 const tabAnim = require('../../utils/tabAnim')
-const demo = require('../../utils/demo')
 
 Page({
   onShow() {
@@ -27,24 +26,6 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ hideText: v })
     }
-  },
-
-  /** 载入示例数据（固定 ID 去重，可重复点不会加重复） */
-  loadDemo() {
-    wx.showModal({
-      title: '载入示例数据',
-      content: '会添加示例物品和示例种草（含已卖出、已退役、冷静中等各种状态），不影响你自己的记录。',
-      confirmText: '载入',
-      success: (m) => {
-        if (!m.confirm) return
-        const r = demo.seed()
-        if (!r.items && !r.wishes) {
-          wx.showToast({ title: '示例数据已存在', icon: 'none' })
-        } else {
-          wx.showToast({ title: '已载入 ' + r.items + ' 件物品 · ' + r.wishes + ' 株草', icon: 'none' })
-        }
-      }
-    })
   },
 
   /** 导出全部数据：JSON 复制到剪贴板 */

@@ -1,13 +1,21 @@
-const demo = require('./utils/demo')
-
 App({
   onLaunch() {
     // 首次启动初始化存储结构
     if (!wx.getStorageSync('items')) {
       wx.setStorageSync('items', [])
     }
-    // 载入示例物品（仅一次）
-    demo.loadDemo()
+    // 一次性清理历史示例数据（demo_ 前缀固定 ID）
+    if (!wx.getStorageSync('demoCleaned')) {
+      const items = wx.getStorageSync('items')
+      if (Array.isArray(items)) {
+        wx.setStorageSync('items', items.filter((it) => !/^demo_/.test(it.id)))
+      }
+      const wishes = wx.getStorageSync('wishes')
+      if (Array.isArray(wishes)) {
+        wx.setStorageSync('wishes', wishes.filter((w) => !/^demo_/.test(w.id)))
+      }
+      wx.setStorageSync('demoCleaned', true)
+    }
 
     // 夜间模式兜底：部分安卓微信切换主题时已渲染页面不重算 @media 样式，
     // 监听主题变化强制刷新当前页面，触发样式重渲染
