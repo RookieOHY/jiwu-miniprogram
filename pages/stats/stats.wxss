@@ -197,3 +197,74 @@ page {
 .bottom-space {
   height: 40rpx;
 }
+
+/* 本月预算 */
+.sec-note {
+  font-size: 22rpx;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+.bud-row {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.bud-row:last-child {
+  border-bottom: none;
+}
+.bud-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+.bud-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bud-num {
+  font-size: 26rpx;
+  color: var(--text-2);
+  font-family: "DIN Alternate", sans-serif;
+  flex-shrink: 0;
+}
+.bud-input {
+  width: 200rpx;
+  text-align: right;
+  font-size: 28rpx;
+  font-weight: 600;
+  font-family: "DIN Alternate", sans-serif;
+  border-bottom: 1rpx solid var(--accent);
+  padding: 2rpx 4rpx;
+}
+.bud-track {
+  height: 10rpx;
+  border-radius: 6rpx;
+  background: var(--track);
+  margin-top: 12rpx;
+  overflow: hidden;
+}
+.bud-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+.bud-fill.over {
+  background: var(--danger-text);
+}
+.bud-sub {
+  font-size: 22rpx;
+  color: var(--text-dim);
+  margin-top: 8rpx;
+}
+.bud-over {
+  color: var(--danger-text);
+  font-weight: 600;
+}
+.ph {
+  color: var(--text-dim);
+  font-size: 24rpx;
+}

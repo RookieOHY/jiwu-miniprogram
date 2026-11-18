@@ -17,7 +17,13 @@ Page({
   },
 
   goDetail(e) {
-    wx.navigateTo({ url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id })
+    const d = e.currentTarget.dataset
+    // 预算类没有对应物品，跳统计页的预算区
+    if (d.kind === 'budget') {
+      wx.switchTab({ url: '/pages/stats/stats' })
+      return
+    }
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + d.id })
   },
 
   hide(e) {

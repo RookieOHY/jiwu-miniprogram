@@ -6,6 +6,7 @@
 
 const store = require('./store')
 const prefs = require('./prefs')
+const budget = require('./budget')
 
 const DISMISS_KEY = 'reminderDismissed'
 // 阈值改为可配置（设置 → 提醒）：默认提前 30 天预警、90 天没使用算吃灰
@@ -68,6 +69,27 @@ function getReminders(todayStr) {
       }
     }
   })
+  // 预算超支（全局，不属于某个物品；按月去重，下月重新提醒）
+  if (prefs.budgetAlert()) {
+    budget.overRows().forEach((r) => {
+      const id = 'budget|' + r.scope + '|' + r.month
+      if (dismissed[id]) return
+      out.push({
+        id,
+        itemId: '',
+        scope: r.scope,
+        kind: 'budget',
+        name: r.scope === budget.TOTAL ? '本月总预算' : r.name,
+        type: '预算超支',
+        tag: '💸',
+        date: r.month,
+        left: 0,
+        overdue: true,
+        text: '超 ' + r.overBy + ' 元（上限 ' + r.cap + '）'
+      })
+    })
+  }
+
   out.sort((a, b) => a.left - b.left)
   return out
 }

@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const budget = require('../../utils/budget')
 const cats = require('../../utils/cats')
 const lock = require('../../utils/lock')
 
@@ -17,7 +18,12 @@ Page({
     topDaily: [],
     totalCount: 0,
     totalSpend: '0',
-    period: 'month' // month | year
+    period: 'month', // month | year
+    // 预算
+    budgetRows: [],
+    budgetMonth: '',
+    editScope: '',
+    editValue: ''
   },
 
   onShow() {
@@ -96,13 +102,48 @@ Page({
       .sort((a, b) => b.dailyNum - a.dailyNum)
       .slice(0, 5)
 
+    const rows = budget.rows()
     this.setData({
       months,
+      budgetRows: rows,
+      budgetMonth: rows.length ? rows[0].month : budget.monthKey(),
       catStats,
       statusStats,
       topDaily,
       totalCount: all.length,
       totalSpend: store.fmtMoney(total)
     })
-  }
+  },
+
+  /* ---------- 预算：行内改上限 ---------- */
+
+  startCap(e) {
+    const scope = e.currentTarget.dataset.s
+    if (!scope) return
+    if (scope === this.data.editScope) return
+    const cur = budget.capOf(scope)
+    this.setData({ editScope: scope, editValue: cur > 0 ? String(cur) : '' })
+  },
+
+  onCapInput(e) {
+    this.setData({ editValue: e.detail.value })
+  },
+
+  commitCap(e) {
+    const scope = e.currentTarget.dataset.s
+    if (!scope || scope !== this.data.editScope) return
+    const raw = String(this.data.editValue || '').trim()
+    if (raw !== '' && !(parseFloat(raw) > 0)) {
+      wx.showToast({ title: '填个大于 0 的数字', icon: 'none' })
+      this.setData({ editScope: '', editValue: '' })
+      return
+    }
+    budget.setCap(scope, raw)
+    this.setData({ editScope: '', editValue: '' })
+    this.refresh()
+    wx.showToast({ title: raw === '' ? '已取消该上限' : '上限已设', icon: 'none' })
+  },
+
+  noop() {}
+
 })

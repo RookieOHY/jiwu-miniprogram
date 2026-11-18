@@ -7,7 +7,7 @@
   </view>
 
   <view wx:for="{{list}}" wx:key="id" class="card rm-row">
-    <view class="rm-main" data-id="{{item.itemId}}" bindtap="goDetail">
+    <view class="rm-main" data-id="{{item.itemId}}" data-kind="{{item.kind}}" bindtap="goDetail">
       <view class="rm-top">
         <text class="rm-tag {{item.overdue ? 'overdue' : ''}}">{{item.tag}} {{item.type}}</text>
         <text class="rm-left {{item.overdue ? 'overdue' : ''}}">{{item.text}}</text>
