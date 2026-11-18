@@ -5,6 +5,7 @@ const lock = require('../../utils/lock')
 Page({
   data: {
     item: null,
+    missing: false,
     daily: '',
     monthly: '',
     days: 0,
@@ -42,8 +43,14 @@ Page({
   refresh() {
     const it = store.getById(this.id)
     if (!it) {
+      // 直接停在空白页是最糟的体验：给一个明确出口
+      this.setData({ missing: true })
       wx.showToast({ title: '物品不存在', icon: 'none' })
-      setTimeout(() => wx.navigateBack(), 600)
+      setTimeout(() => {
+        const pages = getCurrentPages()
+        if (pages.length > 1) wx.navigateBack()
+        else wx.switchTab({ url: '/pages/index/index' }) // 栈底就没页可回，转首页
+      }, 700)
       return
     }
     const today = this.fmtDate(new Date())
@@ -147,6 +154,10 @@ Page({
         }
       }
     })
+  },
+
+  goHome() {
+    wx.switchTab({ url: '/pages/index/index' })
   },
 
   toggleMore() {

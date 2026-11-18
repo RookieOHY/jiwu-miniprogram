@@ -8,7 +8,7 @@ const KEY = 'lockConfig'
 const DEFAULTS = { enabled: false, pin: '', onBackground: true }
 
 let sessionAuthed = false // 本次运行是否已解锁（切后台按配置重新上锁）
-let pendingRoute = ''     // 被拦截时想去的页面，解锁后送回
+let navigating = false    // 防止连续 onShow 重复压入锁页
 
 function get() {
   const s = wx.getStorageSync(KEY)
@@ -66,7 +66,6 @@ function toggle(on, keepAuthed) {
   set(Object.assign(cfg, { enabled: !!on }))
   if (on && !keepAuthed) {
     sessionAuthed = false
-    pendingRoute = ''
   }
   return { ok: true }
 }
@@ -75,7 +74,6 @@ function toggle(on, keepAuthed) {
 function resetPin() {
   set(Object.assign(get(), { pin: '', enabled: false }))
   sessionAuthed = true
-  pendingRoute = ''
 }
 
 /* ---------- 运行时锁状态 ---------- */
@@ -95,7 +93,6 @@ function markAuthed() {
 
 function lockNow() {
   sessionAuthed = false
-  pendingRoute = ''
 }
 
 function currentPage() {
@@ -103,55 +100,42 @@ function currentPage() {
   return pages[pages.length - 1] || null
 }
 
-/** 完整回跳地址：保留 options（详情页/投票页缺 id 就打不开了） */
-function routeWithQuery(cur) {
-  if (!cur || !cur.route) return ''
-  const opt = cur.options || {}
-  const parts = []
-  Object.keys(opt).forEach((k) => {
-    if (opt[k] === undefined || opt[k] === null) return
-    parts.push(k + '=' + encodeURIComponent(opt[k]))
-  })
-  return cur.route + (parts.length ? '?' + parts.join('&') : '')
-}
-
 function isTabRoute(route) {
   const tabs = ['pages/index/index', 'pages/wishlist/wishlist', 'pages/stats/stats', 'pages/settings/settings']
   return tabs.indexOf(route) >= 0
 }
 
-function pending() {
-  return pendingRoute
-}
-
 /**
- * 页面 onShow 守卫：需要口令且未解锁时跳锁页
+ * 页面 onShow 守卫：需要口令且未解锁时，把锁页压在当前页之上
+ * 用 navigateTo 而不是 reLaunch：页面栈与 query 原样保留，
+ * 解锁后 navigateBack 就回到用户原来那一页，不会出现「回跳丢参数 → 空白页」
  * @returns {boolean} true = 已拦截，调用方应立刻 return
  */
 function guard() {
   if (!enabled() || sessionAuthed) return false
-  const route = routeWithQuery(currentPage())
-  if (!route || route.indexOf('pages/lock/lock') === 0) return false
-  pendingRoute = route
-  wx.reLaunch({ url: '/pages/lock/lock' })
+  const cur = currentPage()
+  if (!cur || !cur.route) return false
+  if (cur.route.indexOf('pages/lock/lock') === 0) return false
+  if (navigating) return true
+  navigating = true
+  wx.navigateTo({
+    url: '/pages/lock/lock',
+    complete: () => {
+      setTimeout(() => { navigating = false }, 400)
+    }
+  })
   return true
 }
 
-/** 解锁后回到被拦截前的页面 */
+/** 解锁：关掉锁页回到原页面；栈里只剩锁页时回首页 */
 function resume() {
-  const full = pendingRoute
-  pendingRoute = ''
   sessionAuthed = true
-  if (!full || full.indexOf('pages/lock/lock') === 0) {
-    wx.switchTab({ url: '/pages/index/index' })
+  const pages = getCurrentPages()
+  if (pages.length > 1) {
+    wx.navigateBack()
     return
   }
-  const path = full.split('?')[0]
-  if (isTabRoute(path)) {
-    wx.switchTab({ url: '/' + path })
-  } else {
-    wx.redirectTo({ url: '/' + full })
-  }
+  wx.switchTab({ url: '/pages/index/index' })
 }
 
 module.exports = {
@@ -168,7 +152,6 @@ module.exports = {
   lockNow,
   guard,
   resume,
-  pending,
   isTabRoute,
   PIN_LEN: 4
 }

@@ -141,6 +141,8 @@ Page({
     lock.toggle(v)
     this.setData({ lockOn: lock.enabled() })
     wx.showToast({ title: v ? '应用锁已开启' : '应用锁已关闭', icon: 'none' })
+    // 开着锁就当场演示一次，别让用户猜它到底生效没
+    if (v) setTimeout(() => lock.guard(), 800)
   },
 
   goSetPin() {

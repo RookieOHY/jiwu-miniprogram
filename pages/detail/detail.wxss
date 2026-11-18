@@ -267,3 +267,25 @@
   font-weight: 400;
   font-size: 26rpx;
 }
+
+/* 物品不存在兜底（避免整页空白） */
+.missing {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-dim);
+}
+.missing-ico { font-size: 88rpx; margin-bottom: 20rpx; }
+.missing-t { font-size: 30rpx; color: var(--text-1); font-weight: 600; }
+.missing-s { font-size: 22rpx; margin-top: 8rpx; }
+.missing-btn {
+  margin-top: 32rpx;
+  padding: 16rpx 44rpx;
+  border-radius: 999rpx;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 26rpx;
+}

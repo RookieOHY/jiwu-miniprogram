@@ -144,5 +144,12 @@
   </view>
 </view>
 
+<view wx:if="{{missing}}" class="missing">
+  <view class="missing-ico">🧾</view>
+  <view class="missing-t">这件物品不在了</view>
+  <view class="missing-s">可能已被删除，或链接来自旧备份</view>
+  <view class="missing-btn" bindtap="goHome">回物品列表</view>
+</view>
+
 <!-- 行内日期编辑：日历组件 -->
 <cal-picker visible="{{showDate}}" value="{{dateValue}}" bindselect="onDateSelect" bindclose="closeDate"/>
