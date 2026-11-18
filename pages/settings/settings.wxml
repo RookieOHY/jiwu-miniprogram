@@ -1,33 +1,67 @@
+<wxs src="../../utils/fmt.wxs" module="fmt" />
 <view class="page {{tabAnim}}">
 
+  <!-- 设置项搜索：条目多了以后，找比改更费时间 -->
+  <view class="set-search">
+    <input
+      class="set-search-in"
+      placeholder="搜设置项，如「汇率」「金额」「锁」「推送」"
+      placeholder-class="set-ph"
+      value="{{q}}"
+      bindinput="onSearch"
+      confirm-type="search"
+    />
+    <text wx:if="{{q}}" class="set-search-x" bindtap="clearSearch">×</text>
+  </view>
+
+  <!-- 概览 -->
+  <view wx:if="{{!searching}}" class="card set-overview">
+    <view class="ov-cell">
+      <view class="ov-num">{{itemCount}}</view>
+      <view class="ov-label">件物品</view>
+    </view>
+    <view class="ov-cell">
+      <view class="ov-num">{{wishCount}}</view>
+      <view class="ov-label">株草</view>
+    </view>
+    <view class="ov-cell">
+      <view class="ov-num">{{reminderCount}}</view>
+      <view class="ov-label">条提醒</view>
+    </view>
+    <view class="ov-cell">
+      <view class="ov-num">{{lockOn ? '开' : '关'}}</view>
+      <view class="ov-label">应用锁</view>
+    </view>
+  </view>
+
   <!-- 外观 -->
-  <view class="card">
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '外观')}}">
     <view class="sec-title">外观</view>
-    <view class="row">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'dark')}}">
       <view class="row-main">
         <view class="row-name">深色模式</view>
-        <view class="row-sub">跟随系统自动切换</view>
+        <view class="row-sub">跟随系统自动切换，App 内不提供手动开关</view>
       </view>
     </view>
-    <view class="row">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'hideAmount')}}">
+      <view class="row-main">
+        <view class="row-name">隐藏所有金额</view>
+        <view class="row-sub">列表、详情、统计、账单全部打码</view>
+      </view>
+      <switch checked="{{amountHidden}}" color="#5856D6" bindchange="onAmountHidden"/>
+    </view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'hideTabText')}}">
       <view class="row-main">
         <view class="row-name">隐藏底部胶囊文本</view>
         <view class="row-sub">开启后底部导航仅显示图标</view>
       </view>
       <switch checked="{{tabbarHideText}}" color="#5856D6" bindchange="onTabbarHideText"/>
     </view>
-    <view class="row">
-      <view class="row-main">
-        <view class="row-name">隐藏所有金额</view>
-        <view class="row-sub">列表、详情、统计均打码，首页眼睛可临时切换</view>
-      </view>
-      <switch checked="{{amountHidden}}" color="#5856D6" bindchange="onAmountHidden"/>
-    </view>
-    <picker mode="selector" range="{{viewNames}}" value="{{viewIndex}}" bindchange="onViewPick">
+    <picker wx:if="{{fmt.has(visibleKeys, 'view')}}" mode="selector" range="{{viewNames}}" value="{{viewIndex}}" bindchange="onViewPick">
       <view class="row">
         <view class="row-main">
           <view class="row-name">默认视图</view>
-          <view class="row-sub">首次打开物品列表的展示方式</view>
+          <view class="row-sub">首次打开物品列表的样子</view>
         </view>
         <view class="row-val">{{viewNames[viewIndex]}} ›</view>
       </view>
@@ -35,34 +69,34 @@
   </view>
 
   <!-- 提醒 -->
-  <view class="card">
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '提醒')}}">
     <view class="sec-title">提醒</view>
-    <view class="row" bindtap="goReminders" hover-class="row-press" hover-stay-time="80">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'center')}}" bindtap="goReminders" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">到期提醒</view>
-        <view class="row-sub">保修 / 退役 / 续费 / 补货 / 保养 / 吃灰 / 预算，现在 {{reminderCount}} 条</view>
+        <view class="row-sub">保修 / 退役 / 续费 / 补货 / 保养 / 吃灰 / 预算</view>
       </view>
-      <view class="row-arrow">›</view>
+      <view class="row-val">{{reminderCount}} 条 ›</view>
     </view>
-    <picker mode="selector" range="{{warnNames}}" value="{{warnIndex}}" bindchange="onWarnPick">
+    <picker wx:if="{{fmt.has(visibleKeys, 'warnDays')}}" mode="selector" range="{{warnNames}}" value="{{warnIndex}}" bindchange="onWarnPick">
       <view class="row">
         <view class="row-main">
           <view class="row-name">提前几天提醒</view>
-          <view class="row-sub">保修、退役、续费到期日</view>
+          <view class="row-sub">保修、退役、续费、补货、保养</view>
         </view>
         <view class="row-val">{{warnNames[warnIndex]}} ›</view>
       </view>
     </picker>
-    <picker mode="selector" range="{{dustNames}}" value="{{dustIndex}}" bindchange="onDustPick">
+    <picker wx:if="{{fmt.has(visibleKeys, 'dustDays')}}" mode="selector" range="{{dustNames}}" value="{{dustIndex}}" bindchange="onDustPick">
       <view class="row">
         <view class="row-main">
           <view class="row-name">多久算吃灰</view>
-          <view class="row-sub">超过这个天数没记使用就提醒</view>
+          <view class="row-sub">超过这些天数没记使用就提醒</view>
         </view>
         <view class="row-val">{{dustNames[dustIndex]}} ›</view>
       </view>
     </picker>
-    <view class="row">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'budgetAlert')}}">
       <view class="row-main">
         <view class="row-name">预算超支提醒</view>
         <view class="row-sub">本月支出超过分类预算时提醒</view>
@@ -70,107 +104,116 @@
       <switch checked="{{budgetAlert}}" color="#5856D6" bindchange="onBudgetAlert"/>
     </view>
 
-    <view class="sec-label">微信提醒（订阅消息）</view>
-    <view class="row">
+    <!-- 微信提醒：细节多，折叠成一条，展开后再配 -->
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'notify')}}" bindtap="toggleNotify" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
-        <view class="row-name">模板 ID</view>
-        <view class="row-sub">{{notifyOn ? notifyTmplId : '未配置——提醒只能打开小程序才看得到'}}</view>
+        <view class="row-name">微信提醒（订阅消息）</view>
+        <view class="row-sub">{{notifySummary}}</view>
       </view>
-      <input
-        wx:if="{{tmplEditing}}"
-        class="tmpl-input"
-        placeholder="粘贴模板 ID"
-        placeholder-class="ph"
-        focus="{{true}}"
-        value="{{tmplValue}}"
-        bindinput="onTmplInput"
-        bindblur="commitTmpl"
-        bindconfirm="commitTmpl"
-      />
-      <text wx:else class="row-val" bindtap="startTmpl">{{notifyOn ? '改' : '填写'}} ›</text>
+      <view class="row-arrow">{{notifyOpen ? '▴' : '▾'}}</view>
     </view>
-    <view wx:if="{{notifyOn}}" class="row" bindtap="askNotify" hover-class="row-press" hover-stay-time="80">
-      <view class="row-main">
-        <view class="row-name">攒一次授权</view>
-        <view class="row-sub">微信规则：授权 1 次只能推 1 条，当前可发 {{notifyQuota}} 条</view>
+    <block wx:if="{{notifyOpen}}">
+      <view class="row" wx:if="{{fmt.has(visibleKeys, 'notifyTmpl')}}">
+        <view class="row-main">
+          <view class="row-name">模板 ID</view>
+          <view class="row-sub ellipsis">{{notifyOn ? notifyTmplId : '未配置——提醒只能打开小程序才看得到'}}</view>
+        </view>
+        <input
+          wx:if="{{tmplEditing}}"
+          class="tmpl-input"
+          placeholder="粘贴模板 ID"
+          placeholder-class="set-ph"
+          focus="{{true}}"
+          value="{{tmplValue}}"
+          bindinput="onTmplInput"
+          bindblur="commitTmpl"
+          bindconfirm="commitTmpl"
+        />
+        <text wx:else class="row-val" bindtap="startTmpl">{{notifyOn ? '改' : '填写'}} ›</text>
       </view>
-      <view class="row-arrow">›</view>
-    </view>
-    <view wx:if="{{notifyReady}}" class="row" bindtap="testNotify" hover-class="row-press" hover-stay-time="80">
-      <view class="row-main">
-        <view class="row-name">试发最紧急的一条</view>
-        <view class="row-sub">用来验证模板字段是否对得上</view>
+      <view class="row" wx:if="{{notifyOn && fmt.has(visibleKeys, 'notifyAsk')}}" bindtap="askNotify" hover-class="row-press" hover-stay-time="80">
+        <view class="row-main">
+          <view class="row-name">攒一次授权</view>
+          <view class="row-sub">微信规则：授权 1 次只能推 1 条，当前可发 {{notifyQuota}} 条</view>
+        </view>
+        <view class="row-arrow">›</view>
       </view>
-      <view class="row-arrow">›</view>
-    </view>
-    <view wx:if="{{notifyErr}}" class="notify-err">{{notifyErr}}</view>
-    <view class="row" bindtap="notifyHelp" hover-class="row-press" hover-stay-time="80">
-      <view class="row-main">
-        <view class="row-name">开通步骤</view>
-        <view class="row-sub">后台选模板 → 填 ID → 部署 notify 云函数 → 授权</view>
+      <view class="row" wx:if="{{notifyReady && fmt.has(visibleKeys, 'notifyTest')}}" bindtap="testNotify" hover-class="row-press" hover-stay-time="80">
+        <view class="row-main">
+          <view class="row-name">试发最紧急的一条</view>
+          <view class="row-sub">用来验证模板字段是否对得上</view>
+        </view>
+        <view class="row-arrow">›</view>
       </view>
-      <view class="row-arrow">›</view>
-    </view>
+      <view wx:if="{{notifyErr}}" class="notify-err">{{notifyErr}}</view>
+      <view class="row" wx:if="{{fmt.has(visibleKeys, 'notifyHelp')}}" bindtap="notifyHelp" hover-class="row-press" hover-stay-time="80">
+        <view class="row-main">
+          <view class="row-name">开通步骤</view>
+          <view class="row-sub">后台选模板 → 填 ID → 部署 notify 云函数 → 授权</view>
+        </view>
+        <view class="row-arrow">›</view>
+      </view>
+    </block>
   </view>
 
-  <!-- 隐私 -->
-  <view class="card">
-    <view class="sec-title">隐私</view>
-    <view class="row">
+  <!-- 隐私与安全 -->
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '隐私')}}">
+    <view class="sec-title">隐私与安全</view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'appLock')}}">
       <view class="row-main">
         <view class="row-name">应用锁</view>
-        <view class="row-sub">{{hasPin ? '4 位数字口令，忘记可重置' : '开启前需设置 4 位口令'}}</view>
+        <view class="row-sub">{{hasPin ? '4 位数字口令，忘记可重置' : '开启前需先设一个 4 位口令'}}</view>
       </view>
       <switch checked="{{lockOn}}" color="#5856D6" bindchange="onLockSwitch"/>
     </view>
-    <view class="row" bindtap="goSetPin" hover-class="row-press" hover-stay-time="80">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'setPin')}}" bindtap="goSetPin" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">{{hasPin ? '修改口令' : '设置口令'}}</view>
         <view class="row-sub">输入两次新口令确认</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
-    <view class="row">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'lockBg')}}">
       <view class="row-main">
         <view class="row-name">切后台自动上锁</view>
         <view class="row-sub">离开小程序后再回来要重新输入</view>
       </view>
       <switch checked="{{lockBg}}" color="#5856D6" bindchange="onLockBg"/>
     </view>
-    <view class="row" bindtap="privacyNote" hover-class="row-press" hover-stay-time="80">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'privacyNote')}}" bindtap="privacyNote" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
-        <view class="row-name">隐私说明</view>
-        <view class="row-sub">数据存本机、口令非加密、备份是明文</view>
+        <view class="row-name">数据存在哪里</view>
+        <view class="row-sub">只存本机、口令非加密、备份是明文</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
   </view>
 
-  <!-- 数据 -->
-  <view class="card">
-    <view class="sec-title">数据</view>
-    <view class="row" bindtap="backupMenu" hover-class="row-press" hover-stay-time="80">
+  <!-- 数据与备份 -->
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '数据')}}">
+    <view class="sec-title">数据与备份</view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'backup')}}" bindtap="backupMenu" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">备份与恢复</view>
         <view class="row-sub">导出 JSON/CSV 文件、从文件恢复（合并或覆盖）</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
-    <view class="row" bindtap="loadDemo" hover-class="row-press" hover-stay-time="80">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'loadDemo')}}" bindtap="loadDemo" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">载入演示数据</view>
-        <view class="row-sub">12 件覆盖保修临期 / 吃灰 / 回本 / 外币 / 附加收支的物品</view>
+        <view class="row-sub">14 件覆盖保修临期 / 吃灰 / 回本 / 补货 / 保养 / 外币</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
-    <view wx:if="{{demoCount}}" class="row" bindtap="clearDemo" hover-class="row-press" hover-stay-time="80">
+    <view wx:if="{{demoCount && fmt.has(visibleKeys, 'clearDemo')}}" class="row" bindtap="clearDemo" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name danger">清除演示数据（{{demoCount}} 件）</view>
         <view class="row-sub">只删演示物品，不影响你自己记录的数据</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
-    <view class="row" bindtap="clearData" hover-class="row-press" hover-stay-time="80">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'clearAll')}}" bindtap="clearData" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name danger">清空全部数据</view>
         <view class="row-sub">删除所有物品记录，不可恢复</view>
@@ -179,13 +222,13 @@
     </view>
   </view>
 
-  <!-- 汇率 -->
-  <view class="card">
-    <view class="sec-title">汇率</view>
-    <view class="row" bindtap="toggleRates" hover-class="row-press" hover-stay-time="80">
+  <!-- 价格与汇率 -->
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '汇率')}}">
+    <view class="sec-title">价格与汇率</view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'rates')}}" bindtap="toggleRates" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">外币折算汇率</view>
-        <view class="row-sub">用于把外币物品折算成日均人民币，当前展开{{rateOpen ? '中' : '查看'}}</view>
+        <view class="row-sub">外币物品的日均按此折算，改完即时生效</view>
       </view>
       <view class="row-arrow">{{rateOpen ? '▴' : '▾'}}</view>
     </view>
@@ -209,14 +252,19 @@
   </view>
 
   <!-- 关于 -->
-  <view class="card">
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '关于')}}">
     <view class="sec-title">关于</view>
-    <view class="row">
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'version')}}">
       <view class="row-main">
         <view class="row-name">版本</view>
         <view class="row-sub">MVP · 数据仅保存在本机，不上传服务器</view>
       </view>
     </view>
+  </view>
+
+  <view wx:if="{{searching && !visibleKeys.length}}" class="set-none">
+    <view>没有匹配的设置项</view>
+    <view class="set-none-sub">换个词试试，比如「锁」「金额」「汇率」「推送」</view>
   </view>
 
   <view class="bottom-space"></view>

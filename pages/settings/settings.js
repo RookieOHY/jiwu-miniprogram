@@ -7,6 +7,35 @@ const prefs = require('../../utils/prefs')
 const lock = require('../../utils/lock')
 const notify = require('../../utils/notify')
 
+// 设置项索引：分组 + 搜索关键词（WXML 不能调方法，匹配逻辑全在这里算好）
+const ROWS = [
+  { key: 'dark', sec: '外观', label: '深色模式', kw: ['深色', '夜间', '黑色', '主题', 'dark'] },
+  { key: 'hideAmount', sec: '外观', label: '隐藏所有金额', kw: ['金额', '隐藏', '打码', '脱敏', '隐私', '钱', '数字'] },
+  { key: 'hideTabText', sec: '外观', label: '隐藏底部胶囊文本', kw: ['底部', '胶囊', '文本', '导航', '图标', 'tabbar'] },
+  { key: 'view', sec: '外观', label: '默认视图', kw: ['视图', '列表', '卡片', '分类', '位置', '默认'] },
+  { key: 'center', sec: '提醒', label: '到期提醒', kw: ['到期', '提醒', '保修', '补货', '保养', '吃灰', '续费', '退役', '提醒中心'] },
+  { key: 'warnDays', sec: '提醒', label: '提前几天提醒', kw: ['提前', '几天', '天数', '预警', '阈值'] },
+  { key: 'dustDays', sec: '提醒', label: '多久算吃灰', kw: ['吃灰', '闲置', '没用', '多久', '阈值'] },
+  { key: 'budgetAlert', sec: '提醒', label: '预算超支提醒', kw: ['预算', '超支', '上限'] },
+  { key: 'notify', sec: '提醒', label: '微信提醒（订阅消息）', kw: ['微信', '推送', '订阅', '消息', '通知', '服务通知', 'push'] },
+  { key: 'notifyTmpl', sec: '提醒', label: '模板 ID', kw: ['模板', 'id', 'tmpl'] },
+  { key: 'notifyAsk', sec: '提醒', label: '攒一次授权', kw: ['授权', '额度', '订阅次数'] },
+  { key: 'notifyTest', sec: '提醒', label: '试发最紧急的一条', kw: ['试发', '测试', '发送', '试试'] },
+  { key: 'notifyHelp', sec: '提醒', label: '开通步骤', kw: ['开通', '步骤', '怎么弄', '教程', '部署', '帮助'] },
+  { key: 'appLock', sec: '隐私', label: '应用锁', kw: ['锁', '密码', '口令', '加密', '防偷看', 'pin'] },
+  { key: 'setPin', sec: '隐私', label: '设置口令', kw: ['口令', '密码', '修改密码', 'pin', '锁', 'unlock'] },
+  { key: 'lockBg', sec: '隐私', label: '切后台自动上锁', kw: ['后台', '切后台', '自动上锁', '重新输入'] },
+  { key: 'privacyNote', sec: '隐私', label: '数据存在哪里', kw: ['隐私', '说明', '服务器', '上传', '明文', '安全', '存储'] },
+  { key: 'backup', sec: '数据', label: '备份与恢复', kw: ['备份', '恢复', '导出', '导入', 'json', 'csv', '文件'] },
+  { key: 'loadDemo', sec: '数据', label: '载入演示数据', kw: ['演示', '示例', '测试数据', 'demo'] },
+  { key: 'clearDemo', sec: '数据', label: '清除演示数据', kw: ['清除演示', '删演示', 'demo'] },
+  { key: 'clearAll', sec: '数据', label: '清空全部数据', kw: ['清空', '删除所有', '重置', '全部'] },
+  { key: 'rates', sec: '汇率', label: '外币折算汇率', kw: ['汇率', '美元', 'usd', '欧元', '日元', '英镑', '换算', '折算', '外币'] },
+  { key: 'version', sec: '关于', label: '版本', kw: ['版本', '关于', 'mvp'] }
+]
+const SECS = ['外观', '提醒', '隐私', '数据', '汇率', '关于']
+const NOTIFY_KEYS = ['notify', 'notifyTmpl', 'notifyAsk', 'notifyTest', 'notifyHelp']
+
 const VIEW_OPTS = [
   { key: 'list', name: '列表' },
   { key: 'card', name: '卡片' },
@@ -20,6 +49,15 @@ Page({
   data: {
     demoCount: 0,
     reminderCount: 0,
+    itemCount: 0,
+    wishCount: 0,
+    // 搜索与折叠
+    q: '',
+    searching: false,
+    visibleKeys: ROWS.map((r) => r.key),
+    visibleSecs: SECS,
+    notifyOpen: false,
+    notifySummary: '未配置——提醒只能打开小程序才看得到',
     // 外观
     tabbarHideText: true,
     amountHidden: false,
@@ -69,6 +107,9 @@ Page({
     this.setData({
       demoCount: preview.count(),
       reminderCount: reminders.countReminders(),
+      itemCount: store.getAll().length,
+      wishCount: store.getWishes().length,
+      notifySummary: this._notifySummary(),
       tabbarHideText: store.getTabbarHideText(),
       amountHidden: !!wx.getStorageSync('amountHidden'),
       viewIndex: Math.max(0, VIEW_OPTS.findIndex((o) => o.key === p.defaultView)),
@@ -92,6 +133,69 @@ Page({
         rate: String(store.rateOf(c.key))
       }))
     })
+  },
+
+  /* ---------------- 搜索与分组过滤 ---------------- */
+
+  onSearch(e) {
+    const q = String(e.detail.value || '')
+    this.setData(this._filter(q), () => {
+      if (q.trim() && !this.data.visibleKeys.length) {
+        wx.showToast({ title: '没找到匹配的设置项', icon: 'none' })
+      }
+    })
+  },
+
+  clearSearch() {
+    this.setData(this._filter(''))
+  },
+
+  _filter(rawQ) {
+    const q = String(rawQ || '').trim().toLowerCase()
+    if (!q) {
+      return {
+        q: '',
+        searching: false,
+        visibleKeys: ROWS.map((r) => r.key),
+        visibleSecs: SECS,
+        notifyOpen: !!this._notifyUser
+      }
+    }
+    const hit = (r) => {
+      if (String(r.label).toLowerCase().indexOf(q) >= 0) return true
+      for (let i = 0; i < r.kw.length; i++) {
+        const k = r.kw[i].toLowerCase()
+        if (k.indexOf(q) >= 0 || q.indexOf(k) >= 0) return true
+      }
+      return false
+    }
+    // 命中分组名（如输入「提醒」）则该组全部显示
+    const secHit = SECS.filter((n) => n.toLowerCase().indexOf(q) >= 0)
+    const keys = ROWS.filter((r) => secHit.indexOf(r.sec) >= 0 || hit(r)).map((r) => r.key)
+    const secs = SECS.filter((n) => keys.some((k) => (ROWS.find((r) => r.key === k) || {}).sec === n))
+    // 搜到微信提醒的子项时自动展开，否则用户看不到命中结果
+    const notifyHit = keys.some((k) => NOTIFY_KEYS.indexOf(k) >= 0)
+    return {
+      q: rawQ,
+      searching: true,
+      visibleKeys: keys,
+      visibleSecs: secs,
+      // 手动展开过 或 搜索命中了子项才展开，清空搜索后回到手动状态
+      notifyOpen: !!this._notifyUser || notifyHit
+    }
+  },
+
+  toggleNotify() {
+    this._notifyUser = !this.data.notifyOpen
+    this.setData({ notifyOpen: this._notifyUser })
+  },
+
+  _notifySummary() {
+    const id = notify.tmplId()
+    if (!id) return '未配置——提醒只能打开小程序才看得到'
+    if (!notify.ready()) return '模板已填，但云开发不可用（检查环境 ID）'
+    const n = notify.quota()
+    return n > 0 ? '已开启，还能推 ' + n + ' 条' : '已配置，但授权额度用完了'
   },
 
   /* ---------------- 外观 ---------------- */
@@ -203,7 +307,7 @@ Page({
   /** 攒一次推送额度 */
   askNotify() {
     notify.ask((r) => {
-      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '', notifyReady: notify.ready() })
+      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '', notifyReady: notify.ready(), notifySummary: this._notifySummary() })
       wx.showToast({ title: r.msg, icon: r.ok ? 'success' : 'none' })
     })
   },
@@ -213,7 +317,7 @@ Page({
     wx.showLoading({ title: '发送中' })
     notify.send(null, (r) => {
       wx.hideLoading()
-      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '' })
+      this.setData({ notifyQuota: notify.quota(), notifyErr: notify.get().lastErr || '', notifySummary: this._notifySummary() })
       if (r.needAuth) {
         wx.showModal({
           title: '需要先授权',
