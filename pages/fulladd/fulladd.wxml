@@ -46,7 +46,7 @@
 
       <view class="field-line">
         <text class="f-label">购买日期</text>
-        <view class="date-chip" bindtap="openDate" data-f="buyDate">buyDate</view>
+        <view class="date-chip" bindtap="openDate" data-f="buyDate">{{buyDate}}</view>
       </view>
     </view>
 
@@ -66,7 +66,7 @@
       </view>
       <view class="field-line" wx:if="{{pricingDaily}}">
         <text class="f-label">预计退役日期</text>
-        <view class="date-chip" bindtap="openDate" data-f="expectedRetire">expectedRetire || '选择日期'</view>
+        <view class="date-chip" bindtap="openDate" data-f="expectedRetire">{{expectedRetire || '选择日期'}}</view>
       </view>
       <view class="switch-row">
         <view class="row-main">
@@ -98,7 +98,7 @@
     <view class="card sec">
       <view class="field-line">
         <text class="f-label">开始使用日期</text>
-        <view class="date-chip" bindtap="openDate" data-f="startUseDate">startUseDate || '选择日期'</view>
+        <view class="date-chip" bindtap="openDate" data-f="startUseDate">{{startUseDate || '选择日期'}}</view>
       </view>
     </view>
 
@@ -130,7 +130,7 @@
       </view>
       <view class="field-line" wx:if="{{warrantyEnabled}}">
         <text class="f-label">保修到期</text>
-        <view class="date-chip" bindtap="openDate" data-f="warrantyDate">warrantyDate || '选择日期'</view>
+        <view class="date-chip" bindtap="openDate" data-f="warrantyDate">{{warrantyDate || '选择日期'}}</view>
       </view>
     </view>
 
@@ -185,7 +185,7 @@
       </view>
       <view class="field-line">
         <text class="f-label">日期</text>
-        <view class="date-chip" bindtap="openDate" data-f="extraDate">extraDate</view>
+        <view class="date-chip" bindtap="openDate" data-f="extraDate">{{extraDate}}</view>
       </view>
       <button class="mini-add" bindtap="addExtra">添加一条</button>
 
