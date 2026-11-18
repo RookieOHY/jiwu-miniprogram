@@ -54,12 +54,14 @@
   min-width: 0;
 }
 .hero-num-item .hero-num {
-  font-size: 48rpx;
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
   line-height: 1.2;
   white-space: nowrap;
 }
+.hero-num.num-lg { font-size: 44rpx; }
+.hero-num.num-md { font-size: 34rpx; }
+.hero-num.num-sm { font-size: 27rpx; }
 .hero-num-label {
   font-size: 22rpx;
   opacity: 0.8;

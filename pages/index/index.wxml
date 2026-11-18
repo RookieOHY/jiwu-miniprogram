@@ -10,21 +10,21 @@
       </view>
       <view class="hero-nums">
         <view class="hero-num-item">
-          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view>
+          <view class="hero-num {{numSize}}">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view>
           <view class="hero-num-label-row">
             <text class="hero-num-label">总投入</text>
             <view class="eye {{amountHidden ? 'eye-off' : ''}}" catchtap="toggleHide"></view>
           </view>
         </view>
         <view class="hero-num-item">
-          <view class="hero-num">{{amountHidden ? '¥****' : '¥' + totalPeriodValue}}</view>
+          <view class="hero-num {{numSize}}">{{amountHidden ? '¥****' : '¥' + totalPeriodValue}}</view>
           <view class="hero-num-label-row">
             <text class="hero-num-label">{{periodLabel}}</text>
             <view class="period-cycle" catchtap="cyclePeriod"></view>
           </view>
         </view>
         <view class="hero-num-item">
-          <view class="hero-num">{{count}}</view>
+          <view class="hero-num {{numSize}}">{{count}}</view>
           <view class="hero-num-label">总件数</view>
         </view>
       </view>

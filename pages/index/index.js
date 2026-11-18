@@ -231,13 +231,23 @@ Page({
       heldCount,
       retiredCount,
       soldCount,
-      totalSpend: store.fmtShort(totalSpend),
-      totalDaily: store.fmtShort(totalDaily),
-      totalPeriodValue: store.fmtShort(totalPeriodValue),
+      totalSpend: store.fmtMoney(totalSpend),
+      totalDaily: store.fmtMoney(totalDaily),
+      totalPeriodValue: store.fmtMoney(totalPeriodValue),
       periodLabel,
       catView,
       activeChips,
-      filterCount
+      filterCount,
+      numSize: (function () {
+        const maxLen = Math.max(
+          String(store.fmtMoney(totalSpend)).length,
+          String(store.fmtMoney(totalDaily * mult)).length,
+          String(all.length).length
+        )
+        if (maxLen <= 7) return 'num-lg'
+        if (maxLen <= 9) return 'num-md'
+        return 'num-sm'
+      })()
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
     this.checkCelebration()
