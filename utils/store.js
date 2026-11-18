@@ -199,6 +199,15 @@ function fmtMoney(n) {
   return Number(n).toFixed(2)
 }
 
+/** 金额缩写：中文习惯，1万以上用「万」，1亿以上用「亿」（总览窄列防溢出） */
+function fmtShort(n) {
+  if (!isFinite(n)) return '0'
+  const v = Number(n)
+  if (Math.abs(v) >= 1e8) return (v / 1e8).toFixed(2) + '亿'
+  if (Math.abs(v) >= 1e4) return (v / 1e4).toFixed(2) + '万'
+  return v.toFixed(2)
+}
+
 /** 某一天的总支出（该日购买物品折算人民币之和） */
 function spendByDate() {
   const map = {}
@@ -336,6 +345,7 @@ module.exports = {
   monthlyCost,
   breakEven,
   fmtMoney,
+  fmtShort,
   spendByDate,
   getTabbarHideText
 }
