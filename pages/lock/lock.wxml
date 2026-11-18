@@ -1,23 +1,31 @@
 <view class="lock">
+  <!-- 骨架全部写死在 wxml 里：即使页面 JS 出错，键盘与提示仍然可见，不会出现「锁页白屏」 -->
   <view class="lock-head">
-    <image class="lock-logo" src="/assets/3d/package.png" mode="aspectFit"/>
-    <view class="lock-title">{{title}}</view>
-    <view class="lock-sub">{{error ? error : sub}}</view>
+    <view class="lock-title">{{title ? title : '输入口令'}}</view>
+    <view class="lock-sub">{{error ? error : (sub || '日用即值已上锁')}}</view>
   </view>
 
   <view class="dots {{shake ? 'shake' : ''}}">
-    <view wx:for="{{dots}}" wx:key="index" class="dot {{item === 'on' ? 'on' : ''}}"></view>
+    <view class="dot {{input.length >= 1 ? 'on' : ''}}"></view>
+    <view class="dot {{input.length >= 2 ? 'on' : ''}}"></view>
+    <view class="dot {{input.length >= 3 ? 'on' : ''}}"></view>
+    <view class="dot {{input.length >= 4 ? 'on' : ''}}"></view>
   </view>
 
   <view class="pad">
-    <view
-      wx:for="{{keys}}"
-      wx:key="*this"
-      class="key {{item === 'del' || item === 'forget' ? 'key-fn' : ''}} {{item === 'forget' ? 'key-forget' : ''}}"
-      data-k="{{item}}"
-      bindtap="onKey"
-      hover-class="key-press"
-      hover-stay-time="60"
-    >{{item === 'del' ? '⌫' : item === 'forget' ? '忘记' : item}}</view>
+    <view class="key" data-k="1" bindtap="onKey" hover-class="key-press">1</view>
+    <view class="key" data-k="2" bindtap="onKey" hover-class="key-press">2</view>
+    <view class="key" data-k="3" bindtap="onKey" hover-class="key-press">3</view>
+    <view class="key" data-k="4" bindtap="onKey" hover-class="key-press">4</view>
+    <view class="key" data-k="5" bindtap="onKey" hover-class="key-press">5</view>
+    <view class="key" data-k="6" bindtap="onKey" hover-class="key-press">6</view>
+    <view class="key" data-k="7" bindtap="onKey" hover-class="key-press">7</view>
+    <view class="key" data-k="8" bindtap="onKey" hover-class="key-press">8</view>
+    <view class="key" data-k="9" bindtap="onKey" hover-class="key-press">9</view>
+    <view class="key key-fn key-forget" data-k="forget" bindtap="onForget" hover-class="key-press">忘记</view>
+    <view class="key" data-k="0" bindtap="onKey" hover-class="key-press">0</view>
+    <view class="key key-fn" data-k="del" bindtap="onDel" hover-class="key-press">⌫</view>
   </view>
+
+  <view class="lock-foot">连错后可点「忘记」重置口令，物品数据不会丢</view>
 </view>
