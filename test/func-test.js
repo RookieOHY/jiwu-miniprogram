@@ -284,7 +284,7 @@ function testCats() {
   const cats = makeSandbox(wx, {}).require('../../utils/cats')
 
   const groups = cats.getGroups()
-  A(groups.length === 10, '默认 10 个大分类')
+  A(groups.length === 15, '默认 15 个大分类')
   A(groups[0].name === '电子数码' && groups[0].subs.includes('手机通讯'), '默认子分类')
 
   A(cats.addSub('电子数码', '平板') === true, '添加子分类')
@@ -298,7 +298,7 @@ function testCats() {
   const n = cats.importJSON(JSON.stringify({ groups: [{ name: '测试组', subs: ['A'] }] }))
   A(n === 1, 'JSON 导入成功')
   cats.resetDefaults()
-  A(cats.getGroups().length === 10, '恢复默认')
+  A(cats.getGroups().length === 15, '恢复默认')
 }
 
 /* ---------- 场景 7：标签体系 ---------- */

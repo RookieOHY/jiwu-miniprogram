@@ -14,7 +14,12 @@ const DEFAULT_GROUPS = [
   { name: '食品杂货', icon: '/assets/3d/apple.png', subs: ['零食饮料', '生鲜果蔬'] },
   { name: '厨房用品', icon: '/assets/3d/egg.png', subs: ['锅具餐具', '小家电'] },
   { name: '家居家具', icon: '/assets/3d/couch.png', subs: ['家具家电', '家纺布艺'] },
-  { name: '宠物用品', icon: '/assets/3d/teddy.png', subs: ['宠物粮食', '宠物玩具'] }
+  { name: '宠物用品', icon: '/assets/3d/teddy.png', subs: ['宠物粮食', '宠物玩具'] },
+  { name: '交通出行', icon: '/assets/3d/car.png', subs: ['私家车', '公共交通', '骑行代步', '加油充电'] },
+  { name: '音乐影音', icon: '/assets/3d/guitar.png', subs: ['乐器设备', '影音会员', '演出票务'] },
+  { name: '收藏爱好', icon: '/assets/3d/crown.png', subs: ['手办模型', '卡牌藏品', '艺术摆件'] },
+  { name: '医疗健康', icon: '/assets/3d/pill.png', subs: ['常备药品', '保健营养', '医疗器械'] },
+  { name: '礼品社交', icon: '/assets/3d/gift.png', subs: ['送出礼物', '收到礼物', '请客支出'] }
 ]
 
 const KEY = 'userCats'
