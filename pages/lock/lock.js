@@ -7,28 +7,22 @@ Page({
     title: '输入口令',
     sub: '',
     input: '',
-    dots: ['', '', '', ''],
     error: '',
     shake: false,
-    keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'forget', '0', 'del'],
     enableAfter: false // 从设置页「开锁」进来时，设完口令顺手开启
   },
 
   onLoad(query) {
+    // 只依赖 query 与本地存储；骨架写死在 wxml，即使这里出错页面也不会空白
     const mode = query && query.mode === 'set' ? 'set' : 'unlock'
-    const enableAfter = query && query.enable === '1'
-    this.setData({ enableAfter })
-    this.setData(
-      mode === 'set'
-        ? { mode, title: '设置新口令', sub: lock.hasPin() ? '用于替换当前口令' : '4 位数字，解锁后才能开启应用锁' }
-        : { mode, title: '输入口令', sub: '日用即值已上锁' },
-      () => this.focusSafe()
-    )
-  },
-
-  /** 锁页期间隐藏「返回首页」按钮（低版本或tab页会 fail，忽略即可） */
-  focusSafe() {
-    if (wx.hideHomeButton) wx.hideHomeButton({ fail: () => {} })
+    this.setData({
+      mode,
+      enableAfter: !!(query && query.enable === '1'),
+      title: mode === 'set' ? '设置新口令' : '输入口令',
+      sub: mode === 'set'
+        ? (lock.hasPin() ? '用于替换当前口令' : '4 位数字，解锁后才能开启应用锁')
+        : '日用即值已上锁'
+    })
   },
 
   onKey(e) {
@@ -37,27 +31,16 @@ Page({
     if (k === 'forget') return this.onForget()
     if (this.data.input.length >= lock.PIN_LEN) return
     const input = this.data.input + k
-    this.setData({
-      input,
-      dots: this.toDots(input),
-      error: ''
-    })
+    this.setData({ input, error: '' })
     if (input.length === lock.PIN_LEN) setTimeout(() => this.submit(), 120)
   },
 
-  toDots(input) {
-    const d = ['', '', '', '']
-    for (let i = 0; i < input.length && i < 4; i++) d[i] = 'on'
-    return d
-  },
-
   onDel() {
-    const input = this.data.input.slice(0, -1)
-    this.setData({ input, dots: this.toDots(input), error: '' })
+    this.setData({ input: this.data.input.slice(0, -1), error: '' })
   },
 
   clearInput(msg) {
-    this.setData({ input: '', dots: this.toDots(''), error: msg || '', shake: !!msg })
+    this.setData({ input: '', error: msg || '', shake: !!msg })
     if (msg) setTimeout(() => this.setData({ shake: false }), 400)
   },
 

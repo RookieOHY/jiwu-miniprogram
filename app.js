@@ -35,5 +35,15 @@ App({
   /** 切后台即重新上锁（设置里可关） */
   onHide() {
     if (lock.enabled() && lock.onBackground()) lock.lockNow()
+  },
+
+  /** 旧分享卡片 / 失效路径不要停在白屏，直接回首页 */
+  onPageNotFound(res) {
+    console.warn('[记物] 页面不存在，回首页：', res && res.path)
+    wx.switchTab({ url: '/pages/index/index' })
+  },
+
+  onError(msg) {
+    console.error('[记物] 运行错误：', msg)
   }
 })
