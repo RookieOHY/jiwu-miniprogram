@@ -815,16 +815,38 @@
   border: none;
 }
 
-/* 到期提醒条 */
-.rm-banner {
+/* 常驻提醒入口：铃铛 + 未处理数量角标 */
+.bell-btn {
+  position: relative;
+  flex-shrink: 0;
+  width: 64rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  background: var(--chip);
   display: flex;
   align-items: center;
-  gap: 12rpx;
-  background: rgba(88, 86, 214, 0.1);
-  border-radius: 20rpx;
-  padding: 20rpx 24rpx;
-  margin-bottom: 20rpx;
+  justify-content: center;
 }
-.rm-bell { font-size: 28rpx; }
-.rm-text { flex: 1; font-size: 26rpx; color: var(--accent); }
-.rm-go { font-size: 24rpx; color: var(--accent); }
+.bell-ico {
+  width: 32rpx;
+  height: 32rpx;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 32rpx 32rpx;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239b9b93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.268 21a2 2 0 0 0 3.464 0'/%3E%3Cpath d='M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .738-1.673C19.414 13.958 18 12.22 18 8A6 6 0 0 0 6 8c0 4.22-1.414 5.958-2.738 7.326'/%3E%3C/svg%3E");
+}
+.bell-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 30rpx;
+  height: 30rpx;
+  border-radius: 15rpx;
+  background: var(--danger-text);
+  color: #ffffff;
+  font-size: 18rpx;
+  line-height: 30rpx;
+  text-align: center;
+  padding: 0 6rpx;
+  box-sizing: border-box;
+}

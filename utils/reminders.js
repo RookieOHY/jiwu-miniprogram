@@ -8,6 +8,7 @@ const store = require('./store')
 
 const DISMISS_KEY = 'reminderDismissed'
 const WARN_DAYS = 30   // 提前 30 天预警
+const DUST_DAYS = 90   // 超过 90 天没使用 = 吃灰
 
 function fmtDate(d) {
   const p = (n) => (n < 10 ? '0' + n : '' + n)
@@ -27,7 +28,7 @@ function getReminders(todayStr) {
   const out = []
   store.getAll().forEach((it) => {
     if (it.retired && !it.expectedRetireDate) return
-    const push = (type, date, tag) => {
+    const push = (type, date, tag, only) => {
       if (!date) return
       const left = diffDays(date, today)
       if (left > WARN_DAYS) return
@@ -46,7 +47,22 @@ function getReminders(todayStr) {
       })
     }
     push('保修/保质到期', it.warrantyEnabled ? it.warrantyDate : '', '🛡')
-    push('预计退役', it.expectedRetireDate, '📦')
+    if (!it.recycle) push('预计退役', it.expectedRetireDate, '📦')
+    push('订阅续费', it.recycle ? it.expectedRetireDate : '', '🔁', true)
+    // 吃灰：有使用记录且距今超过 DUST_DAYS 天没再使用
+    if (!it.retired && it.lastUseDate) {
+      const idle = -diffDays(it.lastUseDate, today)
+      if (idle >= DUST_DAYS) {
+        const id = it.id + '|dust|' + it.lastUseDate
+        if (!dismissed[id]) {
+          out.push({
+            id, itemId: it.id, name: it.name, type: '吃灰预警', tag: '🕳',
+            date: it.lastUseDate, left: -idle, overdue: true,
+            text: '已 ' + idle + ' 天没使用'
+          })
+        }
+      }
+    }
   })
   out.sort((a, b) => a.left - b.left)
   return out

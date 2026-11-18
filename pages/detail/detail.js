@@ -83,6 +83,9 @@ Page({
       },
       days: store.daysHeld(it),
       daily: store.fmtMoney(store.dailyCost(it)),
+      // 顶层也挂一份，供双引擎卡直接引用（之前只写在 item 内导致永远为空）
+      uses: it.uses || 0,
+      perUse: (it.uses || 0) > 0 ? store.fmtMoney(store.perUseCost(it)) : '',
       // 摊销预测：一次性购入的物品，持有越久日均越低
       daily30: store.fmtMoney(it.price / 30),
       daily365: store.fmtMoney(it.price / 365),

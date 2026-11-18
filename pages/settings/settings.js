@@ -1,6 +1,7 @@
 const store = require('../../utils/store')
 const tabAnim = require('../../utils/tabAnim')
 const backup = require('../../utils/backup')
+const preview = require('../../utils/preview')
 
 Page({
   onShow() {
@@ -12,11 +13,12 @@ Page({
   },
 
   data: {
-    tabbarHideText: true
+    tabbarHideText: true,
+    demoCount: 0
   },
 
   onLoad() {
-    this.setData({ tabbarHideText: store.getTabbarHideText() })
+    this.setData({ tabbarHideText: store.getTabbarHideText(), demoCount: preview.count() })
   },
 
   /** 配置：是否隐藏底部胶囊的文本（默认开启） */
@@ -27,6 +29,18 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ hideText: v })
     }
+  },
+
+  loadDemo() {
+    const added = preview.seed()
+    this.setData({ demoCount: preview.count() })
+    wx.showToast({ title: added ? '已载入 ' + added + ' 件演示物品' : '演示数据已存在', icon: 'none' })
+  },
+
+  clearDemo() {
+    preview.clear()
+    this.setData({ demoCount: 0 })
+    wx.showToast({ title: '已清除演示数据', icon: 'none' })
   },
 
   goReminders() {

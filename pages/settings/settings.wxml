@@ -10,6 +10,20 @@
       </view>
       <view class="row-arrow">›</view>
     </view>
+    <view class="row" bindtap="loadDemo" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">载入演示数据</view>
+        <view class="row-sub">12 件覆盖保修临期 / 吃灰 / 回本 / 外币 / 附加收支的物品</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <view wx:if="{{demoCount}}" class="row" bindtap="clearDemo" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name danger">清除演示数据（{{demoCount}} 件）</view>
+        <view class="row-sub">只删演示物品，不影响你自己记录的数据</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
     <view class="row" bindtap="clearData" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name danger">清空全部数据</view>
