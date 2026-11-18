@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const reminders = require('../../utils/reminders')
+const lock = require('../../utils/lock')
 
 Page({
   data: {
@@ -23,6 +24,8 @@ Page({
   },
 
   onShow() {
+
+    if (lock.guard()) return
     this.refresh()
   },
 

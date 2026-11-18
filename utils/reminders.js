@@ -5,10 +5,12 @@
  */
 
 const store = require('./store')
+const prefs = require('./prefs')
 
 const DISMISS_KEY = 'reminderDismissed'
-const WARN_DAYS = 30   // 提前 30 天预警
-const DUST_DAYS = 90   // 超过 90 天没使用 = 吃灰
+// 阈值改为可配置（设置 → 提醒）：默认提前 30 天预警、90 天没使用算吃灰
+const warnDays = () => prefs.warnDays()
+const dustDays = () => prefs.dustDays()
 
 function fmtDate(d) {
   const p = (n) => (n < 10 ? '0' + n : '' + n)
@@ -24,6 +26,8 @@ function diffDays(dateStr, today) {
 /** 提醒列表：临期（含已过期）按剩余天数升序 */
 function getReminders(todayStr) {
   const today = todayStr || fmtDate(new Date())
+  const wd = warnDays()
+  const dd = dustDays()
   const dismissed = wx.getStorageSync(DISMISS_KEY) || {}
   const out = []
   store.getAll().forEach((it) => {
@@ -31,7 +35,7 @@ function getReminders(todayStr) {
     const push = (type, date, tag, only) => {
       if (!date) return
       const left = diffDays(date, today)
-      if (left > WARN_DAYS) return
+      if (left > wd) return
       const id = it.id + '|' + type + '|' + date
       if (dismissed[id]) return
       out.push({
@@ -49,10 +53,10 @@ function getReminders(todayStr) {
     push('保修/保质到期', it.warrantyEnabled ? it.warrantyDate : '', '🛡')
     if (!it.recycle) push('预计退役', it.expectedRetireDate, '📦')
     push('订阅续费', it.recycle ? it.expectedRetireDate : '', '🔁', true)
-    // 吃灰：有使用记录且距今超过 DUST_DAYS 天没再使用
+    // 吃灰：有使用记录且距今超过阈值天数没再使用
     if (!it.retired && it.lastUseDate) {
       const idle = -diffDays(it.lastUseDate, today)
-      if (idle >= DUST_DAYS) {
+      if (idle >= dd) {
         const id = it.id + '|dust|' + it.lastUseDate
         if (!dismissed[id]) {
           out.push({
@@ -85,4 +89,4 @@ function restoreAll() {
   wx.setStorageSync(DISMISS_KEY, {})
 }
 
-module.exports = { getReminders, countReminders, dismiss, restoreAll, WARN_DAYS, fmtDate, diffDays }
+module.exports = { getReminders, countReminders, dismiss, restoreAll, warnDays, dustDays, fmtDate, diffDays }

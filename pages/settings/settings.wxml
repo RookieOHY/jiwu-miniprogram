@@ -1,5 +1,109 @@
 <view class="page {{tabAnim}}">
 
+  <!-- 外观 -->
+  <view class="card">
+    <view class="sec-title">外观</view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">深色模式</view>
+        <view class="row-sub">跟随系统自动切换</view>
+      </view>
+    </view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">隐藏底部胶囊文本</view>
+        <view class="row-sub">开启后底部导航仅显示图标</view>
+      </view>
+      <switch checked="{{tabbarHideText}}" color="#5856D6" bindchange="onTabbarHideText"/>
+    </view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">隐藏所有金额</view>
+        <view class="row-sub">列表、详情、统计均打码，首页眼睛可临时切换</view>
+      </view>
+      <switch checked="{{amountHidden}}" color="#5856D6" bindchange="onAmountHidden"/>
+    </view>
+    <picker mode="selector" range="{{viewNames}}" value="{{viewIndex}}" bindchange="onViewPick">
+      <view class="row">
+        <view class="row-main">
+          <view class="row-name">默认视图</view>
+          <view class="row-sub">首次打开物品列表的展示方式</view>
+        </view>
+        <view class="row-val">{{viewNames[viewIndex]}} ›</view>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 提醒 -->
+  <view class="card">
+    <view class="sec-title">提醒</view>
+    <view class="row" bindtap="goReminders" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">到期提醒</view>
+        <view class="row-sub">保修 / 保质 / 预计退役 / 吃灰 / 预算，现在 {{reminderCount}} 条</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <picker mode="selector" range="{{warnNames}}" value="{{warnIndex}}" bindchange="onWarnPick">
+      <view class="row">
+        <view class="row-main">
+          <view class="row-name">提前几天提醒</view>
+          <view class="row-sub">保修、退役、续费到期日</view>
+        </view>
+        <view class="row-val">{{warnNames[warnIndex]}} ›</view>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{dustNames}}" value="{{dustIndex}}" bindchange="onDustPick">
+      <view class="row">
+        <view class="row-main">
+          <view class="row-name">多久算吃灰</view>
+          <view class="row-sub">超过这个天数没记使用就提醒</view>
+        </view>
+        <view class="row-val">{{dustNames[dustIndex]}} ›</view>
+      </view>
+    </picker>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">预算超支提醒</view>
+        <view class="row-sub">本月支出超过分类预算时提醒</view>
+      </view>
+      <switch checked="{{budgetAlert}}" color="#5856D6" bindchange="onBudgetAlert"/>
+    </view>
+  </view>
+
+  <!-- 隐私 -->
+  <view class="card">
+    <view class="sec-title">隐私</view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">应用锁</view>
+        <view class="row-sub">{{hasPin ? '4 位数字口令，忘记可重置' : '开启前需设置 4 位口令'}}</view>
+      </view>
+      <switch checked="{{lockOn}}" color="#5856D6" bindchange="onLockSwitch"/>
+    </view>
+    <view class="row" bindtap="goSetPin" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">{{hasPin ? '修改口令' : '设置口令'}}</view>
+        <view class="row-sub">输入两次新口令确认</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <view class="row">
+      <view class="row-main">
+        <view class="row-name">切后台自动上锁</view>
+        <view class="row-sub">离开小程序后再回来要重新输入</view>
+      </view>
+      <switch checked="{{lockBg}}" color="#5856D6" bindchange="onLockBg"/>
+    </view>
+    <view class="row" bindtap="privacyNote" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">隐私说明</view>
+        <view class="row-sub">数据存本机、口令非加密、备份是明文</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+  </view>
+
   <!-- 数据 -->
   <view class="card">
     <view class="sec-title">数据</view>
@@ -33,28 +137,33 @@
     </view>
   </view>
 
-  <!-- 配置 -->
+  <!-- 汇率 -->
   <view class="card">
-    <view class="sec-title">配置</view>
-    <view class="row">
+    <view class="sec-title">汇率</view>
+    <view class="row" bindtap="toggleRates" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
-        <view class="row-name">隐藏底部胶囊文本</view>
-        <view class="row-sub">开启后底部导航仅显示图标</view>
+        <view class="row-name">外币折算汇率</view>
+        <view class="row-sub">用于把外币物品折算成日均人民币，当前展开{{rateOpen ? '中' : '查看'}}</view>
       </view>
-      <switch checked="{{tabbarHideText}}" color="#5856D6" bindchange="onTabbarHideText"/>
+      <view class="row-arrow">{{rateOpen ? '▴' : '▾'}}</view>
     </view>
-  </view>
-
-  <!-- 提醒 -->
-  <view class="card">
-    <view class="sec-title">提醒</view>
-    <view class="row" bindtap="goReminders" hover-class="row-press" hover-stay-time="80">
-      <view class="row-main">
-        <view class="row-name">到期提醒</view>
-        <view class="row-sub">保修 / 保质 / 预计退役，提前 30 天提醒</view>
+    <block wx:if="{{rateOpen}}">
+      <view wx:for="{{rates}}" wx:key="code" class="row">
+        <view class="row-main">
+          <view class="row-name">{{item.symbol}} {{item.label}}</view>
+          <view class="row-sub">1 {{item.code}} = ? 元</view>
+        </view>
+        <input
+          class="rate-input"
+          type="digit"
+          value="{{item.rate}}"
+          data-c="{{item.code}}"
+          bindblur="onRateInput"
+          bindinput="onRateInput"
+        />
       </view>
-      <view class="row-arrow">›</view>
-    </view>
+      <view class="rate-reset" bindtap="resetRates">恢复默认汇率</view>
+    </block>
   </view>
 
   <!-- 关于 -->
@@ -64,12 +173,6 @@
       <view class="row-main">
         <view class="row-name">版本</view>
         <view class="row-sub">MVP · 数据仅保存在本机，不上传服务器</view>
-      </view>
-    </view>
-    <view class="row">
-      <view class="row-main">
-        <view class="row-name">深色模式</view>
-        <view class="row-sub">跟随系统自动切换</view>
       </view>
     </view>
   </view>

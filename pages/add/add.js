@@ -18,8 +18,13 @@ function calcApply(a, b, op) {
   return b
 }
 const icons = require('../../utils/icons')
+const lock = require('../../utils/lock')
 
 Page({
+  onShow() {
+    if (lock.guard()) return
+  },
+
   data: {
     name: '',
     price: '',

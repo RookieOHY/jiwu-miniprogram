@@ -1,10 +1,7 @@
-const preview = require('./utils/preview')
+const lock = require('./utils/lock')
 
 App({
   onLaunch() {
-    // 临时预览数据（看完说“删除预览”即清）
-    preview.seedPreview()
-
     // 首次启动初始化存储结构
     if (!wx.getStorageSync('items')) {
       wx.setStorageSync('items', [])
@@ -33,5 +30,10 @@ App({
         cur.setData({ __theme: res.theme })
       })
     }
+  },
+
+  /** 切后台即重新上锁（设置里可关） */
+  onHide() {
+    if (lock.enabled() && lock.onBackground()) lock.lockNow()
   }
 })

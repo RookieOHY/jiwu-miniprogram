@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const cats = require('../../utils/cats')
+const lock = require('../../utils/lock')
 
 function today() {
   const d = new Date()
@@ -19,6 +20,8 @@ Page({
   },
 
   onShow() {
+
+    if (lock.guard()) return
     // 同步胶囊 TabBar 选中态（统计 = 第 3 个 tab）
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2, hideText: store.getTabbarHideText() })

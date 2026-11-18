@@ -45,6 +45,9 @@ function toCNY(price, currency) {
 
 /** 汇率：1 单位外币 = N 人民币 */
 function rateOf(currency) {
+  if (currency === 'CNY') return 1
+  const over = require('./prefs').rateOverride(currency)
+  if (over) return over
   const c = CURRENCIES.find((c) => c.key === currency)
   return (c && c.rate) || 1
 }

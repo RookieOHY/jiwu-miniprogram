@@ -15,6 +15,7 @@ function calcApply(a, b, op) {
 }
 const tagsUtil = require('../../utils/tags')
 const icons = require('../../utils/icons')
+const lock = require('../../utils/lock')
 
 function today() {
   const d = new Date()
@@ -23,6 +24,10 @@ function today() {
 }
 
 Page({
+  onShow() {
+    if (lock.guard()) return
+  },
+
   data: {
     tab: 'info', // info | cost
     // 基本信息

@@ -1,6 +1,7 @@
 const store = require('../../utils/store')
 const tabAnim = require('../../utils/tabAnim')
 const cloud = require('../../utils/cloud')
+const lock = require('../../utils/lock')
 
 /** 千分位格式化：100000 → "100,000"，自动去尾零 */
 function fmtNum(n) {
@@ -37,6 +38,8 @@ Page({
   },
 
   onShow() {
+
+    if (lock.guard()) return
     // 同步胶囊 TabBar 选中态
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1, hideText: store.getTabbarHideText() })

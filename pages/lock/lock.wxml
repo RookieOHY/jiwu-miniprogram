@@ -1,0 +1,23 @@
+<view class="lock">
+  <view class="lock-head">
+    <image class="lock-logo" src="/assets/3d/package.png" mode="aspectFit"/>
+    <view class="lock-title">{{title}}</view>
+    <view class="lock-sub">{{error ? error : sub}}</view>
+  </view>
+
+  <view class="dots {{shake ? 'shake' : ''}}">
+    <view wx:for="{{dots}}" wx:key="index" class="dot {{item === 'on' ? 'on' : ''}}"></view>
+  </view>
+
+  <view class="pad">
+    <view
+      wx:for="{{keys}}"
+      wx:key="*this"
+      class="key {{item === 'del' || item === 'forget' ? 'key-fn' : ''}} {{item === 'forget' ? 'key-forget' : ''}}"
+      data-k="{{item}}"
+      bindtap="onKey"
+      hover-class="key-press"
+      hover-stay-time="60"
+    >{{item === 'del' ? '⌫' : item === 'forget' ? '忘记' : item}}</view>
+  </view>
+</view>

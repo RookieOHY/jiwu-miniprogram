@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/lock/lock",
     "pages/wishlist/wishlist",
     "pages/stats/stats",
     "pages/wishlist/add",

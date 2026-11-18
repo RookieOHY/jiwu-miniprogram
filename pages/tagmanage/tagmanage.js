@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const tags = require('../../utils/tags')
+const lock = require('../../utils/lock')
 
 Page({
   data: {
@@ -9,6 +10,8 @@ Page({
   },
 
   onShow() {
+
+    if (lock.guard()) return
     this.refresh()
   },
 
