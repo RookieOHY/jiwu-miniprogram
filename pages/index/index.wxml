@@ -43,7 +43,7 @@
       <view wx:if="{{reminderCount}}" class="bell-badge">{{reminderCount > 9 ? '9+' : reminderCount}}</view>
     </view>
     <view class="filter-btn" bindtap="openFilter">筛选<text wx:if="{{filterCount}}" class="filter-badge">{{filterCount}}</text></view>
-    <view class="view-toggle vt-{{viewMode === 'list' ? 'to-card' : viewMode === 'card' ? 'to-cat' : 'to-list'}}" bindtap="toggleView"></view>
+    <view class="view-toggle vt-{{viewMode === 'list' ? 'to-card' : viewMode === 'card' ? 'to-cat' : viewMode === 'cat' ? 'to-loc' : 'to-list'}}" bindtap="toggleView"></view>
   </view>
 
   <!-- 生效条件胶囊 -->
@@ -182,6 +182,51 @@
     </view>
   </block>
 
+  <!-- 位置视图：按存放位置归置 -->
+  <block wx:if="{{viewMode === 'loc'}}">
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <view class="empty-icon">📍</view>
+      <view>还没有记录任何物品</view>
+      <view class="empty-tip">点击下方按钮，记下第一件吧</view>
+    </view>
+
+    <view wx:for="{{locView}}" wx:key="name" class="cat-sec">
+      <view class="cat-sec-head">
+        <view class="cat-sec-left">
+          <image class="cat-sec-ico" src="{{item.icon}}" mode="aspectFit"/>
+          <text class="cat-sec-name">{{item.title}}</text>
+        </view>
+        <text class="loc-sec-sum">{{item.items.length}} 件 · {{amountHidden ? '¥****' : '¥' + item.spendText}}</text>
+      </view>
+      <view
+        wx:for="{{item.items}}"
+        wx:for-item="it"
+        wx:key="id"
+        class="catview-item card"
+        hover-class="item-press"
+        hover-stay-time="80"
+        data-id="{{it.id}}"
+        bindtap="goDetail"
+        bindlongpress="onItemLongPress"
+      >
+        <view class="item-main">
+          <view class="item-name">
+            {{it.name}}
+            <text wx:if="{{it.sold}}" class="tag-sold">已卖出</text>
+            <text wx:elif="{{it.retired}}" class="tag-retired">已退役</text>
+          </view>
+          <view class="item-meta">{{it.catName}} · 已持有 {{it.days}} 天</view>
+        </view>
+        <view class="item-right">
+          <view class="item-daily-big">{{amountHidden ? '****' : it.symbol + it.daily}}<text class="per">/天</text></view>
+          <view class="item-buy">{{amountHidden ? '买入 ****' : '买入 ' + it.symbol + it.price}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{locView.length}}" class="loc-tip">位置写在物品详情页「存放位置」那一行，点一下就能改</view>
+  </block>
+
   <view class="bottom-space"></view>
 </view>
 
@@ -238,6 +283,11 @@
       <view class="flt-sec-title">币种</view>
       <view class="flt-chips">
         <view wx:for="{{currencies}}" wx:key="key" class="flt-chip {{selCurrency === item.key ? 'on' : ''}}" data-v="{{item.key}}" bindtap="setCurrency">{{item.symbol}} {{item.name}}</view>
+      </view>
+
+      <view class="flt-sec-title">视图</view>
+      <view class="flt-chips">
+        <view wx:for="{{viewOptions}}" wx:key="key" class="flt-chip {{viewMode === item.key ? 'on' : ''}}" data-v="{{item.key}}" bindtap="setView">{{item.name}}</view>
       </view>
 
       <view class="flt-sec-title">排序</view>

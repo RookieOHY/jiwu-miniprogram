@@ -2,6 +2,7 @@ const store = require('../../utils/store')
 const cats = require('../../utils/cats')
 const tagsUtil = require('../../utils/tags')
 const reminders = require('../../utils/reminders')
+const prefs = require('../../utils/prefs')
 const poster = require('../../utils/poster')
 const tabAnim = require('../../utils/tabAnim')
 const lock = require('../../utils/lock')
@@ -15,7 +16,14 @@ Page({
     retiredCount: 0,
     soldCount: 0,
     filter: 'all', // all | 持有中 | 已退役 | 已卖出（旧状态保留兼容）
-    viewMode: 'list', // list | card | cat
+    viewMode: 'list', // list | card | cat | loc
+    viewOptions: [
+      { key: 'list', name: '列表' },
+      { key: 'card', name: '卡片' },
+      { key: 'cat', name: '分类' },
+      { key: 'loc', name: '位置' }
+    ],
+    locView: [],
     heroHidden: false,
     // 查询与排序
     searchKeyword: '',
@@ -86,7 +94,7 @@ Page({
       allTags: tagsUtil.getTags()
     })
     // 记住用户的视图偏好
-    const saved = wx.getStorageSync('viewMode')
+    const saved = wx.getStorageSync('viewMode') || prefs.get().defaultView
     if (saved) this.setData({ viewMode: saved })
     // 恢复金额隐私模式与周期档位
     this.setData({ amountHidden: !!wx.getStorageSync('amountHidden') })
@@ -94,16 +102,16 @@ Page({
     if (period) this.setData({ totalPeriod: period })
   },
 
-  /** 视图三态轮转：列表 → 卡片 → 分类 → 列表 */
+  /** 视图四态轮转：列表 → 卡片 → 分类 → 位置 → 列表 */
   toggleView() {
-    const order = ['list', 'card', 'cat']
-    const next = order[(order.indexOf(this.data.viewMode) + 1) % 3]
+    const order = ['list', 'card', 'cat', 'loc']
+    const next = order[(order.indexOf(this.data.viewMode) + 1) % order.length]
     this.setData({ viewMode: next })
     wx.setStorageSync('viewMode', next)
     this.refresh()
   },
 
-  /** 直接选择视图（list | card | cat） */
+  /** 直接选择视图（筛选面板里的视图分区） */
   setView(e) {
     const viewMode = e.currentTarget.dataset.v
     if (viewMode === this.data.viewMode) return
@@ -174,6 +182,7 @@ Page({
         symbol: store.currencySymbol(it.currency),
         currency: it.currency || 'CNY',
         note: it.note || '',
+        location: it.location || '',
         tags: it.tags || [],
         retired: it.retired,
         sold: !!it.sold,
@@ -226,6 +235,36 @@ Page({
     })
     catView.sort((a, b) => b.items.length - a.items.length)
 
+    // 位置视图：按「存放位置」文本聚合，未记录的归到最后
+    const locView = []
+    const locIndex = {}
+    items.forEach((it) => {
+      const name = it.location || ''
+      if (locIndex[name] === undefined) {
+        locIndex[name] = locView.length
+        locView.push({
+          name,
+          title: name || '未记录位置',
+          icon: name ? '/assets/3d/pushpin.png' : '/assets/3d/package.png',
+          items: [],
+          spend: 0,
+          daily: 0
+        })
+      }
+      const g = locView[locIndex[name]]
+      g.items.push(it)
+      g.spend += it.priceNum || 0
+      g.daily += it.dailyNum || 0
+    })
+    locView.forEach((g) => {
+      g.spendText = store.fmtMoney(g.spend)
+      g.dailyText = store.fmtMoney(g.daily)
+    })
+    locView.sort((a, b) => {
+      if (!a.name !== !b.name) return a.name ? -1 : 1 // 有位置的排前面，未记录置底
+      return b.items.length - a.items.length
+    })
+
     // 筛选角标
     const heldCount = all.filter((it) => !it.retired).length
     const retiredCount = all.filter((it) => it.retired && !it.sold).length
@@ -242,6 +281,7 @@ Page({
       totalPeriodValue: store.fmtMoney(totalPeriodValue),
       periodLabel,
       catView,
+      locView,
       activeChips,
       filterCount,
       // 时间线只在「默认顺序 + 无筛选」时有意义，否则顺序已重排，虚线会误导
