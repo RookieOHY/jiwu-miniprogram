@@ -48,9 +48,7 @@
 
     <view class="field plain date-field">
       <view class="date-label">购买日期</view>
-      <picker mode="date" value="{{buyDate}}" end="{{maxDate}}" bindchange="onDate">
-        <view class="date-chip">{{buyDateCN}}</view>
-      </picker>
+      <view class="date-chip" bindtap="openDate" data-f="buyDate">{{buyDateCN}}</view>
     </view>
   </view>
 
@@ -173,3 +171,6 @@
     </scroll-view>
   </view>
 </view>
+
+<!-- 日历选择组件 -->
+<cal-picker visible="{{showCal}}" value="{{calValue}}" bindselect="onCalSelect" bindclose="closeCal"/>

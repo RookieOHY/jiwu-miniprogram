@@ -54,6 +54,10 @@ Page({
     platformName: '其他',
     // 计算器
     showCalc: false,
+    // 日历
+    showCal: false,
+    dateField: '',
+    calValue: '',
     calcDisplay: '0',
     calcAcc: null,
     calcOp: null,
@@ -249,6 +253,20 @@ Page({
   },
 
   /* ---------- 计算器 ---------- */
+
+  /* ---------- 日历选择 ---------- */
+
+  openDate(e) {
+    this.setData({ dateField: e.currentTarget.dataset.f, calValue: this.data.buyDate || '', showCal: true })
+  },
+
+  onCalSelect(e) {
+    this.setData({ buyDate: e.detail.date, buyDateCN: fmtCN(e.detail.date), showCal: false })
+  },
+
+  closeCal() {
+    this.setData({ showCal: false })
+  },
 
   openCalc() {
     const v = parseFloat(this.data.price)
