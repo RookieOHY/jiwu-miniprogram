@@ -53,6 +53,9 @@
   flex: 1;
   min-width: 0;
 }
+.hero-num-item {
+  text-align: center;
+}
 .hero-num-item .hero-num {
   font-weight: 700;
   font-family: "DIN Alternate", sans-serif;
@@ -480,6 +483,7 @@
   min-height: 30rpx;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8rpx;
 }
 .eye,
