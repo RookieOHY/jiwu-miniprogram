@@ -1,3 +1,4 @@
+<wxs src="../../utils/fmt.wxs" module="fmt" />
 <view class="page {{tabAnim}}">
 
   <!-- 顶部汇总（上滑自动收起） -->
@@ -30,15 +31,20 @@
     </view>
   </view>
 
-  <!-- 筛选 + 视图切换 -->
+  <!-- 搜索 + 筛选 + 视图切换 -->
   <view class="toolbar">
-    <view class="filters">
-      <view class="filter-chip {{filter === 'all' ? 'on' : ''}}" data-f="all" bindtap="setFilter">全部</view>
-      <view class="filter-chip {{filter === '持有中' ? 'on' : ''}}" data-f="持有中" bindtap="setFilter">持有中</view>
-      <view class="filter-chip {{filter === '已退役' ? 'on' : ''}}" data-f="已退役" bindtap="setFilter">已退役</view>
-      <view class="filter-chip {{filter === '已卖出' ? 'on' : ''}}" data-f="已卖出" bindtap="setFilter">已卖出</view>
+    <view class="search-box">
+      <view class="search-ico"></view>
+      <input class="search-input" placeholder="搜索物品名称 / 标签 / 备注" placeholder-class="ph" value="{{searchKeyword}}" bindinput="onSearch"/>
+      <view wx:if="{{searchKeyword}}" class="search-clear" bindtap="clearSearch">×</view>
     </view>
+    <view class="filter-btn" bindtap="openFilter">筛选<text wx:if="{{filterCount}}" class="filter-badge">{{filterCount}}</text></view>
     <view class="view-toggle vt-{{viewMode === 'list' ? 'to-card' : viewMode === 'card' ? 'to-cat' : 'to-list'}}" bindtap="toggleView"></view>
+  </view>
+
+  <!-- 生效条件胶囊 -->
+  <view wx:if="{{activeChips.length}}" class="active-chips">
+    <view wx:for="{{activeChips}}" wx:key="key" class="active-chip" data-k="{{item.key}}" bindtap="removeChip">{{item.label}} ×</view>
   </view>
 
   <!-- 物品列表（列表视图） -->
@@ -173,6 +179,70 @@
   </block>
 
   <view class="bottom-space"></view>
+</view>
+
+<!-- 筛选面板 -->
+<view wx:if="{{showFilter}}" class="flt-mask" bindtap="closeFilter">
+  <view class="flt-panel" catchtap="noop">
+    <view class="flt-head">
+      <text class="flt-cancel" bindtap="closeFilter">取消</text>
+      <text class="flt-title">筛选与排序</text>
+      <text class="flt-reset" bindtap="resetFilter">重置</text>
+    </view>
+    <scroll-view scroll-y class="flt-body">
+      <view class="flt-sec-title">状态</view>
+      <view class="flt-chips">
+        <view wx:for="{{statusOptions}}" wx:key="*this" class="flt-chip {{fmt.has(statuses, item) ? 'on' : ''}}" data-v="{{item}}" bindtap="toggleStatus">{{item}}</view>
+      </view>
+
+      <view class="flt-sec-title">分类</view>
+      <view class="flt-chips">
+        <view wx:for="{{catGroups}}" wx:key="name" class="flt-chip {{selGroup === item.name ? 'on' : ''}}" data-name="{{item.name}}" bindtap="setGroup">{{item.name}}</view>
+      </view>
+      <view wx:if="{{selGroup}}" class="flt-chips sub">
+        <block wx:for="{{catGroups}}" wx:key="name" wx:for-item="g">
+          <block wx:if="{{g.name === selGroup}}">
+            <view wx:for="{{g.subs}}" wx:for-item="s" wx:key="*this" class="flt-chip {{selSub === s ? 'on' : ''}}" data-sub="{{s}}" bindtap="setSub">{{s}}</view>
+          </block>
+        </block>
+      </view>
+
+      <view class="flt-sec-title">购买渠道</view>
+      <view class="flt-chips">
+        <view wx:for="{{platforms}}" wx:key="key" class="flt-chip {{fmt.has(selPlatforms, item.key) ? 'on' : ''}}" data-v="{{item.key}}" bindtap="togglePlatform">{{item.name}}</view>
+      </view>
+
+      <view class="flt-sec-title">价格区间（¥）</view>
+      <view class="flt-range">
+        <input class="flt-input" type="digit" placeholder="最低" placeholder-class="ph" value="{{minPrice}}" bindinput="onMinPrice"/>
+        <text class="flt-dash">~</text>
+        <input class="flt-input" type="digit" placeholder="最高" placeholder-class="ph" value="{{maxPrice}}" bindinput="onMaxPrice"/>
+      </view>
+
+      <view class="flt-sec-title">购买日期</view>
+      <view class="flt-range">
+        <picker mode="date" value="{{dateFrom}}" bindchange="onDateFrom"><view class="flt-date">{{dateFrom || '开始日期'}}</view></picker>
+        <text class="flt-dash">~</text>
+        <picker mode="date" value="{{dateTo}}" bindchange="onDateTo"><view class="flt-date">{{dateTo || '结束日期'}}</view></picker>
+      </view>
+
+      <view class="flt-sec-title">标签</view>
+      <view class="flt-chips">
+        <view wx:for="{{allTags}}" wx:key="*this" class="flt-chip {{fmt.has(selTags, item) ? 'on' : ''}}" data-v="{{item}}" bindtap="toggleTag">{{item}}</view>
+      </view>
+
+      <view class="flt-sec-title">币种</view>
+      <view class="flt-chips">
+        <view wx:for="{{currencies}}" wx:key="key" class="flt-chip {{selCurrency === item.key ? 'on' : ''}}" data-v="{{item.key}}" bindtap="setCurrency">{{item.symbol}} {{item.name}}</view>
+      </view>
+
+      <view class="flt-sec-title">排序</view>
+      <view class="flt-chips">
+        <view wx:for="{{sortOptions}}" wx:key="key" class="flt-chip {{sortBy === item.key ? 'on' : ''}}" data-v="{{item.key}}" bindtap="setSort">{{item.name}}</view>
+      </view>
+    </scroll-view>
+    <button class="flt-ok" bindtap="closeFilter">查看 {{items.length}} 件物品</button>
+  </view>
 </view>
 
 <!-- 值回票价日：全屏庆祝卡 -->

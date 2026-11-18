@@ -261,8 +261,25 @@ function testIndex() {
   A(inst.data.heldCount === 1 && inst.data.retiredCount === 1 && inst.data.soldCount === 1, '三态计数')
   A(inst.data.totalSpend === '2460.00', '总投入折算合计（USD×7.2）')
 
-  inst.setFilter({ currentTarget: { dataset: { f: '持有中' } } })
-  A(inst.data.items.length === 1 && inst.data.items[0].name === 'A', '持有中筛选')
+  // 新筛选：状态多选
+  inst.toggleStatus({ currentTarget: { dataset: { v: '持有中' } } })
+  A(inst.data.items.length === 1 && inst.data.items[0].name === 'A', '状态筛选（持有中）')
+  inst.toggleStatus({ currentTarget: { dataset: { v: '持有中' } } }) // 取消
+
+  // 关键词搜索
+  inst.onSearch({ detail: { value: '跑步机' } })
+  A(inst.data.items.length === 0, '关键词搜索（无匹配）')
+  inst.onSearch({ detail: { value: 'A' } })
+  A(inst.data.items.length === 1, '关键词搜索（命中）')
+  inst.clearSearch()
+
+  // 排序：日均高→低
+  inst.setSort({ currentTarget: { dataset: { v: 'dailyDesc' } } })
+  A(inst.data.items[0].dailyNum >= inst.data.items[1].dailyNum, '日均降序')
+  inst.setSort({ currentTarget: { dataset: { v: 'default' } } })
+
+  inst.resetFilter()
+  A(inst.data.filterCount === 0, '重置筛选')
 
   inst.toggleHide()
   A(inst.data.amountHidden === true, '金额隐藏')

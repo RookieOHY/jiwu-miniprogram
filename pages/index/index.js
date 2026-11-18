@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const cats = require('../../utils/cats')
+const tagsUtil = require('../../utils/tags')
 const poster = require('../../utils/poster')
 const tabAnim = require('../../utils/tabAnim')
 
@@ -11,9 +12,38 @@ Page({
     heldCount: 0,
     retiredCount: 0,
     soldCount: 0,
-    filter: 'all', // all | 持有中 | 已退役 | 已卖出
-    viewMode: 'list', // list | card
+    filter: 'all', // all | 持有中 | 已退役 | 已卖出（旧状态保留兼容）
+    viewMode: 'list', // list | card | cat
     heroHidden: false,
+    // 查询与排序
+    searchKeyword: '',
+    showFilter: false,
+    filterCount: 0,
+    activeChips: [],
+    statuses: [],
+    statusOptions: ['持有中', '已退役', '已卖出'],
+    catGroups: [],
+    selGroup: '',
+    selSub: '',
+    platforms: [],
+    selPlatforms: [],
+    minPrice: '',
+    maxPrice: '',
+    dateFrom: '',
+    dateTo: '',
+    allTags: [],
+    selTags: [],
+    currencies: [],
+    selCurrency: '',
+    sortBy: 'default',
+    sortOptions: [
+      { key: 'default', name: '默认（置顶+最新）' },
+      { key: 'dailyDesc', name: '日均 高→低' },
+      { key: 'dailyAsc', name: '日均 低→高' },
+      { key: 'priceDesc', name: '价格 高→低' },
+      { key: 'daysDesc', name: '持有天数 长→短' },
+      { key: 'nameAsc', name: '名称 A→Z' }
+    ],
     totalDaily: '0',
     amountHidden: false,
     totalPeriod: 'day',
@@ -42,6 +72,13 @@ Page({
   },
 
   onLoad() {
+    // 查询条件候选
+    this.setData({
+      catGroups: cats.getGroups(),
+      platforms: store.PLATFORMS,
+      currencies: store.CURRENCIES,
+      allTags: tagsUtil.getTags()
+    })
     // 记住用户的视图偏好
     const saved = wx.getStorageSync('viewMode')
     if (saved) this.setData({ viewMode: saved })
@@ -82,11 +119,39 @@ Page({
     const totalPeriodValue = store.fmtMoney(totalDaily * mult)
     const periodLabel = this.data.totalPeriod === 'month' ? '总月均' : this.data.totalPeriod === 'year' ? '总年均' : '总日均'
 
+    const d = this.data
+    const kw = (d.searchKeyword || '').trim().toLowerCase()
     const items = all
       .filter((it) => {
-        if (this.data.filter === '持有中' && it.retired) return false
-        if (this.data.filter === '已退役' && (!it.retired || it.sold)) return false
-        if (this.data.filter === '已卖出' && !it.sold) return false
+        // 状态多选
+        if (d.statuses.length) {
+          const st = it.sold ? '已卖出' : it.retired ? '已退役' : '持有中'
+          if (d.statuses.indexOf(st) < 0) return false
+        }
+        // 分类：大分类 + 子分类
+        if (d.selGroup) {
+          const groupName = it.categoryGroup || store.getCategoryName(it.category)
+          if (groupName !== d.selGroup) return false
+          if (d.selSub && it.category !== d.selSub && store.getCategoryName(it.category) !== d.selSub) return false
+        }
+        // 渠道多选
+        if (d.selPlatforms.length && d.selPlatforms.indexOf(it.platform || 'other') < 0) return false
+        // 价格区间（折算人民币）
+        const priceCNY = store.toCNY(it.price, it.currency)
+        if (d.minPrice !== '' && priceCNY < parseFloat(d.minPrice)) return false
+        if (d.maxPrice !== '' && priceCNY > parseFloat(d.maxPrice)) return false
+        // 购买日期范围（YYYY-MM-DD 字典序即可比较）
+        if (d.dateFrom && it.buyDate < d.dateFrom) return false
+        if (d.dateTo && it.buyDate > d.dateTo) return false
+        // 标签多选（任一命中）
+        if (d.selTags.length && !(it.tags || []).some((t) => d.selTags.indexOf(t) >= 0)) return false
+        // 币种
+        if (d.selCurrency && (it.currency || 'CNY') !== d.selCurrency) return false
+        // 关键词：名称 / 备注 / 分类 / 渠道 / 标签
+        if (kw) {
+          const hay = [it.name, it.note, store.getCategoryName(it.category), store.getPlatformName(it.platform), (it.tags || []).join(' ')].join(' ').toLowerCase()
+          if (hay.indexOf(kw) < 0) return false
+        }
         return true
       })
       .map((it) => ({
@@ -100,14 +165,43 @@ Page({
         platform: it.platform,
         platformName: store.getPlatformName(it.platform),
         symbol: store.currencySymbol(it.currency),
+        currency: it.currency || 'CNY',
+        note: it.note || '',
+        tags: it.tags || [],
         retired: it.retired,
         sold: !!it.sold,
         pinned: !!it.pinned,
         daily: store.fmtMoney(store.dailyCost(it)),
+        dailyNum: store.toCNY(store.dailyCost(it), it.currency),
+        priceNum: store.toCNY(it.price, it.currency),
         days: store.daysHeld(it)
       }))
-      // 置顶的排最前，其余保持最新买入在前的顺序
-      .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
+      .sort((a, b) => {
+        switch (d.sortBy) {
+          case 'dailyDesc': return b.dailyNum - a.dailyNum
+          case 'dailyAsc': return a.dailyNum - b.dailyNum
+          case 'priceDesc': return b.priceNum - a.priceNum
+          case 'daysDesc': return b.days - a.days
+          case 'nameAsc': return a.name.localeCompare(b.name)
+          default: return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
+        }
+      })
+
+    // 生效条件胶囊 + 计数
+    const activeChips = []
+    d.statuses.forEach((s) => activeChips.push({ key: 'status:' + s, label: s }))
+    if (d.selGroup) activeChips.push({ key: 'group', label: '分类:' + (d.selSub || d.selGroup) })
+    d.selPlatforms.forEach((p) => activeChips.push({ key: 'platform:' + p, label: store.getPlatformName(p) }))
+    if (d.minPrice !== '' || d.maxPrice !== '') activeChips.push({ key: 'price', label: '¥' + (d.minPrice || '0') + '-' + (d.maxPrice || '∞') })
+    if (d.dateFrom || d.dateTo) activeChips.push({ key: 'date', label: (d.dateFrom || '…') + '~' + (d.dateTo || '…') })
+    d.selTags.forEach((t) => activeChips.push({ key: 'tag:' + t, label: t }))
+    if (d.selCurrency) activeChips.push({ key: 'currency', label: d.selCurrency })
+    if (kw) activeChips.push({ key: 'kw', label: '搜索:' + kw })
+    if (d.sortBy !== 'default') {
+      const so = d.sortOptions.find((o) => o.key === d.sortBy)
+      activeChips.push({ key: 'sort', label: so ? so.name : '排序' })
+    }
+    const filterCount = activeChips.length
 
     // 分类视图：按大分类分组，节头带 3D 图标
     const allGroups = cats.getGroups()
@@ -140,10 +234,113 @@ Page({
       totalDaily: store.fmtMoney(totalDaily),
       totalPeriodValue,
       periodLabel,
-      catView
+      catView,
+      activeChips,
+      filterCount
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
     this.checkCelebration()
+  },
+
+  /* ---------- 查询与筛选 ---------- */
+
+  onSearch(e) {
+    this.setData({ searchKeyword: e.detail.value }, () => this.refresh())
+  },
+
+  clearSearch() {
+    this.setData({ searchKeyword: '' }, () => this.refresh())
+  },
+
+  openFilter() {
+    this.setData({
+      showFilter: true,
+      allTags: Array.from(new Set(tagsUtil.getTags().concat(
+        store.getAll().reduce((acc, it) => acc.concat(it.tags || []), [])
+      )))
+    })
+  },
+
+  closeFilter() {
+    this.setData({ showFilter: false })
+  },
+
+  noop() {},
+
+  toggleStatus(e) {
+    const v = e.currentTarget.dataset.v
+    const list = this.data.statuses.slice()
+    const i = list.indexOf(v)
+    if (i >= 0) list.splice(i, 1)
+    else list.push(v)
+    this.setData({ statuses: list }, () => this.refresh())
+  },
+
+  setGroup(e) {
+    const name = e.currentTarget.dataset.name
+    this.setData({ selGroup: this.data.selGroup === name ? '' : name, selSub: '' }, () => this.refresh())
+  },
+
+  setSub(e) {
+    const sub = e.currentTarget.dataset.sub
+    this.setData({ selSub: this.data.selSub === sub ? '' : sub }, () => this.refresh())
+  },
+
+  togglePlatform(e) {
+    const v = e.currentTarget.dataset.v
+    const list = this.data.selPlatforms.slice()
+    const i = list.indexOf(v)
+    if (i >= 0) list.splice(i, 1)
+    else list.push(v)
+    this.setData({ selPlatforms: list }, () => this.refresh())
+  },
+
+  toggleTag(e) {
+    const v = e.currentTarget.dataset.v
+    const list = this.data.selTags.slice()
+    const i = list.indexOf(v)
+    if (i >= 0) list.splice(i, 1)
+    else list.push(v)
+    this.setData({ selTags: list }, () => this.refresh())
+  },
+
+  onMinPrice(e) { this.setData({ minPrice: e.detail.value }, () => this.refresh()) },
+  onMaxPrice(e) { this.setData({ maxPrice: e.detail.value }, () => this.refresh()) },
+  onDateFrom(e) { this.setData({ dateFrom: e.detail.value }, () => this.refresh()) },
+  onDateTo(e) { this.setData({ dateTo: e.detail.value }, () => this.refresh()) },
+
+  setCurrency(e) {
+    const v = e.currentTarget.dataset.v
+    this.setData({ selCurrency: this.data.selCurrency === v ? '' : v }, () => this.refresh())
+  },
+
+  setSort(e) {
+    this.setData({ sortBy: e.currentTarget.dataset.v }, () => this.refresh())
+  },
+
+  resetFilter() {
+    this.setData({
+      statuses: [], selGroup: '', selSub: '', selPlatforms: [],
+      minPrice: '', maxPrice: '', dateFrom: '', dateTo: '',
+      selTags: [], selCurrency: '', sortBy: 'default', searchKeyword: ''
+    }, () => this.refresh())
+  },
+
+  removeChip(e) {
+    const key = e.currentTarget.dataset.k
+    if (key.indexOf('status:') === 0) {
+      const v = key.slice(7)
+      this.setData({ statuses: this.data.statuses.filter((s) => s !== v) }, () => this.refresh())
+    } else if (key.indexOf('platform:') === 0) {
+      const v = key.slice(9)
+      this.setData({ selPlatforms: this.data.selPlatforms.filter((s) => s !== v) }, () => this.refresh())
+    } else if (key.indexOf('tag:') === 0) {
+      const v = key.slice(4)
+      this.setData({ selTags: this.data.selTags.filter((s) => s !== v) }, () => this.refresh())
+    } else {
+      const map = { group: { selGroup: '', selSub: '' }, price: { minPrice: '', maxPrice: '' }, date: { dateFrom: '', dateTo: '' }, currency: { selCurrency: '' }, kw: { searchKeyword: '' }, sort: { sortBy: 'default' } }
+      this.setData(map[key] || {}, () => this.refresh())
+    }
   },
 
   /** 隐藏/显示金额（隐私模式，记忆状态） */
