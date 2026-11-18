@@ -497,9 +497,13 @@
 }
 .cat-sec-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   padding: 0 8rpx 16rpx;
+}
+.cat-sec-left {
+  display: flex;
+  align-items: center;
 }
 .cat-sec-name {
   font-size: 30rpx;
@@ -531,9 +535,13 @@
 }
 .cat-sec-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   padding: 0 8rpx 16rpx;
+}
+.cat-sec-left {
+  display: flex;
+  align-items: center;
 }
 .cat-sec-name {
   font-size: 30rpx;
@@ -558,9 +566,6 @@
   width: 44rpx;
   height: 44rpx;
   margin-right: 14rpx;
-}
-.cat-sec-head {
-  align-items: center;
 }
 
 /* 视图分段控件：列表 / 卡片 / 分类 三图标并列 */
