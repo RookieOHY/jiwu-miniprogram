@@ -5,6 +5,7 @@
     "pages/wishlist/wishlist",
     "pages/wishlist/add",
     "pages/fulladd/fulladd",
+    "pages/catmanage/catmanage",
     "pages/duoshou/duoshou",
     "pages/vote/vote",
     "pages/settings/settings",

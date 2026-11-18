@@ -1,0 +1,45 @@
+<view class="page">
+
+  <!-- 大分类卡片 -->
+  <view wx:for="{{groups}}" wx:key="name" class="card group-card">
+    <view class="g-head">
+      <image class="g-icon" src="{{item.icon}}" mode="aspectFit"/>
+      <text class="g-name">{{item.name}}</text>
+    </view>
+    <view class="chip-wrap">
+      <view
+        wx:for="{{item.subs}}"
+        wx:for-item="s"
+        wx:key="*this"
+        class="sub-chip {{editMode ? 'editing' : ''}}"
+        data-g="{{item.name}}"
+        data-s="{{s.name}}"
+        bindtap="onSubTap"
+      >
+        {{s.name}}
+        <text wx:if="{{s.count}}" class="sub-count">{{s.count}}</text>
+        <text wx:if="{{editMode}}" class="sub-x">×</text>
+      </view>
+      <view wx:if="{{!item.subs.length}}" class="sub-empty">暂无子分类</view>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-bar">
+    <view class="bar-btn manage" bindtap="toggleEdit">{{editMode ? '完成' : '管理'}}</view>
+    <view class="bar-btn add" bindtap="addFlow">添加</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
+
+<!-- 右上角菜单 -->
+<view wx:if="{{showMenu}}" class="menu-mask" bindtap="closeMenu">
+  <view class="menu-sheet" catchtap="">
+    <view class="menu-title">分类数据</view>
+    <view class="menu-item" bindtap="exportCats">导出分类（复制 JSON）</view>
+    <view class="menu-item" bindtap="importFile">从文件导入</view>
+    <view class="menu-item" bindtap="importDefault">导入默认分类</view>
+    <view class="menu-item cancel" bindtap="closeMenu">取消</view>
+  </view>
+</view>
