@@ -128,3 +128,23 @@
   margin-top: 16rpx;
   line-height: 1.6;
 }
+
+/* 新增分组标题与图片 */
+.sec-head {
+  font-size: 26rpx;
+  color: var(--text-2);
+  margin-bottom: 12rpx;
+}
+.tag-list {
+  color: var(--accent);
+}
+.photo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.photo-thumb {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 20rpx;
+}

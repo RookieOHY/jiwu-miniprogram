@@ -28,7 +28,9 @@
     <view class="row"><text class="k">名称</text><text class="v">{{item.name}}</text></view>
     <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
-    <view class="row"><text class="k">分类</text><text class="v">{{item.catName}}</text></view>
+    <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
+    <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{item.tags.join(' / ')}}</text></view>
+    <view class="row" wx:if="{{item.startUseDate}}"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
     <view class="row" wx:if="{{item.note}}"><text class="k">备注</text><text class="v">{{item.note}}</text></view>
     <view class="row" wx:if="{{item.sold}}">
@@ -47,6 +49,51 @@
     <view class="row">
       <text class="k">状态</text>
       <text class="v">{{item.sold ? '已卖出' : (item.retired ? '已退役（日均已锁定）' : '持有中')}}</text>
+    </view>
+    <view class="row" wx:if="{{item.fxRecorded}}">
+      <text class="k">外币留档</text>
+      <text class="v">{{item.fxCurrency}} {{item.fxPrice}} · 汇率 {{item.fxRate}}</text>
+    </view>
+  </view>
+
+  <!-- 计价与服役 -->
+  <view class="card info">
+    <view class="sec-head">计价与服役</view>
+    <view class="row"><text class="k">计价方式</text><text class="v">{{item.pricingDaily ? '日均计价' : '一次性'}}</text></view>
+    <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
+    <view class="row" wx:if="{{item.expectedRetireDate}}"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text></view>
+    <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
+    <view class="row" wx:if="{{item.valuation}}"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text></view>
+  </view>
+
+  <!-- 期限信息 -->
+  <view class="card info" wx:if="{{item.warrantyEnabled}}">
+    <view class="sec-head">期限信息</view>
+    <view class="row"><text class="k">保修到期</text><text class="v">{{item.warrantyDate || '未设置'}}</text></view>
+  </view>
+
+  <!-- 额外信息 -->
+  <view class="card info" wx:if="{{item.location}}">
+    <view class="sec-head">额外信息</view>
+    <view class="row"><text class="k">存放位置</text><text class="v">{{item.location}}</text></view>
+  </view>
+
+  <!-- 附加收支 -->
+  <view class="card info" wx:if="{{item.hasExtras}}">
+    <view class="sec-head">附加收支</view>
+    <view wx:for="{{item.extras}}" wx:key="index" class="row">
+      <text class="k">{{item.type}}</text>
+      <text class="v">{{item.name || '未命名'}} · {{item.date}}</text>
+      <text class="v price {{item.type === '收入' ? 'profit-pos' : 'profit-neg'}}">{{item.type === '收入' ? '+' : '-'}}¥{{item.amount}}</text>
+    </view>
+    <view class="row"><text class="k">收支合计</text><text class="v price">{{item.extrasTotal}}</text></view>
+  </view>
+
+  <!-- 备注与图片 -->
+  <view class="card info" wx:if="{{item.photos.length}}">
+    <view class="sec-head">图片</view>
+    <view class="photo-row">
+      <image wx:for="{{item.photos}}" wx:key="*this" class="photo-thumb" src="{{item}}" mode="aspectFill"/>
     </view>
   </view>
 
