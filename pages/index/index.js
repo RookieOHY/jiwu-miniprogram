@@ -1,6 +1,7 @@
 const store = require('../../utils/store')
 const cats = require('../../utils/cats')
 const tagsUtil = require('../../utils/tags')
+const reminders = require('../../utils/reminders')
 const poster = require('../../utils/poster')
 const tabAnim = require('../../utils/tabAnim')
 
@@ -48,6 +49,7 @@ Page({
     amountHidden: false,
     totalPeriod: 'day',
     totalPeriodValue: '0',
+    reminderCount: 0,
     periodLabel: '总日均'
   },
   /** 上滑收起顶部绿色汇总卡（迟滞阈值防抖动：>300 收起，<20 展开） */
@@ -238,6 +240,7 @@ Page({
       catView,
       activeChips,
       filterCount,
+      reminderCount: reminders.countReminders(),
       numSize: (function () {
         // +1 是 ¥ 符号；三列各约 210rpx，按最长值选字号保证不溢出
         const maxLen = Math.max(
@@ -354,6 +357,11 @@ Page({
       const map = { group: { selGroup: '', selSub: '' }, price: { minPrice: '', maxPrice: '' }, date: { dateFrom: '', dateTo: '' }, currency: { selCurrency: '' }, kw: { searchKeyword: '' }, sort: { sortBy: 'default' } }
       this.setData(map[key] || {}, () => this.refresh())
     }
+  },
+
+  /** 到期提醒入口 */
+  goReminders() {
+    wx.navigateTo({ url: '/pages/reminders/reminders' })
   },
 
   /** 隐藏/显示金额（隐私模式，记忆状态） */

@@ -31,6 +31,13 @@
     </view>
   </view>
 
+  <!-- 到期提醒条 -->
+  <view wx:if="{{reminderCount}}" class="rm-banner" bindtap="goReminders">
+    <text class="rm-bell">🔔</text>
+    <text class="rm-text">{{reminderCount}} 项即将到期（保修 / 预计退役）</text>
+    <text class="rm-go">查看 ›</text>
+  </view>
+
   <!-- 搜索 + 筛选 + 视图切换 -->
   <view class="toolbar">
     <view class="search-box">

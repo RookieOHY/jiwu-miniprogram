@@ -1,0 +1,41 @@
+page { background: var(--bg); color: var(--text-1); }
+.page { padding: 24rpx 28rpx; }
+.card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 20rpx;
+}
+.rm-row { display: flex; align-items: center; gap: 20rpx; }
+.rm-main { flex: 1; min-width: 0; }
+.rm-top { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.rm-tag { font-size: 22rpx; color: var(--accent); }
+.rm-tag.overdue { color: var(--danger-text); }
+.rm-left { font-size: 22rpx; color: var(--text-2); }
+.rm-left.overdue { color: var(--danger-text); font-weight: 600; }
+.rm-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-top: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rm-date { font-size: 22rpx; color: var(--text-3); margin-top: 4rpx; }
+.rm-x {
+  flex-shrink: 0;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: var(--chip);
+  color: var(--text-2);
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rm-foot { text-align: center; font-size: 24rpx; color: var(--text-3); padding: 24rpx 0; }
+.empty { text-align: center; color: var(--text-dim); padding: 160rpx 0; }
+.empty-icon { font-size: 88rpx; margin-bottom: 20rpx; }
+.empty-tip { font-size: 22rpx; margin-top: 8rpx; }
+.bottom-space { height: 40rpx; }

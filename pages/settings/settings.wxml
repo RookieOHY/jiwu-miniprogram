@@ -3,10 +3,10 @@
   <!-- 数据 -->
   <view class="card">
     <view class="sec-title">数据</view>
-    <view class="row" bindtap="exportData" hover-class="row-press" hover-stay-time="80">
+    <view class="row" bindtap="backupMenu" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
-        <view class="row-name">导出全部数据</view>
-        <view class="row-sub">复制 JSON 备份到剪贴板，粘贴保存防丢</view>
+        <view class="row-name">备份与恢复</view>
+        <view class="row-sub">导出 JSON/CSV 文件、从文件恢复（合并或覆盖）</view>
       </view>
       <view class="row-arrow">›</view>
     </view>
@@ -28,6 +28,18 @@
         <view class="row-sub">开启后底部导航仅显示图标</view>
       </view>
       <switch checked="{{tabbarHideText}}" color="#5856D6" bindchange="onTabbarHideText"/>
+    </view>
+  </view>
+
+  <!-- 提醒 -->
+  <view class="card">
+    <view class="sec-title">提醒</view>
+    <view class="row" bindtap="goReminders" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">到期提醒</view>
+        <view class="row-sub">保修 / 保质 / 预计退役，提前 30 天提醒</view>
+      </view>
+      <view class="row-arrow">›</view>
     </view>
   </view>
 

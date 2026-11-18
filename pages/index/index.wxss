@@ -814,3 +814,17 @@
 .flt-ok::after {
   border: none;
 }
+
+/* 到期提醒条 */
+.rm-banner {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(88, 86, 214, 0.1);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+}
+.rm-bell { font-size: 28rpx; }
+.rm-text { flex: 1; font-size: 26rpx; color: var(--accent); }
+.rm-go { font-size: 24rpx; color: var(--accent); }
