@@ -90,6 +90,8 @@ Page({
     fxCurrency: 'USD',
     fxPrice: '',
     fxRate: store.rateOf('USD'),
+    fxConvertedText: '0.0',
+    fxEditing: '',
     // 计算器
     showCalc: false,
     calcTarget: 'price',
@@ -445,7 +447,7 @@ Page({
       fxCurrency,
       fxRate: store.rateOf(fxCurrency),
       fxPrice: this.data.fxPrice || ''
-    })
+    }, () => this._syncFxConverted())
   },
 
   closeFxSheet() {
@@ -456,16 +458,28 @@ Page({
     const list = store.CURRENCIES.filter((c) => c.key !== 'CNY')
     const i = list.findIndex((c) => c.key === this.data.fxCurrency)
     const next = list[(i + 1) % list.length]
-    this.setData({ fxCurrency: next.key, fxRate: store.rateOf(next.key) })
+    this.setData({ fxCurrency: next.key, fxRate: store.rateOf(next.key) }, () => this._syncFxConverted())
   },
 
   onFxPrice(e) {
-    this.setData({ fxPrice: e.detail.value })
+    this.setData({ fxPrice: e.detail.value, fxEditing: 'fx' }, () => this._syncFxConverted())
   },
 
-  /** 折合本位币（实时） */
-  _fxConverted() {
-    return round10(parseFloat(this.data.fxPrice) || 0) * this.data.fxRate
+  /** 折合本位币可输入：反推外币原价 */
+  onFxConverted(e) {
+    const v = parseFloat(e.detail.value) || 0
+    this.setData({
+      fxEditing: 'cny',
+      fxConvertedText: e.detail.value,
+      fxPrice: v > 0 ? String(round10(v / this.data.fxRate)) : ''
+    })
+  },
+
+  /** 折合本位币（实时，文本在 JS 算好，WXML 不做方法调用） */
+  _syncFxConverted() {
+    if (this.data.fxEditing === 'cny') return
+    const v = (parseFloat(this.data.fxPrice) || 0) * this.data.fxRate
+    this.setData({ fxConvertedText: v.toFixed(2) })
   },
 
   confirmFx() {
@@ -479,7 +493,8 @@ Page({
       currency: this.data.fxCurrency,
       symbol: store.currencySymbol(this.data.fxCurrency),
       price: String(converted),
-      fxSheet: false
+      fxSheet: false,
+      fxEditing: ''
     })
   },
 
@@ -490,6 +505,7 @@ Page({
     let cur = '0'
     if (t === 'price') cur = this.data.price || '0'
     if (t === 'fx') cur = this.data.fxPrice || '0'
+    if (t === 'cny') cur = this.data.fxConvertedText || '0'
     this.setData({ showCalc: true, calcTarget: t, calcDisplay: cur, calcAcc: null, calcOp: null, calcFresh: true })
   },
 
@@ -546,7 +562,9 @@ Page({
     const v = parseFloat(this.data.calcDisplay) || 0
     const t = this.data.calcTarget
     if (t === 'fx') {
-      this.setData({ fxPrice: v > 0 ? String(v) : '', showCalc: false })
+      this.setData({ fxPrice: v > 0 ? String(v) : '', showCalc: false, fxEditing: 'fx' }, () => this._syncFxConverted())
+    } else if (t === 'cny') {
+      this.setData({ fxConvertedText: v > 0 ? v.toFixed(2) : '0.0', fxPrice: v > 0 ? String(round10(v / this.data.fxRate)) : '', showCalc: false })
     } else {
       this.setData({ price: v > 0 ? String(v) : '', showCalc: false }, () => this._updateNeed())
     }

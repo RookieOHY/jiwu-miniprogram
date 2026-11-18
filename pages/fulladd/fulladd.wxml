@@ -343,7 +343,11 @@
       <view class="p-ico calc" bindtap="openCalc" data-t="fx"></view>
     </view>
     <view class="fx-label">折合本位币</view>
-    <view class="fx-converted">¥ {{_fxConverted ? (fxPrice * fxRate).toFixed(2) : '0.0'}}</view>
+    <view class="fx-input-row">
+      <text class="fx-sym">¥</text>
+      <input class="fx-input" type="digit" placeholder="0.0" placeholder-class="ph" value="{{fxConvertedText}}" bindinput="onFxConverted"/>
+      <view class="p-ico calc" bindtap="openCalc" data-t="cny"></view>
+    </view>
     <button class="fx-ok" bindtap="confirmFx">确定</button>
   </view>
 </view>

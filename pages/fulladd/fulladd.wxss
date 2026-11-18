@@ -732,6 +732,9 @@ page {
   font-family: "DIN Alternate", sans-serif;
   color: var(--text-1);
 }
+.fx-input-row .p-ico {
+  margin-left: 16rpx;
+}
 .fx-ok {
   margin-top: 32rpx;
   width: 100%;

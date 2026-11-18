@@ -351,8 +351,7 @@ function testFx() {
   A(inst.data.fxCurrency === 'USD', '默认外币 USD')
 
   inst.onFxPrice({ detail: { value: '100' } })
-  const conv = inst._fxConverted()
-  A(Math.abs(conv - 720) < 0.01, '折合本位币 100USD→¥720')
+  A(inst.data.fxConvertedText === '720.00', '折合本位币 100USD→¥720.00')
 
   inst.cycleFx()
   A(inst.data.fxCurrency === 'EUR', '币种轮换到 EUR')
@@ -363,6 +362,11 @@ function testFx() {
   A(inst.data.currency === 'EUR', '确定后币种切换')
   A(inst.data.price === '395', '价格折算 50EUR→¥395')
   A(inst.data.fxSheet === false, '弹层关闭')
+
+  // 双向：输人民币反推外币（此时币种已是 EUR，汇率 7.9）
+  inst.onFxConverted({ detail: { value: '790' } })
+  A(inst.data.fxPrice === '100', '¥790 反推 100EUR')
+  A(inst.data.fxConvertedText === '790', '折合输入保持')
 
   // 计算器填外币价
   inst.openCalc({ currentTarget: { dataset: { t: 'fx' } } })
