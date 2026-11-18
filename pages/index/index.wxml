@@ -131,6 +131,46 @@
     </view>
   </block>
 
+  <!-- 分类视图：按分类分组的物品 -->
+  <block wx:elif="{{viewMode === 'cat'}}">
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <view class="empty-icon">📦</view>
+      <view>还没有记录任何物品</view>
+      <view class="empty-tip">点击下方按钮，记下第一件吧</view>
+    </view>
+
+    <view wx:for="{{catView}}" wx:key="name" class="cat-sec">
+      <view class="cat-sec-head">
+        <text class="cat-sec-name">{{item.name}}</text>
+        <text class="cat-sec-count">{{item.items.length}} 件</text>
+      </view>
+      <view
+        wx:for="{{item.items}}"
+        wx:for-item="it"
+        wx:key="id"
+        class="catview-item card"
+        hover-class="item-press"
+        hover-stay-time="80"
+        data-id="{{it.id}}"
+        bindtap="goDetail"
+        bindlongpress="onItemLongPress"
+      >
+        <view class="item-main">
+          <view class="item-name">
+            {{it.name}}
+            <text wx:if="{{it.sold}}" class="tag-sold">已卖出</text>
+            <text wx:elif="{{it.retired}}" class="tag-retired">已退役</text>
+          </view>
+          <view class="item-meta">已持有 {{it.days}} 天</view>
+        </view>
+        <view class="item-right">
+          <view class="item-daily-big">{{it.symbol}}{{it.daily}}<text class="per">/天</text></view>
+          <view class="item-buy">买入 {{it.symbol}}{{it.price}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
   <view class="bottom-space"></view>
 </view>
 

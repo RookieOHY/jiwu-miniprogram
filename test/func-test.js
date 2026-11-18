@@ -418,6 +418,40 @@ function testSavedFlow() {
   A(after.name === '机械键盘' && after.price === 250, 'fulladd 编辑保存生效')
 }
 
+/* ---------- 场景 11：分类视图 ---------- */
+function testCatView() {
+  console.log('▶ 分类视图')
+  freshUtils()
+  const wx = makeWx({
+    items: [
+      { id: '1', name: '手机', price: 5000, buyDate: '2026-01-01', category: '手机通讯', categoryGroup: '电子数码', platform: 'jd', currency: 'CNY', retired: false, sold: false },
+      { id: '2', name: '电脑', price: 9000, buyDate: '2026-02-01', category: '电脑办公', categoryGroup: '电子数码', platform: 'jd', currency: 'CNY', retired: false, sold: false },
+      { id: '3', name: '旧物品', price: 50, buyDate: '2026-03-01', category: 'other', platform: 'other', currency: 'CNY', retired: false, sold: false }
+    ]
+  })
+  wx._tabbar = { data: {}, setData(p) { Object.assign(this.data, p) } }
+  const inst = loadPage('pages/index/index.js', wx)
+  inst.onLoad({})
+  inst.onShow()
+
+  inst.toggleView()
+  A(inst.data.viewMode === 'card', '列表→卡片')
+  inst.toggleView()
+  A(inst.data.viewMode === 'cat', '卡片→分类')
+  inst.toggleView()
+  A(inst.data.viewMode === 'list', '分类→列表（轮转闭合）')
+  inst.toggleView(); inst.toggleView()
+  A(inst.data.viewMode === 'cat', '回到分类视图')
+
+  A(inst.data.catView.length === 3, '三个分类组（手机通讯/电脑办公/legacy 其他）')
+  const g1 = inst.data.catView.find((g) => g.name === '手机通讯')
+  A(g1 && g1.items.length === 1, '手机通讯组 1 件')
+  A(inst.data.catView[0].items.length >= inst.data.catView[1].items.length, '按件数降序')
+
+  // 持久化
+  A(wx.getStorageSync('viewMode') === 'cat', '视图模式记忆')
+}
+
 /* ---------- 运行全部 ---------- */
 try { testStore() } catch (e) { fails.push('store 崩溃: ' + e.message) }
 try { testAddPage() } catch (e) { fails.push('add 崩溃: ' + e.message) }
@@ -429,6 +463,7 @@ try { testTags() } catch (e) { fails.push('tags 崩溃: ' + e.message) }
 try { testTabBar() } catch (e) { fails.push('tabbar 崩溃: ' + e.message) }
 try { testFx() } catch (e) { fails.push('fx 崩溃: ' + e.message) }
 try { testSavedFlow() } catch (e) { fails.push('saved 崩溃: ' + e.message) }
+try { testCatView() } catch (e) { fails.push('catview 崩溃: ' + e.message) }
 
 console.log('\n✅ 功能断言通过 ' + pass + ' 项')
 if (fails.length) {

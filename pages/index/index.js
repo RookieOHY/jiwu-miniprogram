@@ -50,11 +50,13 @@ Page({
     if (period) this.setData({ totalPeriod: period })
   },
 
-  /** 切换列表/卡片视图，图标显示将要切过去的视图 */
+  /** 视图三态轮转：列表 → 卡片 → 分类 → 列表 */
   toggleView() {
-    const viewMode = this.data.viewMode === 'list' ? 'card' : 'list'
-    this.setData({ viewMode })
-    wx.setStorageSync('viewMode', viewMode)
+    const order = ['list', 'card', 'cat']
+    const next = order[(order.indexOf(this.data.viewMode) + 1) % 3]
+    this.setData({ viewMode: next })
+    wx.setStorageSync('viewMode', next)
+    this.refresh()
   },
 
   /** 直接选择视图（list | card），不做切换翻转 */
@@ -104,6 +106,19 @@ Page({
       // 置顶的排最前，其余保持最新买入在前的顺序
       .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
 
+    // 分类视图：按分类分组（子分类名或 legacy 分类名）
+    const catView = []
+    const catIndex = {}
+    items.forEach((it) => {
+      const name = it.catName || '其他'
+      if (catIndex[name] === undefined) {
+        catIndex[name] = catView.length
+        catView.push({ name, items: [] })
+      }
+      catView[catIndex[name]].items.push(it)
+    })
+    catView.sort((a, b) => b.items.length - a.items.length)
+
     // 筛选角标
     const heldCount = all.filter((it) => !it.retired).length
     const retiredCount = all.filter((it) => it.retired && !it.sold).length
@@ -118,7 +133,8 @@ Page({
       totalSpend: store.fmtMoney(totalSpend),
       totalDaily: store.fmtMoney(totalDaily),
       totalPeriodValue,
-      periodLabel
+      periodLabel,
+      catView
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡
     this.checkCelebration()
