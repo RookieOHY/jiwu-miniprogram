@@ -20,7 +20,8 @@
   <view wx:if="{{!wishes.length}}" class="empty">
     <view class="empty-icon">🌱</view>
     <view>还没有种草</view>
-    <view class="empty-tip">看到心动的先记一笔，冷静几天再决定</view>
+    <view class="empty-tip">点右下角 ➕ 种第一株 ↘</view>
+    <view class="empty-tip sub">看到心动的先记一笔，冷静几天再决定</view>
   </view>
 
   <!-- 草单 -->
