@@ -176,3 +176,29 @@
   height: 44rpx;
   background-size: 44rpx 44rpx;
 }
+
+/* ➕ 外层容器：承载气泡定位 */
+.plus-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ➕ 动作提示气泡（不拦截点击） */
+.plus-tip {
+  position: absolute;
+  bottom: 116rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  line-height: 1.4;
+  color: #ffffff;
+  background: rgba(88, 86, 214, 0.85);
+  border-radius: 16rpx;
+  padding: 4rpx 14rpx;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+.plus-tip.tip-plant {
+  background: rgba(52, 199, 89, 0.88);
+}

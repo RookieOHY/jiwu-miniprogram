@@ -15,6 +15,9 @@
     </view>
   </view>
 
-  <!-- 右侧独立 ➕ 圆钮 -->
-  <view class="plus" bindtap="goAdd" hover-class="plus-press" hover-stay-time="80">＋</view>
+  <!-- 右侧独立 ➕ 圆钮（气泡提示说明它会打开什么） -->
+  <view class="plus-wrap">
+    <view class="plus-tip {{plusTip === '种一株' ? 'tip-plant' : ''}}">{{plusTip}}</view>
+    <view class="plus" bindtap="goAdd" hover-class="plus-press" hover-stay-time="80">＋</view>
+  </view>
 </view>
