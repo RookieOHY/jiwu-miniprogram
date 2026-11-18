@@ -126,6 +126,7 @@ Page({
     if (!scope) return
     if (scope === this.data.editScope) return
     const cur = budget.capOf(scope)
+    this._closed = '' // 本次编辑允许提交一次
     this.setData({ editScope: scope, editValue: cur > 0 ? String(cur) : '' })
   },
 
@@ -133,15 +134,18 @@ Page({
     this.setData({ editValue: e.detail.value })
   },
 
+  /** 同 detail 的行内编辑：值取事件本身，按 scope 去重，避免 blur/confirm 互踩或切换行时丢输入 */
   commitCap(e) {
     const scope = e.currentTarget.dataset.s
-    if (!scope || scope !== this.data.editScope) return
-    const raw = String(this.data.editValue || '').trim()
+    if (!scope || this._closed === scope) return
+    const fromEvent = e.detail && e.detail.value !== undefined ? e.detail.value : null
+    const raw = String(fromEvent === null ? this.data.editValue : fromEvent).trim()
     if (raw !== '' && !(parseFloat(raw) > 0)) {
       wx.showToast({ title: '填个大于 0 的数字', icon: 'none' })
       this.setData({ editScope: '', editValue: '' })
       return
     }
+    this._closed = scope
     budget.setCap(scope, raw)
     this.setData({ editScope: '', editValue: '' })
     this.refresh()

@@ -49,7 +49,7 @@
     <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>
     <view class="row ed" wx:if="{{item.startUseDate}}" data-f="startUseDate" bindtap="openDate"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text><text class="ed-go">›</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
-    <view class="row ed" bindtap="startEdit" data-f="note"><text class="k">备注</text><input class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="写点使用感受，清空即删除" placeholder-class="ph" data-f="note" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.note || '点击添加'}}</text><text class="ed-go">›</text></block></view>
+    <view class="row ed" bindtap="startEdit" data-f="note"><text class="k">备注</text><input wx:if="{{editField === 'note'}}" class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="写点使用感受，清空即删除" placeholder-class="ph" data-f="note" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.note || '点击添加'}}</text><text class="ed-go">›</text></block></view>
     <view class="row" wx:if="{{item.sold}}">
       <text class="k">卖出日期</text><text class="v">{{item.soldDate}}</text>
     </view>
@@ -82,7 +82,7 @@
       <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
       <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
       <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
-      <view class="row ed" bindtap="startEdit" data-f="valuation" data-n="1"><text class="k">当前估值</text><input class="inline-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="现在还值多少钱" placeholder-class="ph" data-f="valuation" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v price">{{amountHidden ? '****' : '¥' + item.valuation}}</text><text class="ed-go">›</text></block></view>
+      <view class="row ed" bindtap="startEdit" data-f="valuation" data-n="1"><text class="k">当前估值</text><input wx:if="{{editField === 'valuation'}}" class="inline-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="现在还值多少钱" placeholder-class="ph" data-f="valuation" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v price">{{amountHidden ? '****' : '¥' + item.valuation}}</text><text class="ed-go">›</text></block></view>
     </view>
 
     <!-- 期限信息 -->
@@ -94,7 +94,7 @@
     <!-- 额外信息 -->
     <view class="card info">
       <view class="sec-head">额外信息</view>
-      <view class="row ed" bindtap="startEdit" data-f="location"><text class="k">存放位置</text><input class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" data-f="location" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.location || '点击添加'}}</text><text class="ed-go">›</text></block></view>
+      <view class="row ed" bindtap="startEdit" data-f="location"><text class="k">存放位置</text><input wx:if="{{editField === 'location'}}" class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" data-f="location" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.location || '点击添加'}}</text><text class="ed-go">›</text></block></view>
     </view>
 
     <!-- 附加收支 -->

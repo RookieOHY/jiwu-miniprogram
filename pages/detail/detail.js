@@ -162,10 +162,13 @@ Page({
     if (!it || !field) return
     if (field === this.data.editField) return // 输入框冒泡上来的点击，忽略
     const cur = it[field] === undefined || it[field] === null ? '' : String(it[field])
+    this._num = this._num || {}
+    this._num[field] = e.currentTarget.dataset.n === '1'
+    this._closed = '' // 本次编辑允许提交一次
     this.setData({
       editField: field,
       editValue: cur,
-      editNum: e.currentTarget.dataset.n === '1'
+      editNum: this._num[field]
     })
   },
 
@@ -173,14 +176,22 @@ Page({
     this.setData({ editValue: e.detail.value })
   },
 
-  /** blur 与 confirm 都会触发，靠 editField 去重 */
+  /**
+   * blur 与 confirm 会对同一次编辑连着触发两次。
+   * 值一律从事件本身取（提交后 editValue 会被清空，再读第二次就成了空值→把字段刷没）；
+   * 去重按「本次编辑只提交一次」，不靠 editField 判重（先点别的行时 editField 已变，输入会被丢掉）。
+   */
   commitEdit(e) {
     const field = e.currentTarget.dataset.f
-    if (!field || field !== this.data.editField) return
-    const raw = String(this.data.editValue === undefined ? '' : this.data.editValue).trim()
+    if (!field || this._closed === field) return
+    const fromEvent = e.detail && e.detail.value !== undefined ? e.detail.value : null
+    const raw = String(fromEvent === null ? this.data.editValue : fromEvent).trim()
+    const isNum = this._num && this._num[field] !== undefined
+      ? this._num[field]
+      : field !== 'note' && field !== 'location'
     const patch = {}
 
-    if (this.data.editNum) {
+    if (isNum) {
       if (raw === '') {
         patch[field] = 0
       } else {
@@ -203,6 +214,7 @@ Page({
       if (be && be.reached) patch.celebrated = true
     }
 
+    this._closed = field
     this.setData({ editField: '', editValue: '' })
     store.updateItem(this.id, patch)
     this.refresh()

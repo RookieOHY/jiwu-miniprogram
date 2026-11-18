@@ -6,15 +6,13 @@
     <view>评审加载中…</view>
   </view>
 
-  <!-- 错误 -->
-  <view wx:elif="{{state === 'error'}}" class="empty">
+  <view wx:elif="{{state === 'error'}}" class="empty"><!-- 错误 -->
     <view class="empty-icon">🥀</view>
     <view>{{error}}</view>
     <view class="empty-tip" bindtap="goHome">去看看「记物」是什么 ›</view>
   </view>
 
-  <!-- 评审正文 -->
-  <block wx:elif="{{state === 'ready'}}">
+  <block wx:elif="{{state === 'ready'}}"><!-- 评审正文 -->
 
     <view class="head-tip">你的朋友正在纠结，帮你把把关</view>
 
