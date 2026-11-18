@@ -19,9 +19,9 @@ Page({
     currencies: store.CURRENCIES,
     buyDate: '',
     maxDate: '',
-    category: '其他',
-    categoryGroup: '其他',
-    catName: '其他',
+    category: '手机通讯',
+    categoryGroup: '电子数码',
+    catName: '手机通讯',
     categories: store.CATEGORIES,
     showCatPanel: false,
     catKeyword: '',
@@ -102,6 +102,11 @@ Page({
         .map((g) => ({ name: g.name, icon: g.icon, subs: g.subs.filter((x) => x.includes(q)) }))
         .filter((g) => g.subs.length)
     })
+  },
+
+  /** 点大分类：切换右侧子分类列表 */
+  setCatGroup(e) {
+    this.setData({ categoryGroup: e.currentTarget.dataset.name, catKeyword: '' })
   },
 
   /** 点子分类：选中并关闭 */

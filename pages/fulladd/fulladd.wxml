@@ -275,7 +275,9 @@
         <view
           wx:for="{{catGroups}}"
           wx:key="name"
-          class="ccp-group {{(!catKeyword && (categoryGroup === item.name || (!categoryGroup && index === 0))) ? 'on' : ''}}"
+          class="ccp-group {{categoryGroup === item.name ? 'on' : ''}}"
+          data-name="{{item.name}}"
+          bindtap="setCatGroup"
         >
           <image class="ccp-gicon" src="{{item.icon}}" mode="aspectFit"/>
           <text>{{item.name}}</text>
@@ -283,7 +285,7 @@
       </scroll-view>
       <scroll-view scroll-y class="ccp-right">
         <block wx:for="{{catGroups}}" wx:key="name" wx:for-item="g">
-          <block wx:if="{{catKeyword || categoryGroup === g.name || (!categoryGroup && index === 0)}}">
+          <block wx:if="{{catKeyword || categoryGroup === g.name}}">
             <view
               wx:for="{{g.subs}}"
               wx:for-item="s"
