@@ -489,9 +489,10 @@ Page({
       wx.showToast({ title: '请填写外币原价', icon: 'none' })
       return
     }
+    // 外币仅作记录：入账统一按人民币折算价
     this.setData({
-      currency: this.data.fxCurrency,
-      symbol: store.currencySymbol(this.data.fxCurrency),
+      currency: 'CNY',
+      symbol: '¥',
       price: String(converted),
       fxSheet: false,
       fxEditing: ''

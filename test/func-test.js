@@ -359,9 +359,16 @@ function testFx() {
 
   inst.onFxPrice({ detail: { value: '50' } })
   inst.confirmFx()
-  A(inst.data.currency === 'EUR', '确定后币种切换')
+  A(inst.data.currency === 'CNY', '入账币种固定人民币')
+  A(inst.data.symbol === '¥', '主价格行显示 ¥ 符号')
   A(inst.data.price === '395', '价格折算 50EUR→¥395')
   A(inst.data.fxSheet === false, '弹层关闭')
+  inst.save()
+  const store2 = makeSandbox(wx, {}).require('../../utils/store')
+  const saved = store2.getAll().find((x) => x.name === '海淘货')
+  A(!!saved, '保存入库')
+  A(saved.price === 395, '入库价格为折合人民币')
+  A(saved.fxCurrency === 'EUR' && saved.fxPrice === '50', '外币原价留档')
 
   // 双向：输人民币反推外币（此时币种已是 EUR，汇率 7.9）
   inst.onFxConverted({ detail: { value: '790' } })
