@@ -19,14 +19,17 @@
   </view>
   <view wx:if="{{moreWays}}" class="more-ways">
     <view class="more-item" bindtap="goFullAdd">
+      <view class="more-ico ico-detail"></view>
       <text>详细添加</text>
       <view class="more-arrow">›</view>
     </view>
     <view class="more-item">
+      <view class="more-ico ico-scan"></view>
       <text>识别添加</text>
       <view class="more-arrow">›</view>
     </view>
     <view class="more-item">
+      <view class="more-ico ico-csv"></view>
       <text>CSV 添加</text>
       <view class="more-arrow">›</view>
     </view>
