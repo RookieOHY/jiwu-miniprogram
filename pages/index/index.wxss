@@ -553,3 +553,12 @@
 .catview-item .item-daily-big {
   font-size: 30rpx;
 }
+
+.cat-sec-ico {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 14rpx;
+}
+.cat-sec-head {
+  align-items: center;
+}

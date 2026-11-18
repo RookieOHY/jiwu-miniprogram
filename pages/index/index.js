@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const cats = require('../../utils/cats')
 const poster = require('../../utils/poster')
 const tabAnim = require('../../utils/tabAnim')
 
@@ -106,14 +107,17 @@ Page({
       // 置顶的排最前，其余保持最新买入在前的顺序
       .sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0))
 
-    // 分类视图：按分类分组（子分类名或 legacy 分类名）
+    // 分类视图：按大分类分组，节头带 3D 图标
+    const allGroups = cats.getGroups()
     const catView = []
     const catIndex = {}
     items.forEach((it) => {
-      const name = it.catName || '其他'
+      // 大分类：详细添加的物品记了 categoryGroup；legacy 物品用分类中文名
+      const name = it.categoryGroup || it.catName || '其他'
       if (catIndex[name] === undefined) {
+        const g = allGroups.find((x) => x.name === name)
         catIndex[name] = catView.length
-        catView.push({ name, items: [] })
+        catView.push({ name, icon: g ? g.icon : '/assets/3d/package.png', items: [] })
       }
       catView[catIndex[name]].items.push(it)
     })

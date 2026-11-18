@@ -139,6 +139,7 @@
 
     <view wx:for="{{catView}}" wx:key="name" class="cat-sec">
       <view class="cat-sec-head">
+        <image class="cat-sec-ico" src="{{item.icon}}" mode="aspectFit"/>
         <text class="cat-sec-name">{{item.name}}</text>
         <text class="cat-sec-count">{{item.items.length}} 件</text>
       </view>

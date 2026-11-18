@@ -446,9 +446,10 @@ function testCatView() {
   inst.toggleView(); inst.toggleView()
   A(inst.data.viewMode === 'cat', '回到分类视图')
 
-  A(inst.data.catView.length === 3, '三个分类组（手机通讯/电脑办公/legacy 其他）')
-  const g1 = inst.data.catView.find((g) => g.name === '手机通讯')
-  A(g1 && g1.items.length === 1, '手机通讯组 1 件')
+  A(inst.data.catView.length === 2, '按大分类分组：电子数码 + legacy 其他')
+  const g1 = inst.data.catView.find((g) => g.name === '电子数码')
+  A(g1 && g1.items.length === 2, '电子数码组 2 件（手机+电脑）')
+  A(g1.icon.includes('laptop'), '组头带 3D 图标')
   A(inst.data.catView[0].items.length >= inst.data.catView[1].items.length, '按件数降序')
 
   // 持久化
