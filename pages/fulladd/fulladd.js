@@ -625,6 +625,9 @@ Page({
     }
     const extra = {
       categoryGroup: d.categoryGroup || '其他',
+      fxCurrency: d.fxCurrency,
+      fxPrice: parseFloat(d.fxPrice) || 0,
+      fxRate: d.fxRate,
       tags: d.tags,
       pricingDaily: d.pricingDaily,
       expectedRetireDate: d.expectedRetire,

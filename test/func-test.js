@@ -368,7 +368,7 @@ function testFx() {
   const saved = store2.getAll().find((x) => x.name === '海淘货')
   A(!!saved, '保存入库')
   A(saved.price === 395, '入库价格为折合人民币')
-  A(saved.fxCurrency === 'EUR' && saved.fxPrice === '50', '外币原价留档')
+  A(saved.fxCurrency === 'EUR' && Number(saved.fxPrice) === 50, '外币原价留档')
 
   // 双向：输人民币反推外币（此时币种已是 EUR，汇率 7.9）
   inst.onFxConverted({ detail: { value: '790' } })
