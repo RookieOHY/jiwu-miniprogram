@@ -94,6 +94,7 @@ Page({
         price: store.fmtMoney(it.price),
         buyDate: it.buyDate,
         category: it.category,
+        categoryGroup: it.categoryGroup || '',
         catName: store.getCategoryName(it.category),
         platform: it.platform,
         platformName: store.getPlatformName(it.platform),
