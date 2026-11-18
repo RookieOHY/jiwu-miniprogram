@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const cats = require('../../utils/cats')
+const tagsUtil = require('../../utils/tags')
 const icons = require('../../utils/icons')
 
 function today() {
@@ -29,6 +30,10 @@ Page({
     displayGroups: [],
     tags: [],
     tagInput: '',
+    showTagPanel: false,
+    tagKeyword: '',
+    userTags: [],
+    tempTags: [],
     // 计价方式
     pricingDaily: true,
     expectedRetire: '',
@@ -221,6 +226,63 @@ Page({
 
   onTagInput(e) {
     this.setData({ tagInput: e.detail.value })
+  },
+
+  /* ---------- 选择标签面板 ---------- */
+
+  openTagPanel() {
+    this.setData({
+      showTagPanel: true,
+      tagKeyword: '',
+      userTags: tagsUtil.getTags(),
+      tempTags: this.data.tags.slice()
+    })
+  },
+
+  closeTagPanel() {
+    this.setData({ showTagPanel: false })
+  },
+
+  onTagKeyword(e) {
+    this.setData({ tagKeyword: e.detail.value })
+  },
+
+  toggleTempTag(e) {
+    const t = e.currentTarget.dataset.t
+    const list = this.data.tempTags.slice()
+    const i = list.indexOf(t)
+    if (i >= 0) list.splice(i, 1)
+    else list.push(t)
+    this.setData({ tempTags: list })
+  },
+
+  applyTags() {
+    this.setData({ tags: this.data.tempTags.slice(), showTagPanel: false })
+  },
+
+  /** 面板内新建标签 */
+  newTag() {
+    wx.showModal({
+      title: '新建标签',
+      editable: true,
+      placeholderText: '输入标签名',
+      success: (m) => {
+        if (!m.confirm || !m.content || !m.content.trim()) return
+        const t = m.content.trim()
+        if (tagsUtil.addTag(t)) {
+          this.setData({
+            userTags: tagsUtil.getTags(),
+            tempTags: this.data.tempTags.concat(t)
+          })
+        } else {
+          wx.showToast({ title: '标签已存在', icon: 'none' })
+        }
+      }
+    })
+  },
+
+  goTagManage() {
+    wx.navigateTo({ url: '/pages/tagmanage/tagmanage' })
   },
 
   addTag() {

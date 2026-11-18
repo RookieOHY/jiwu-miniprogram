@@ -29,16 +29,12 @@
         </view>
       </view>
 
-      <view class="sec-label">标签</view>
-      <view class="tag-row" wx:if="{{tags.length}}">
-        <view wx:for="{{tags}}" wx:key="*this" class="tag">
-          {{item}}
-          <text class="tag-x" data-i="{{index}}" catchtap="removeTag">×</text>
+      <view class="field-line">
+        <text class="f-label">标签</text>
+        <view class="cat-open" bindtap="openTagPanel">
+          <text>{{tags.length ? tags.join(' / ') : '请选择'}}</text>
+          <text class="cat-chev">›</text>
         </view>
-      </view>
-      <view class="row-flex">
-        <input class="row-input" placeholder="添加标签，如：主力机 / 吃灰" placeholder-class="ph" value="{{tagInput}}" bindinput="onTagInput"/>
-        <view class="mini-btn" bindtap="addTag">添加</view>
       </view>
 
       <view class="field-line">
@@ -302,5 +298,38 @@
         <view class="ccp-empty" wx:if="{{!catGroups.length}}">没有匹配的分类</view>
       </scroll-view>
     </view>
+  </view>
+</view>
+
+<!-- 选择标签面板 -->
+<view wx:if="{{showTagPanel}}" class="tp-mask" bindtap="closeTagPanel">
+  <view class="tp-panel" catchtap="noop">
+    <view class="tp-head">
+      <text class="tp-cancel" bindtap="closeTagPanel">取消</text>
+      <text class="tp-title">选择标签</text>
+      <text class="tp-ok" bindtap="applyTags">完成</text>
+    </view>
+    <view class="tp-search">
+      <input class="tp-search-input" placeholder="搜索" placeholder-class="ph" value="{{tagKeyword}}" bindinput="onTagKeyword"/>
+    </view>
+    <view class="tp-myrow">
+      <text class="tp-mylabel">我的标签</text>
+      <text class="tp-manage" bindtap="goTagManage">标签管理</text>
+    </view>
+    <scroll-view scroll-y class="tp-body">
+      <view class="tp-chips">
+        <view
+          wx:for="{{userTags}}"
+          wx:key="*this"
+          wx:if="{{!tagKeyword || item.includes(tagKeyword)}}"
+          class="tp-chip {{tempTags.indexOf(item) >= 0 ? 'on' : ''}}"
+          data-t="{{item}}"
+          bindtap="toggleTempTag"
+        >
+          <text wx:if="{{tempTags.indexOf(item) >= 0}}" class="tp-check">✓ </text>{{item}}
+        </view>
+        <view class="tp-chip tp-new" bindtap="newTag">＋ 新建标签</view>
+      </view>
+    </scroll-view>
   </view>
 </view>
