@@ -237,7 +237,7 @@
       <!-- 侧栏分类 -->
       <scroll-view scroll-y class="ip-side">
         <view class="ip-side-item {{iconCat === 'all' && !iconKeyword ? 'on' : ''}}" data-name="all" bindtap="setIconCat">基础图标</view>
-        <block wx:for="{{iconGroups}}" wx:key="name">
+        <block wx:for="{{iconAllGroups}}" wx:key="name">
           <view
             wx:if="{{!iconKeyword}}"
             class="ip-side-item {{iconCat === item.name ? 'on' : ''}}"

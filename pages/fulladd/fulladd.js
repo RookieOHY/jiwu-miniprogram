@@ -50,6 +50,7 @@ Page({
     iconCat: 'all',
     iconKeyword: '',
     iconGroups: [],
+    iconAllGroups: [],
     // 成本与关联（附加收支）
     extras: [],
     extraType: '支出',
@@ -91,11 +92,13 @@ Page({
 
   filterIcons() {
     const q = this.data.iconKeyword
-    let groups = icons.searchGroups(q)
-    if (!q && this.data.iconCat !== 'all') {
-      groups = groups.filter((g) => g.name === this.data.iconCat)
-    }
-    this.setData({ iconGroups: groups })
+    // 侧栏永远显示全量分类；过滤只影响右侧网格
+    this.setData({
+      iconAllGroups: icons.GROUPS_3D,
+      iconGroups: icons.searchGroups(q).filter(
+        (g) => !q && this.data.iconCat !== 'all' ? g.name === this.data.iconCat : true
+      )
+    })
   },
 
   /** 图库 / 拍照 */
