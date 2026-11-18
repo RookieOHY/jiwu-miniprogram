@@ -143,6 +143,53 @@
       </view>
     </view>
 
+    <!-- 消耗与保养 -->
+    <view class="sec-title">消耗与保养</view>
+    <view class="card sec">
+      <view class="switch-row">
+        <view class="row-main">
+          <view class="row-name">消耗品</view>
+          <view class="row-sub">猫粮、咖啡豆、滤芯这类会用完要补的</view>
+        </view>
+        <switch checked="{{consumable}}" color="#5856D6" bindchange="onConsumable"/>
+      </view>
+      <view class="field-line" wx:if="{{consumable}}">
+        <text class="f-label">可用天数</text>
+        <input class="f-input" type="number" placeholder="如 30" placeholder-class="ph" value="{{useUpDays}}" bindinput="onUseUpDays"/>
+        <text class="qty-unit">天</text>
+      </view>
+      <view class="field-line" wx:if="{{consumable}}">
+        <text class="f-label">上次补货</text>
+        <view class="date-chip" bindtap="openDate" data-f="lastRestockDate">{{lastRestockDate || '选择日期'}}</view>
+      </view>
+      <view class="field-line">
+        <text class="f-label">保养周期</text>
+        <input class="f-input" type="number" placeholder="留空 = 不提醒" placeholder-class="ph" value="{{maintenanceEvery}}" bindinput="onMaintenanceEvery"/>
+        <text class="qty-unit">天一次</text>
+      </view>
+      <view class="field-line" wx:if="{{maintenanceEvery}}">
+        <text class="f-label">上次保养</text>
+        <view class="date-chip" bindtap="openDate" data-f="lastMaintenanceDate">{{lastMaintenanceDate || '选择日期'}}</view>
+      </view>
+    </view>
+
+    <!-- 属性 -->
+    <view class="sec-title">属性</view>
+    <view class="card sec">
+      <view class="field-line">
+        <text class="f-label">品牌</text>
+        <input class="f-input" placeholder="如 苹果 / 无印良品" placeholder-class="ph" value="{{brand}}" bindinput="onBrand"/>
+      </view>
+      <view class="sec-label">颜色</view>
+      <view class="chip-grid">
+        <view wx:for="{{colorChips}}" wx:key="*this" class="chip {{color === item ? 'chip-on' : ''}}" data-v="{{item}}" bindtap="pickColor">{{item}}</view>
+      </view>
+      <view class="sec-label">适用季节</view>
+      <view class="chip-grid">
+        <view wx:for="{{seasonChips}}" wx:key="*this" class="chip {{season === item ? 'chip-on' : ''}}" data-v="{{item}}" bindtap="pickSeason">{{item}}</view>
+      </view>
+    </view>
+
     <!-- 额外信息 -->
     <view class="sec-title">额外信息</view>
     <view class="card sec">

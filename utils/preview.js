@@ -25,6 +25,12 @@ const ROWS = [
   { name: 'iHerb 鱼油 x3', price: 96, currency: 'USD', qty: 3, buyDate: day(-60), category: '保健营养', categoryGroup: '医疗健康', platform: 'iherb', icon: { type: 'emoji', value: '💊' }, extras: [ { type: '支出', name: '国际运费', amount: 120, date: day(-58) }, { type: '收入', name: '优惠券返现', amount: 30, date: day(-50) } ] },
   // —— 已卖出（复盘）——
   { name: 'Switch 游戏机', price: 2099, buyDate: day(-420), category: '智能设备', categoryGroup: '电子数码', platform: 'xy', retired: true, retiredDate: day(-30), sold: true, soldPrice: 1250, soldDate: day(-30), uses: 45, icon: { type: 'emoji', value: '🎮' } },
+  // —— 消耗品（该补货）——
+  { name: '猫粮 5kg', price: 268, buyDate: day(-72), category: '宠物粮食', categoryGroup: '宠物用品', platform: 'tb',
+    consumable: true, useUpDays: 60, lastRestockDate: day(-72), brand: '皇家', icon: { type: 'emoji', value: '🐱' }, location: '储物间' },
+  // —— 周期性保养 ——
+  { name: '净水器滤芯', price: 199, buyDate: day(-200), category: '小家电', categoryGroup: '厨房用品', platform: 'jd',
+    maintenanceEvery: 180, lastMaintenanceDate: day(-170), brand: '小米', icon: { type: 'emoji', value: '💧' } },
   // —— 普通持有 ——
   { name: '人体工学椅', price: 1699, buyDate: day(-150), category: '家具家电', categoryGroup: '家居家具', platform: 'tb', icon: { type: 'emoji', value: '🪑' }, uses: 140, lastUseDate: day(0), useCountEnabled: true, targetDaily: 2 },
   { name: '空气炸锅', price: 399, buyDate: day(-80), category: '小家电', categoryGroup: '厨房用品', platform: 'jd', icon: { type: 'emoji', value: '🍟' }, location: '厨房吊柜' },
@@ -36,7 +42,9 @@ const BASE = {
   currency: 'CNY', platform: 'other', qty: 1, note: '', tags: [], pinned: false,
   retired: false, retiredDate: null, sold: false, soldPrice: null, soldDate: null,
   targetDaily: 0, celebrated: false, uses: 0, pricingDaily: true, inService: true,
-  warrantyEnabled: false, warrantyDate: '', expectedRetireDate: '', extras: [], photos: []
+  warrantyEnabled: false, warrantyDate: '', expectedRetireDate: '', extras: [], photos: [],
+  brand: '', color: '', season: '', consumable: false, useUpDays: 0,
+  lastRestockDate: '', maintenanceEvery: 0, lastMaintenanceDate: ''
 }
 
 /** 载入演示数据（按名字去重，重复点击不叠加），返回新增数 */

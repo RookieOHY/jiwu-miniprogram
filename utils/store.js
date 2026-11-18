@@ -139,6 +139,28 @@ function addItem(data) {
   return item
 }
 
+/**
+ * 一次性修复历史脏数据：老版本 fulladd 编辑时把整包字段写进了 item.extra 嵌套对象，
+ * 这里摊平回顶层，否则保修/估值/位置等永远读不到
+ */
+function flattenLegacyExtras() {
+  const items = getAll()
+  let fixed = 0
+  items.forEach((it) => {
+    const ex = it.extra
+    if (!ex || typeof ex !== 'object' || Array.isArray(ex)) return
+    const blank = (v) => v === undefined || v === null || v === '' || v === 0 || v === false || (Array.isArray(v) && v.length === 0)
+    Object.keys(ex).forEach((k) => {
+      // 嵌套对象来自「最后一次编辑」，比顶层初始默认更可信
+      if (blank(it[k]) && !blank(ex[k])) it[k] = ex[k]
+    })
+    delete it.extra
+    fixed++
+  })
+  if (fixed) save(items)
+  return fixed
+}
+
 function updateItem(id, patch) {
   const items = getAll()
   const idx = items.findIndex((it) => it.id === id)
@@ -393,6 +415,7 @@ module.exports = {
   totalCost,
   dailyCost,
   unitPrice,
+  flattenLegacyExtras,
   addDays,
   restockDate,
   maintenanceDate,

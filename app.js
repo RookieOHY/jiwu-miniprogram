@@ -6,6 +6,10 @@ App({
     if (!wx.getStorageSync('items')) {
       wx.setStorageSync('items', [])
     }
+    // 修复早期编辑写入 item.extra 嵌套对象的数据（摊平回顶层字段）
+    const store = require('./utils/store')
+    const fixed = store.flattenLegacyExtras()
+    if (fixed) console.warn('[记物] 已修复 ' + fixed + ' 件物品的嵌套字段')
     // 一次性清理历史示例数据（demo_ 前缀固定 ID）
     if (!wx.getStorageSync('demoCleaned')) {
       const items = wx.getStorageSync('items')

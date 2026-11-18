@@ -69,6 +69,18 @@ Page({
     // 期限信息
     warrantyEnabled: false,
     warrantyDate: '',
+    // 消耗与保养
+    consumable: false,
+    useUpDays: '',
+    lastRestockDate: '',
+    maintenanceEvery: '',
+    lastMaintenanceDate: '',
+    // 属性
+    brand: '',
+    color: '',
+    colorChips: ['黑', '白', '灰', '银', '棕', '蓝', '绿', '红', '粉', '米', '金', '花色'],
+    season: '',
+    seasonChips: ['春', '夏', '秋', '冬', '四季'],
     // 额外信息
     platform: 'other',
     platformName: '其他',
@@ -150,6 +162,14 @@ Page({
           valuation: it.valuation ? String(it.valuation) : '',
           warrantyEnabled: !!it.warrantyEnabled,
           warrantyDate: it.warrantyDate || '',
+          consumable: !!it.consumable,
+          useUpDays: it.useUpDays ? String(it.useUpDays) : '',
+          lastRestockDate: it.lastRestockDate || '',
+          maintenanceEvery: it.maintenanceEvery ? String(it.maintenanceEvery) : '',
+          lastMaintenanceDate: it.lastMaintenanceDate || '',
+          brand: it.brand || '',
+          color: it.color || '',
+          season: it.season || '',
           platform: it.platform || 'other',
           platformName: store.getPlatformName(it.platform || 'other'),
           location: it.location || '',
@@ -181,6 +201,34 @@ Page({
 
   closeCal() {
     this.setData({ showCal: false })
+  },
+
+  /* ---------- 消耗与保养 / 属性 ---------- */
+
+  onConsumable(e) {
+    this.setData({ consumable: e.detail.value })
+  },
+
+  onUseUpDays(e) {
+    this.setData({ useUpDays: e.detail.value })
+  },
+
+  onMaintenanceEvery(e) {
+    this.setData({ maintenanceEvery: e.detail.value })
+  },
+
+  onBrand(e) {
+    this.setData({ brand: e.detail.value })
+  },
+
+  pickColor(e) {
+    const v = e.currentTarget.dataset.v
+    this.setData({ color: this.data.color === v ? '' : v })
+  },
+
+  pickSeason(e) {
+    const v = e.currentTarget.dataset.v
+    this.setData({ season: this.data.season === v ? '' : v })
   },
 
   /* ---------- 选择分类面板（大分类 → 子分类） ---------- */
@@ -702,21 +750,31 @@ Page({
       warrantyDate: d.warrantyDate,
       location: (d.location || '').trim(),
       photos: d.photos,
-      extras: d.extras
+      extras: d.extras,
+      brand: (d.brand || '').trim(),
+      color: d.color,
+      season: d.season,
+      consumable: !!d.consumable,
+      useUpDays: d.consumable ? (parseInt(d.useUpDays) || 0) : 0,
+      lastRestockDate: d.lastRestockDate || '',
+      maintenanceEvery: parseInt(d.maintenanceEvery) || 0,
+      lastMaintenanceDate: d.lastMaintenanceDate || ''
+    }
+    const core = {
+      name: d.name.trim(),
+      price: p,
+      qty: Math.max(1, parseInt(d.qty) || 1),
+      buyDate: d.buyDate,
+      category: d.category,
+      platform: d.platform,
+      currency: d.currency,
+      icon: d.icon,
+      note: d.note
     }
     if (d.isEdit && d.editId) {
-      store.updateItem(d.editId, {
-        name: d.name.trim(),
-        price: p,
-        qty: Math.max(1, parseInt(d.qty) || 1),
-        buyDate: d.buyDate,
-        category: d.category,
-        platform: d.platform,
-        currency: d.currency,
-        icon: d.icon,
-        note: d.note,
-        extra
-      })
+      // extra 必须展开：直接塞 updateItem 会写成 item.extra 嵌套对象，
+      // 于是保修/估值/标签/位置这些字段「改了等于没改」
+      store.updateItem(d.editId, Object.assign({}, extra, core))
       wx.showToast({ title: '已保存修改', icon: 'success' })
     } else {
       store.addItem({
