@@ -351,7 +351,7 @@ function testTabBar() {
 
   wx._pages = [{ route: 'pages/settings/settings' }]
   comp._syncFromRoute()
-  A(comp.data.selected === 2, '切换路由后索引更新')
+  A(comp.data.selected === 3, '切换路由后索引更新（设置=3）')
 
   A(comp.data.hideText === true, '文本默认隐藏')
 }
@@ -473,6 +473,38 @@ function testCatView() {
   A(wx.getStorageSync('viewMode') === 'cat', '视图模式记忆')
 }
 
+/* ---------- 场景 12：成本闭环与统计 ---------- */
+function testCostAndStats() {
+  console.log('▶ 成本闭环与统计')
+  freshUtils()
+  const wx = makeWx({
+    items: [
+      { id:'1', name:'A', price:1000, buyDate:'2026-11-01', category:'手机通讯', categoryGroup:'电子数码', platform:'jd', currency:'CNY', uses:10, retired:false, sold:false, extras:[{type:'支出',name:'配件',amount:200},{type:'收入',name:'卖出配件',amount:100}] },
+      { id:'2', name:'B', price:2000, buyDate:'2026-10-01', category:'跑步', categoryGroup:'运动户外', platform:'tb', currency:'CNY', retired:false, sold:false }
+    ]
+  })
+  wx._tabbar = { data:{}, setData(p){Object.assign(this.data,p)} }
+  const store = makeSandbox(wx, {}).require('../../utils/store')
+
+  const a = store.getById('1')
+  A(store.totalCost(a) === 1100, '总成本含附加收支 1000+200-100')
+  A(store.dailyCost(a) > 0 && store.dailyCost(a) < 1100, '日均基于总成本')
+  A(store.perUseCost(a) === 110, '次均=总成本/使用次数')
+
+  const b = store.getById('2')
+  A(store.perUseCost(b) === null, '未记录次数时次均为空')
+
+  const inst = loadPage('pages/stats/stats.js', wx)
+  inst.onShow()
+  A(inst.data.totalCount === 2, '统计总件数')
+  A(inst.data.months.length === 6, '按月 6 个月趋势')
+  A(inst.data.statusStats[0].count === 2, '状态分布')
+  A(inst.data.catStats.length === 2, '分类分布')
+  A(inst.data.topDaily.length === 2, '日均排行')
+  inst.setPeriod({ currentTarget: { dataset: { p: 'year' } } })
+  A(inst.data.months.length === 12, '按年 12 个月趋势')
+}
+
 /* ---------- 运行全部 ---------- */
 try { testStore() } catch (e) { fails.push('store 崩溃: ' + e.message) }
 try { testAddPage() } catch (e) { fails.push('add 崩溃: ' + e.message) }
@@ -485,6 +517,7 @@ try { testTabBar() } catch (e) { fails.push('tabbar 崩溃: ' + e.message) }
 try { testFx() } catch (e) { fails.push('fx 崩溃: ' + e.message) }
 try { testSavedFlow() } catch (e) { fails.push('saved 崩溃: ' + e.message) }
 try { testCatView() } catch (e) { fails.push('catview 崩溃: ' + e.message) }
+try { testCostAndStats() } catch (e) { fails.push('cost 崩溃: ' + e.message) }
 
 console.log('\n✅ 功能断言通过 ' + pass + ' 项')
 if (fails.length) {

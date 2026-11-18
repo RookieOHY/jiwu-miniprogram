@@ -146,14 +146,27 @@ function daysHeld(item, now = new Date()) {
   return Math.max(1, diff)
 }
 
-/** 日均成本 = 价格 / 持有天数 */
+/** 总成本 = 买入价 + 附加支出 − 附加收入（附加收支来自「成本与关联」tab） */
+function totalCost(item) {
+  const extras = item.extras || []
+  const delta = extras.reduce((s, x) => s + (x.type === '收入' ? -(x.amount || 0) : (x.amount || 0)), 0)
+  return Math.max(0, item.price + delta)
+}
+
+/** 日均成本 = 总成本 / 持有天数 */
 function dailyCost(item) {
-  return item.price / daysHeld(item)
+  return totalCost(item) / daysHeld(item)
 }
 
 /** 月均成本（按 30 天折算） */
 function monthlyCost(item) {
   return dailyCost(item) * 30
+}
+
+/** 次均成本 = 总成本 / 使用次数（未使用返回 null） */
+function perUseCost(item) {
+  const uses = item.uses || 0
+  return uses > 0 ? totalCost(item) / uses : null
 }
 
 /**
@@ -317,7 +330,9 @@ module.exports = {
   addDuoshouSession,
   pullWish,
   daysHeld,
+  totalCost,
   dailyCost,
+  perUseCost,
   monthlyCost,
   breakEven,
   fmtMoney,

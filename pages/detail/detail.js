@@ -69,6 +69,10 @@ Page({
         extras: it.extras || [],
         hasExtras: !!(it.extras && it.extras.length),
         extrasTotal: it.extras ? store.fmtMoney(it.extras.reduce((s, x) => s + (x.type === '收入' ? -x.amount : x.amount), 0)) : '0',
+        // 次均成本（总成本 / 使用次数）
+        uses: it.uses || 0,
+        perUse: (it.uses || 0) > 0 ? store.fmtMoney(store.perUseCost(it)) : '',
+        totalCost: store.fmtMoney(store.totalCost(it)),
         fxRecorded: !!(it.fxCurrency && it.fxPrice)
       },
       days: store.daysHeld(it),

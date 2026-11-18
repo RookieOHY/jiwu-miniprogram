@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/wishlist/wishlist",
+    "pages/stats/stats",
     "pages/wishlist/add",
     "pages/fulladd/fulladd",
     "pages/catmanage/catmanage",
@@ -33,6 +34,10 @@
       {
         "pagePath": "pages/wishlist/wishlist",
         "text": "种草"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计"
       },
       {
         "pagePath": "pages/settings/settings",

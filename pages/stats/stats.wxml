@@ -1,2 +1,61 @@
-<!--pages/stats/stats.wxml-->
-<text>pages/stats/stats.wxml</text>
+<wxs src="../../utils/fmt.wxs" module="fmt" />
+<view class="page {{tabAnim}}">
+
+  <!-- 概览 -->
+  <view class="card overview">
+    <view class="ov-item"><view class="ov-num">{{totalCount}}</view><view class="ov-label">总件数</view></view>
+    <view class="ov-item"><view class="ov-num">¥{{totalSpend}}</view><view class="ov-label">总投入</view></view>
+  </view>
+
+  <!-- 趋势 -->
+  <view class="sec-title">
+    <text>买入趋势</text>
+    <view class="period-switch">
+      <view class="p {{period === 'month' ? 'on' : ''}}" data-p="month" bindtap="setPeriod">按月</view>
+      <view class="p {{period === 'year' ? 'on' : ''}}" data-p="year" bindtap="setPeriod">按年</view>
+    </view>
+  </view>
+  <view class="card trend">
+    <view wx:for="{{months}}" wx:key="key" class="trend-col">
+      <view class="trend-bar-wrap"><view class="trend-bar" style="height: {{item.h}}rpx;"></view></view>
+      <view class="trend-val">{{item.spend || ''}}</view>
+      <view class="trend-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 分类分布 -->
+  <view class="sec-title"><text>钱花在哪</text></view>
+  <view class="card">
+    <view wx:for="{{catStats}}" wx:key="name" class="cat-row">
+      <image class="cat-ico" src="{{item.icon}}" mode="aspectFit"/>
+      <view class="cat-info">
+        <view class="cat-top"><text class="cat-name">{{item.name}}</text><text class="cat-pct">{{item.pct}}%</text></view>
+        <view class="cat-bar-track"><view class="cat-bar" style="width: {{item.pct}}%;"></view></view>
+      </view>
+      <text class="cat-val">¥{{item.value}}</text>
+    </view>
+    <view wx:if="{{!catStats.length}}" class="empty-mini">还没有物品数据</view>
+  </view>
+
+  <!-- 状态分布 -->
+  <view class="sec-title"><text>物品状态</text></view>
+  <view class="card status-row">
+    <view wx:for="{{statusStats}}" wx:key="name" class="status-cell">
+      <view class="status-num">{{item.count}}</view>
+      <view class="status-label">{{item.name}}</view>
+    </view>
+  </view>
+
+  <!-- 日均排行 -->
+  <view class="sec-title"><text>最烧钱 Top5（日均）</text></view>
+  <view class="card">
+    <view wx:for="{{topDaily}}" wx:key="id" class="rank-row">
+      <view class="rank-no {{index < 3 ? 'hot' : ''}}">{{index + 1}}</view>
+      <text class="rank-name">{{item.name}}</text>
+      <text class="rank-val">{{item.symbol}}{{item.daily}}/天</text>
+    </view>
+    <view wx:if="{{!topDaily.length}}" class="empty-mini">还没有持有中的物品</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

@@ -9,6 +9,18 @@
     <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
   </view>
 
+  <!-- 双引擎：日均 / 次均 -->
+  <view class="card dual-card">
+    <view class="dual-item">
+      <view class="dual-num">{{item.symbol}}{{daily}}</view>
+      <view class="dual-label">日均成本 / 天</view>
+    </view>
+    <view class="dual-item">
+      <view class="dual-num">{{perUse ? item.symbol + perUse : '—'}}</view>
+      <view class="dual-label">次均成本 / 次{{uses ? '（' + uses + '次）' : '（未记录）'}}</view>
+    </view>
+  </view>
+
   <!-- 回本进度：目标日均 -->
   <view class="card be-card" wx:if="{{be}}">
     <view class="be-head" bindtap="setTarget">

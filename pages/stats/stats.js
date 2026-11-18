@@ -1,66 +1,100 @@
-// pages/stats/stats.js
+const store = require('../../utils/store')
+const cats = require('../../utils/cats')
+
+function today() {
+  const d = new Date()
+  const p = (n) => (n < 10 ? '0' + n : '' + n)
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+}
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    months: [],
+    catStats: [],
+    statusStats: [],
+    topDaily: [],
+    totalCount: 0,
+    totalSpend: '0',
+    period: 'month' // month | year
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    // TabBar 选中态：统计页是第 3 个 tab（index=... 由组件自感知路由，这里只刷新数据）
+    this.refresh()
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  setPeriod(e) {
+    this.setData({ period: e.currentTarget.dataset.p }, () => this.refresh())
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
+  refresh() {
+    const all = store.getAll()
+    const isYear = this.data.period === 'year'
+    const n = isYear ? 12 : 6
+    const now = new Date()
 
-  },
+    // 月度/年度趋势：买入金额 + 现存日均
+    const months = []
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - (isYear ? i * 12 : i), 1)
+      const y = d.getFullYear()
+      const m = d.getMonth() + 1
+      const key = isYear ? String(y) : y + '-' + (m < 10 ? '0' + m : m)
+      const label = isYear ? y + '年' : m + '月'
+      const spend = all
+        .filter((it) => (isYear ? it.buyDate.slice(0, 4) === key : it.buyDate.slice(0, 7) === key))
+        .reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
+      months.push({ key, label, spend: Math.round(spend), h: 0 })
+    }
+    const maxSpend = Math.max(...months.map((x) => x.spend), 1)
+    months.forEach((x) => { x.h = Math.max(3, Math.round((x.spend / maxSpend) * 100)) })
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
+    // 分类分布（按大分类）
+    const allGroups = cats.getGroups()
+    const catMap = {}
+    all.forEach((it) => {
+      const name = it.categoryGroup || store.getCategoryName(it.category)
+      const c = store.toCNY(it.price, it.currency)
+      catMap[name] = (catMap[name] || 0) + c
+    })
+    const total = all.reduce((s, it) => s + store.toCNY(it.price, it.currency), 0)
+    const catStats = Object.keys(catMap)
+      .map((name) => {
+        const g = allGroups.find((x) => x.name === name)
+        return { name, icon: g ? g.icon : '/assets/3d/package.png', value: Math.round(catMap[name]), pct: total ? Math.round((catMap[name] / total) * 100) : 0 }
+      })
+      .sort((a, b) => b.value - a.value)
 
-  },
+    // 状态分布
+    const held = all.filter((it) => !it.retired).length
+    const retired = all.filter((it) => it.retired && !it.sold).length
+    const sold = all.filter((it) => it.sold).length
+    const statusStats = [
+      { name: '持有中', count: held },
+      { name: '已退役', count: retired },
+      { name: '已卖出', count: sold }
+    ]
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
+    // 日均 Top5
+    const topDaily = all
+      .filter((it) => !it.retired)
+      .map((it) => ({
+        id: it.id,
+        name: it.name,
+        daily: store.fmtMoney(store.dailyCost(it)),
+        dailyNum: store.toCNY(store.dailyCost(it), it.currency),
+        symbol: store.currencySymbol(it.currency)
+      }))
+      .sort((a, b) => b.dailyNum - a.dailyNum)
+      .slice(0, 5)
 
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+    this.setData({
+      months,
+      catStats,
+      statusStats,
+      topDaily,
+      totalCount: all.length,
+      totalSpend: store.fmtMoney(total)
+    })
   }
 })

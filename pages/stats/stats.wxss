@@ -1,0 +1,199 @@
+page {
+  background: var(--bg);
+  color: var(--text-1);
+}
+.page {
+  padding: 24rpx 28rpx;
+  padding-bottom: 220rpx;
+}
+.card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 32rpx;
+}
+.overview {
+  display: flex;
+  padding: 36rpx 0;
+}
+.ov-item {
+  flex: 1;
+  text-align: center;
+}
+.ov-num {
+  font-size: 44rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+}
+.ov-label {
+  font-size: 22rpx;
+  color: var(--text-2);
+  margin-top: 6rpx;
+}
+.sec-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0 8rpx 16rpx;
+}
+.period-switch {
+  display: flex;
+  background: var(--chip);
+  border-radius: 28rpx;
+  padding: 4rpx;
+}
+.p {
+  font-size: 22rpx;
+  color: var(--chip-text);
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+}
+.p.on {
+  background: var(--accent);
+  color: #ffffff;
+}
+.trend {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 320rpx;
+}
+.trend-col {
+  width: 12%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.trend-bar-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.trend-bar {
+  width: 60%;
+  min-height: 4rpx;
+  border-radius: 10rpx 10rpx 0 0;
+  background: linear-gradient(to top, #5856D6, #8E8EF7);
+}
+.trend-val {
+  font-size: 18rpx;
+  color: var(--text-2);
+  margin-top: 8rpx;
+}
+.trend-label {
+  font-size: 20rpx;
+  color: var(--text-2);
+  margin-top: 4rpx;
+}
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 14rpx 0;
+}
+.cat-ico {
+  width: 48rpx;
+  height: 48rpx;
+  flex-shrink: 0;
+}
+.cat-info {
+  flex: 1;
+  min-width: 0;
+}
+.cat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cat-name {
+  font-size: 26rpx;
+}
+.cat-pct {
+  font-size: 20rpx;
+  color: var(--text-2);
+}
+.cat-bar-track {
+  height: 12rpx;
+  background: var(--chip);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-top: 8rpx;
+}
+.cat-bar {
+  height: 100%;
+  border-radius: 6rpx;
+  background: var(--accent);
+}
+.cat-val {
+  font-size: 24rpx;
+  color: var(--text-2);
+  font-family: "DIN Alternate", sans-serif;
+}
+.status-row {
+  display: flex;
+}
+.status-cell {
+  flex: 1;
+  text-align: center;
+}
+.status-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+}
+.status-label {
+  font-size: 22rpx;
+  color: var(--text-2);
+  margin-top: 6rpx;
+}
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.rank-no {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 12rpx;
+  background: var(--chip);
+  color: var(--chip-text);
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rank-no.hot {
+  background: var(--accent);
+  color: #ffffff;
+}
+.rank-name {
+  flex: 1;
+  font-size: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rank-val {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--danger-text);
+  font-family: "DIN Alternate", sans-serif;
+}
+.empty-mini {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 24rpx;
+  padding: 32rpx 0;
+}
+.bottom-space {
+  height: 40rpx;
+}
