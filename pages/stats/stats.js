@@ -115,6 +115,10 @@ Page({
     })
   },
 
+  goReport() {
+    wx.navigateTo({ url: '/pages/report/report' })
+  },
+
   /* ---------- 预算：行内改上限 ---------- */
 
   startCap(e) {

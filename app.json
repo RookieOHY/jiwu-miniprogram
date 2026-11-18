@@ -11,6 +11,7 @@
     "pages/duoshou/duoshou",
     "pages/vote/vote",
     "pages/reminders/reminders",
+    "pages/report/report",
     "pages/settings/settings",
     "pages/add/add",
     "pages/detail/detail"

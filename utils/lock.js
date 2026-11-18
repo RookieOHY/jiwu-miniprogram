@@ -56,12 +56,15 @@ function setPin(pin) {
   set(Object.assign(get(), { pin: hash(String(pin)) }))
 }
 
-/** 开关应用锁：开启前必须已有口令 */
-function toggle(on) {
+/**
+ * 开关应用锁：开启前必须已有口令
+ * keepAuthed：刚从锁页输完口令进来时传 true，避免二次踢回锁页
+ */
+function toggle(on, keepAuthed) {
   const cfg = get()
   if (on && !cfg.pin) return { ok: false, reason: 'nopin' }
   set(Object.assign(cfg, { enabled: !!on }))
-  if (on) {
+  if (on && !keepAuthed) {
     sessionAuthed = false
     pendingRoute = ''
   }

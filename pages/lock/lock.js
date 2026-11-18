@@ -10,11 +10,14 @@ Page({
     dots: ['', '', '', ''],
     error: '',
     shake: false,
-    keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'forget', '0', 'del']
+    keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'forget', '0', 'del'],
+    enableAfter: false // 从设置页「开锁」进来时，设完口令顺手开启
   },
 
   onLoad(query) {
     const mode = query && query.mode === 'set' ? 'set' : 'unlock'
+    const enableAfter = query && query.enable === '1'
+    this.setData({ enableAfter })
     this.setData(
       mode === 'set'
         ? { mode, title: '设置新口令', sub: lock.hasPin() ? '用于替换当前口令' : '4 位数字，解锁后才能开启应用锁' }
@@ -23,9 +26,9 @@ Page({
     )
   },
 
-  /** 锁页期间禁止回到内容页 */
+  /** 锁页期间隐藏「返回首页」按钮（低版本或tab页会 fail，忽略即可） */
   focusSafe() {
-    wx.hideHomeButton && wx.hideHomeButton()
+    if (wx.hideHomeButton) wx.hideHomeButton({ fail: () => {} })
   },
 
   onKey(e) {
@@ -85,15 +88,15 @@ Page({
     }
     lock.setPin(pin)
     lock.markAuthed()
+    const wasOff = !lock.enabled()
+    if (this.data.enableAfter) lock.toggle(true, true) // 刚验过口令，本次不再拦
     this._first = ''
-    wx.showToast({ title: '口令已更新', icon: 'success' })
-    if (this.data.mode === 'set') {
-      setTimeout(() => {
-        const pages = getCurrentPages()
-        if (pages.length > 1) wx.navigateBack()
-        else wx.switchTab({ url: '/pages/settings/settings' })
-      }, 600)
-    }
+    wx.showToast({ title: this.data.enableAfter && wasOff ? '应用锁已开启' : '口令已更新', icon: 'none' })
+    setTimeout(() => {
+      const pages = getCurrentPages()
+      if (pages.length > 1) wx.navigateBack()
+      else wx.switchTab({ url: '/pages/settings/settings' })
+    }, 600)
   },
 
   onForget() {

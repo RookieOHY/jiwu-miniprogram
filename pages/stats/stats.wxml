@@ -7,6 +7,15 @@
     <view class="ov-item"><view class="ov-num">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view><view class="ov-label">总投入</view></view>
   </view>
 
+  <!-- 年度报告入口 -->
+  <view class="report-entry" bindtap="goReport" hover-class="row-press" hover-stay-time="80">
+    <view class="re-main">
+      <view class="re-name">时光账单 · 年度报告</view>
+      <view class="re-sub">这一年买了多少、什么最值、闲置率多高</view>
+    </view>
+    <text class="re-go">查看 ›</text>
+  </view>
+
   <!-- 本月预算 -->
   <view class="sec-title">
     <text>本月预算</text>

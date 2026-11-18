@@ -268,3 +268,36 @@ page {
   color: var(--text-dim);
   font-size: 24rpx;
 }
+
+/* 年度报告入口 */
+.report-entry {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-1);
+}
+.re-main {
+  flex: 1;
+  min-width: 0;
+}
+.re-name {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+.re-sub {
+  font-size: 22rpx;
+  color: var(--text-dim);
+  margin-top: 6rpx;
+}
+.re-go {
+  font-size: 24rpx;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.row-press {
+  opacity: 0.6;
+}

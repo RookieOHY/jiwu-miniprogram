@@ -1,0 +1,119 @@
+<view class="page">
+
+  <block wx:if="{{r}}">
+
+    <!-- 年份与总额 -->
+    <view class="card yr-card">
+      <view class="yr-row">
+        <text class="yr-btn {{yearIndex === 0 ? 'off' : ''}}" data-d="-1" bindtap="stepYear">‹</text>
+        <text class="yr">{{r.year}}</text>
+        <text class="yr-btn {{yearIndex >= years.length - 1 ? 'off' : ''}}" data-d="1" bindtap="stepYear">›</text>
+      </view>
+      <view class="yr-spend">{{amountHidden ? '¥****' : '¥' + r.spend}}</view>
+      <view class="yr-sub">买了 {{r.count}} 件 · 单件均值 {{amountHidden ? '¥****' : '¥' + r.avgPerItem}}</view>
+      <view wx:if="{{!r.count}}" class="yr-none">这一年没有购买记录，换个年份看看</view>
+    </view>
+
+    <!-- 四格指标 -->
+    <view class="card grid4">
+      <view class="g">
+        <view class="g-num">{{amountHidden ? '****' : '¥' + r.heldDaily}}</view>
+        <view class="g-label">现在的日均</view>
+      </view>
+      <view class="g">
+        <view class="g-num {{r.idlePct >= 30 ? 'warn' : ''}}">{{r.idlePct}}%</view>
+        <view class="g-label">闲置 {{r.idleCount}} 件</view>
+      </view>
+      <view class="g">
+        <view class="g-num pos">{{amountHidden ? '****' : '¥' + r.soldBack}}</view>
+        <view class="g-label">卖出回血 {{r.soldCount}} 件</view>
+      </view>
+      <view class="g">
+        <view class="g-num">{{r.activeMonths}}</view>
+        <view class="g-label">花过钱的月份</view>
+      </view>
+    </view>
+
+    <!-- 最值 -->
+    <view class="sec-title"><text>最值的几件（次均最低）</text></view>
+    <view class="card">
+      <view wx:for="{{r.worth}}" wx:key="id" class="rank-row" data-id="{{item.id}}" bindtap="goDetail" hover-class="row-press" hover-stay-time="80">
+        <view class="rank-no">{{index + 1}}</view>
+        <view class="rank-main">
+          <view class="rank-name">{{item.name}}</view>
+          <view class="rank-sub">用了 {{item.uses}} 次</view>
+        </view>
+        <view class="rank-val">{{amountHidden ? '****' : item.symbol + item.perUse}}<text class="rank-unit">/次</text></view>
+      </view>
+      <view wx:if="{{!r.worth.length}}" class="empty-mini">还没记使用次数，标不出「最值」——详情页点次均那行就能补</view>
+    </view>
+
+    <!-- 回本 -->
+    <block wx:if="{{r.paid.length}}">
+      <view class="sec-title"><text>已经值回票价</text></view>
+      <view class="card">
+        <view wx:for="{{r.paid}}" wx:key="id" class="row-line" data-id="{{item.id}}" bindtap="goDetail" hover-class="row-press" hover-stay-time="80">
+          <text class="row-k">🎉 {{item.name}}</text>
+          <text class="row-v">{{amountHidden ? '****' : '目标日均 ¥' + item.target}}</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 分类分布 -->
+    <view class="sec-title"><text>钱都花在哪</text></view>
+    <view class="card">
+      <view wx:for="{{r.topGroup}}" wx:key="name" class="bud-row">
+        <view class="bud-top">
+          <text class="bud-name">{{item.name}}</text>
+          <text class="bud-num">{{amountHidden ? '****' : '¥' + item.value}} · {{item.pct}}%</text>
+        </view>
+        <view class="bud-track"><view class="bud-fill" style="width: {{item.pct}}%;"></view></view>
+      </view>
+      <view wx:if="{{!r.topGroup.length}}" class="empty-mini">这年还没有分类支出</view>
+    </view>
+
+    <!-- 其它 -->
+    <view class="sec-title"><text>这一年的其它</text></view>
+    <view class="card">
+      <view wx:if="{{r.biggest}}" class="row-line" data-id="{{r.biggest.id}}" bindtap="goDetail" hover-class="row-press" hover-stay-time="80">
+        <text class="row-k">最大单笔</text>
+        <text class="row-v">{{amountHidden ? '****' : '¥' + r.biggest.value}} · {{r.biggest.name}}</text>
+      </view>
+      <view wx:if="{{r.busiestMonth}}" class="row-line">
+        <text class="row-k">最舍得的月份</text>
+        <text class="row-v">{{r.busiestMonth.label}}{{amountHidden ? '' : ' ¥' + r.busiestMonth.value}}</text>
+      </view>
+      <view wx:if="{{r.extraOut !== '0.00'}}" class="row-line">
+        <text class="row-k">附加支出</text>
+        <text class="row-v">{{amountHidden ? '****' : '¥' + r.extraOut}}</text>
+      </view>
+      <view wx:if="{{r.extraIn !== '0.00'}}" class="row-line">
+        <text class="row-k">附加收入</text>
+        <text class="row-v pos">{{amountHidden ? '****' : '¥' + r.extraIn}}</text>
+      </view>
+      <view wx:if="{{r.retiredCount}}" class="row-line">
+        <text class="row-k">当年退役</text>
+        <text class="row-v">{{r.retiredCount}} 件</text>
+      </view>
+      <view wx:if="{{r.subCount}}" class="row-line">
+        <text class="row-k">订阅制</text>
+        <text class="row-v">{{r.subCount}} 件</text>
+      </view>
+      <view wx:if="{{r.fxCount}}" class="row-line">
+        <text class="row-k">外币购入</text>
+        <text class="row-v">{{r.fxCount}} 件</text>
+      </view>
+    </view>
+
+    <button class="share-btn" open-type="share">分享我的账单</button>
+    <view class="foot-note">数据全部来自本机记录，分享的是文字卡片</view>
+  </block>
+
+  <view wx:else class="empty">
+    <view class="empty-icon">🧾</view>
+    <view>还没有可统计的记录</view>
+    <view class="empty-tip">设置 → 载入演示数据，可以直接看效果</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
