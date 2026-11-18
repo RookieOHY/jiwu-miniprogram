@@ -160,10 +160,6 @@ Page({
     return { title: '记物 · 记录你的物品与日均成本', path: '/pages/index/index' }
   },
 
-  goAdd() {
-    wx.navigateTo({ url: '/pages/wishlist/add' })
-  },
-
   copyLink(e) {
     const url = e.currentTarget.dataset.url
     wx.setClipboardData({
