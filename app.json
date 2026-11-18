@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/stats/stats",
     "pages/wishlist/wishlist",
     "pages/wishlist/add",
     "pages/fulladd/fulladd",
