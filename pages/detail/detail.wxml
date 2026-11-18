@@ -70,45 +70,53 @@
     </view>
   </view>
 
-  <!-- 计价与服役 -->
-  <view class="card info">
-    <view class="sec-head">计价与服役</view>
-    <view class="row"><text class="k">计价方式</text><text class="v">{{item.pricingDaily ? '日均计价' : '一次性'}}</text></view>
-    <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
-    <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
-    <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
-    <view class="row ed" wx:if="{{item.valuation}}" bindtap="editValuation"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text><text class="ed-go">›</text></view>
-  </view>
-
-  <!-- 期限信息 -->
-  <view class="card info" wx:if="{{item.warrantyEnabled}}">
-    <view class="sec-head">期限信息</view>
-    <view class="row ed" data-f="warrantyDate" bindtap="openDate"><text class="k">保修到期</text><text class="v">{{item.warrantyDate || '点击设置'}}</text><text class="ed-go">›</text></view>
-  </view>
-
-  <!-- 额外信息 -->
-  <view class="card info" wx:if="{{item.location}}">
-    <view class="sec-head">额外信息</view>
-    <view class="row ed" bindtap="editLocation"><text class="k">存放位置</text><text class="v">{{item.location}}</text><text class="ed-go">›</text></view>
-  </view>
-
-  <!-- 附加收支 -->
-  <view class="card info" wx:if="{{item.hasExtras}}">
-    <view class="sec-head">附加收支</view>
-    <view wx:for="{{item.extras}}" wx:key="index" class="row">
-      <text class="k">{{item.type}}</text>
-      <text class="v">{{item.name || '未命名'}} · {{item.date}}</text>
-      <text class="v price {{item.type === '收入' ? 'profit-pos' : 'profit-neg'}}">{{item.type === '收入' ? '+' : '-'}}¥{{item.amount}}</text>
+  <!-- 更多信息：默认折叠，减少首屏噪音 -->
+  <block wx:if="{{showMore}}">
+    <!-- 计价与服役 -->
+    <view class="card info">
+      <view class="sec-head">计价与服役</view>
+      <view class="row"><text class="k">计价方式</text><text class="v">{{item.pricingDaily ? '日均计价' : '一次性'}}</text></view>
+      <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
+      <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
+      <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
+      <view class="row ed" wx:if="{{item.valuation}}" bindtap="editValuation"><text class="k">当前估值</text><text class="v price">¥{{item.valuation}}</text><text class="ed-go">›</text></view>
     </view>
-    <view class="row"><text class="k">收支合计</text><text class="v price">{{item.extrasTotal}}</text></view>
-  </view>
 
-  <!-- 备注与图片 -->
-  <view class="card info" wx:if="{{item.photos.length}}">
-    <view class="sec-head">图片</view>
-    <view class="photo-row">
-      <image wx:for="{{item.photos}}" wx:key="*this" class="photo-thumb" src="{{item}}" mode="aspectFill"/>
+    <!-- 期限信息 -->
+    <view class="card info" wx:if="{{item.warrantyEnabled}}">
+      <view class="sec-head">期限信息</view>
+      <view class="row ed" data-f="warrantyDate" bindtap="openDate"><text class="k">保修到期</text><text class="v">{{item.warrantyDate || '点击设置'}}</text><text class="ed-go">›</text></view>
     </view>
+
+    <!-- 额外信息 -->
+    <view class="card info" wx:if="{{item.location}}">
+      <view class="sec-head">额外信息</view>
+      <view class="row ed" bindtap="editLocation"><text class="k">存放位置</text><text class="v">{{item.location}}</text><text class="ed-go">›</text></view>
+    </view>
+
+    <!-- 附加收支 -->
+    <view class="card info" wx:if="{{item.hasExtras}}">
+      <view class="sec-head">附加收支</view>
+      <view wx:for="{{item.extras}}" wx:key="index" class="row">
+        <text class="k">{{item.type}}</text>
+        <text class="v">{{item.name || '未命名'}} · {{item.date}}</text>
+        <text class="v price {{item.type === '收入' ? 'profit-pos' : 'profit-neg'}}">{{item.type === '收入' ? '+' : '-'}}¥{{item.amount}}</text>
+      </view>
+      <view class="row"><text class="k">收支合计</text><text class="v price">{{item.extrasTotal}}</text></view>
+    </view>
+
+    <!-- 备注与图片 -->
+    <view class="card info" wx:if="{{item.photos.length}}">
+      <view class="sec-head">图片</view>
+      <view class="photo-row">
+        <image wx:for="{{item.photos}}" wx:key="*this" class="photo-thumb" src="{{item}}" mode="aspectFill"/>
+      </view>
+    </view>
+  </block>
+
+  <view class="more-toggle" bindtap="toggleMore" hover-class="more-press" hover-stay-time="80">
+    <text class="more-name">{{showMore ? '收起更多信息' : '更多信息（' + moreCount + '）'}}</text>
+    <text class="more-arrow {{showMore ? 'up' : ''}}">›</text>
   </view>
 
   <!-- 操作 -->

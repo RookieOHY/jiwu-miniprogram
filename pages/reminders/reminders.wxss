@@ -9,7 +9,7 @@ page { background: var(--bg); color: var(--text-1); }
 .rm-row { display: flex; align-items: center; gap: 20rpx; }
 .rm-main { flex: 1; min-width: 0; }
 .rm-top { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
-.rm-tag { font-size: 22rpx; color: var(--accent); }
+.rm-tag { font-size: 22rpx; color: var(--text-2); }
 .rm-tag.overdue { color: var(--danger-text); }
 .rm-left { font-size: 22rpx; color: var(--text-2); }
 .rm-left.overdue { color: var(--danger-text); font-weight: 600; }

@@ -120,7 +120,7 @@
   background: var(--accent);
 }
 .be-bar-fill.reached {
-  background: linear-gradient(90deg, #34a853, #6fba6f);
+  background: var(--pos);
 }
 .be-sub {
   font-size: 24rpx;
@@ -136,7 +136,7 @@
   margin-bottom: 12rpx;
 }
 .tag-list {
-  color: var(--accent);
+  color: var(--text-2);
 }
 .photo-row {
   display: flex;
@@ -199,4 +199,32 @@
   align-items: center;
   justify-content: center;
   margin-right: 8rpx;
+}
+
+/* 更多信息折叠开关 */
+.more-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 24rpx 0;
+  margin-bottom: 16rpx;
+  border-radius: 20rpx;
+  background: var(--chip);
+}
+.more-name {
+  font-size: 26rpx;
+  color: var(--text-2);
+}
+.more-arrow {
+  font-size: 30rpx;
+  color: var(--text-3);
+  transform: rotate(90deg);
+  transition: transform 0.2s ease;
+}
+.more-arrow.up {
+  transform: rotate(-90deg);
+}
+.more-press {
+  opacity: 0.6;
 }

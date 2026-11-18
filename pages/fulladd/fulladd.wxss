@@ -831,7 +831,7 @@ page {
 }
 .qty-per {
   font-size: 22rpx;
-  color: var(--accent);
+  color: var(--text-2);
   margin-left: 16rpx;
   flex-shrink: 0;
 }

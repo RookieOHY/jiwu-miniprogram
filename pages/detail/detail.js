@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const reminders = require('../../utils/reminders')
 
 Page({
   data: {
@@ -7,6 +8,9 @@ Page({
     monthly: '',
     days: 0,
     endDate: '',
+    // 更多信息折叠（默认收起，有到期项时自动展开一次）
+    showMore: false,
+    moreCount: 0,
     // 行内日期编辑
     showDate: false,
     dateField: '',
@@ -81,6 +85,12 @@ Page({
         totalCost: store.fmtMoney(store.totalCost(it)),
         fxRecorded: !!(it.fxCurrency && it.fxPrice)
       },
+      moreCount:
+        1 +
+        (it.warrantyEnabled ? 1 : 0) +
+        (it.location ? 1 : 0) +
+        (it.extras && it.extras.length ? 1 : 0) +
+        (it.photos && it.photos.length ? 1 : 0),
       days: store.daysHeld(it),
       daily: store.fmtMoney(store.dailyCost(it)),
       // 顶层也挂一份，供双引擎卡直接引用（之前只写在 item 内导致永远为空）
@@ -102,6 +112,11 @@ Page({
         left: Math.max(0, be.need - be.held)
       } : null
     })
+    if (!this._expandChecked) {
+      this._expandChecked = true
+      const pend = reminders.getReminders().some((r) => r.itemId === it.id)
+      if (pend && !this.data.showMore) this.setData({ showMore: true })
+    }
     wx.setNavigationBarTitle({ title: it.name })
   },
 
@@ -148,6 +163,10 @@ Page({
         }
       }
     })
+  },
+
+  toggleMore() {
+    this.setData({ showMore: !this.data.showMore })
   },
 
   /* ---------- 行内编辑：数值 / 文本 ---------- */

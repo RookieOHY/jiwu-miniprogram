@@ -37,6 +37,7 @@ Page({
     currencies: [],
     selCurrency: '',
     sortBy: 'default',
+    showTl: true,
     sortOptions: [
       { key: 'default', name: '默认（置顶+最新）' },
       { key: 'dailyDesc', name: '日均 高→低' },
@@ -240,6 +241,8 @@ Page({
       catView,
       activeChips,
       filterCount,
+      // 时间线只在「默认顺序 + 无筛选」时有意义，否则顺序已重排，虚线会误导
+      showTl: filterCount === 0,
       reminderCount: reminders.countReminders(),
       numSize: (function () {
         // +1 是 ¥ 符号；三列各约 210rpx，按最长值选字号保证不溢出
