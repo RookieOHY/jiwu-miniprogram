@@ -1,0 +1,76 @@
+.cal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 140;
+  display: flex;
+  align-items: flex-end;
+}
+.cal-panel {
+  width: 100%;
+  background: var(--card, #ffffff);
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 28rpx 24rpx calc(env(safe-area-inset-bottom) + 24rpx);
+  box-sizing: border-box;
+}
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16rpx 20rpx;
+}
+.cal-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1c1c1e;
+}
+.cal-nav {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: var(--track, #F2F2F7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: #1c1c1e;
+}
+.cal-week {
+  display: flex;
+  padding-bottom: 8rpx;
+}
+.cal-wd {
+  width: calc(100% / 7);
+  text-align: center;
+  font-size: 24rpx;
+  color: #8e8e93;
+}
+.cal-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.cal-day {
+  width: calc(100% / 7);
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #1c1c1e;
+  box-sizing: border-box;
+}
+.cal-day.blank {
+  color: transparent;
+}
+.cal-day.is-today:not(.is-sel) {
+  color: #5856D6;
+  font-weight: 700;
+}
+.cal-day.is-sel {
+  background: #5856D6;
+  color: #ffffff;
+  border-radius: 50%;
+  font-weight: 700;
+  width: calc(100% / 7);
+  height: 88rpx;
+}

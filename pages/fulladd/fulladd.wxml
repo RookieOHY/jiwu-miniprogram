@@ -46,9 +46,7 @@
 
       <view class="field-line">
         <text class="f-label">购买日期</text>
-        <picker mode="date" value="{{buyDate}}" bindchange="onDate">
-          <view class="date-chip">{{buyDate}}</view>
-        </picker>
+        <view class="date-chip" bindtap="openDate" data-f="buyDate">buyDate</view>
       </view>
     </view>
 
@@ -68,9 +66,7 @@
       </view>
       <view class="field-line" wx:if="{{pricingDaily}}">
         <text class="f-label">预计退役日期</text>
-        <picker mode="date" value="{{expectedRetire}}" bindchange="onExpectedRetire">
-          <view class="date-chip">{{expectedRetire || '选择日期'}}</view>
-        </picker>
+        <view class="date-chip" bindtap="openDate" data-f="expectedRetire">expectedRetire || '选择日期'</view>
       </view>
       <view class="switch-row">
         <view class="row-main">
@@ -102,9 +98,7 @@
     <view class="card sec">
       <view class="field-line">
         <text class="f-label">开始使用日期</text>
-        <picker mode="date" value="{{startUseDate}}" bindchange="onStartUse">
-          <view class="date-chip">{{startUseDate || '选择日期'}}</view>
-        </picker>
+        <view class="date-chip" bindtap="openDate" data-f="startUseDate">startUseDate || '选择日期'</view>
       </view>
     </view>
 
@@ -136,9 +130,7 @@
       </view>
       <view class="field-line" wx:if="{{warrantyEnabled}}">
         <text class="f-label">保修到期</text>
-        <picker mode="date" value="{{warrantyDate}}" bindchange="onWarrantyDate">
-          <view class="date-chip">{{warrantyDate || '选择日期'}}</view>
-        </picker>
+        <view class="date-chip" bindtap="openDate" data-f="warrantyDate">warrantyDate || '选择日期'</view>
       </view>
     </view>
 
@@ -193,9 +185,7 @@
       </view>
       <view class="field-line">
         <text class="f-label">日期</text>
-        <picker mode="date" value="{{extraDate}}" bindchange="onExtraDate">
-          <view class="date-chip">{{extraDate}}</view>
-        </picker>
+        <view class="date-chip" bindtap="openDate" data-f="extraDate">extraDate</view>
       </view>
       <button class="mini-add" bindtap="addExtra">添加一条</button>
 

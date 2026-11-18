@@ -62,6 +62,9 @@ Page({
     iconCat: 'all',
     iconKeyword: '',
     iconGroups: [],
+    showCal: false,
+    dateField: '',
+    calValue: '',
     iconAllGroups: [],
     // 成本与关联（附加收支）
     extras: [],
@@ -81,6 +84,26 @@ Page({
       platformChips: store.PLATFORMS.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
     })
     this.filterIcons()
+  },
+
+  /* ---------- 日历选择 ---------- */
+
+  openDate(e) {
+    const field = e.currentTarget.dataset.f
+    this.setData({ dateField: field, calValue: this.data[field] || '', showCal: true })
+  },
+
+  onCalSelect(e) {
+    const field = this.data.dateField
+    if (!field) return
+    const patch = {}
+    patch[field] = e.detail.date
+    if (field === 'buyDate') patch.buyDateCN = fmtCN(e.detail.date)
+    this.setData(Object.assign({ showCal: false }, patch))
+  },
+
+  closeCal() {
+    this.setData({ showCal: false })
   },
 
   /* ---------- 选择分类面板（大分类 → 子分类） ---------- */

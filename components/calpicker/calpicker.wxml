@@ -1,0 +1,21 @@
+<view wx:if="{{visible}}" class="cal-mask" bindtap="close">
+  <view class="cal-panel" catchtap="noop">
+    <view class="cal-head">
+      <view class="cal-nav" catchtap="prev">‹</view>
+      <view class="cal-title">{{titleText}}</view>
+      <view class="cal-nav" catchtap="next">›</view>
+    </view>
+    <view class="cal-week">
+      <view wx:for="{{week}}" wx:key="*this" class="cal-wd">{{item}}</view>
+    </view>
+    <view class="cal-grid">
+      <view
+        wx:for="{{grid}}"
+        wx:key="index"
+        class="cal-day {{item.empty ? 'blank' : ''}} {{item.today ? 'is-today' : ''}} {{item.sel ? 'is-sel' : ''}}"
+        data-date="{{item.date}}"
+        bindtap="tapDay"
+      >{{item.empty ? '' : item.day}}</view>
+    </view>
+  </view>
+</view>
