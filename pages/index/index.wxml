@@ -130,8 +130,6 @@
       </view>
     </view>
   </block>
-
-  <!-- 分类视图：按分类分组的物品 -->
   <block wx:elif="{{viewMode === 'cat'}}">
     <view wx:if="{{items.length === 0}}" class="empty">
       <view class="empty-icon">📦</view>
