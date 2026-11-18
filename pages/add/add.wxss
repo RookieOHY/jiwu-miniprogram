@@ -627,3 +627,34 @@
 .saved-btn2::after {
   border: none;
 }
+
+/* 更多添加方式：横向三列 */
+.more-ways {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 8rpx 8rpx;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0 0 32rpx;
+}
+.more-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 26rpx 12rpx;
+  box-shadow: var(--shadow-1);
+  border-bottom: none;
+  text-align: center;
+  line-height: 1.4;
+}
+.more-arrow {
+  font-size: 26rpx;
+  color: var(--text-3);
+  margin-top: 2rpx;
+}
