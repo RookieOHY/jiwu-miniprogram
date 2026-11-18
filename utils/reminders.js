@@ -1,6 +1,6 @@
 /**
  * 到期提醒引擎
- * 数据源：item.warrantyDate（保修/保质期）、item.expectedRetireDate（预计退役）
+ * 数据源：保修/保质、预计退役、订阅续费、消耗品补货、周期性保养、吃灰、预算超支
  * 状态：dismissed 记录在 storage，按 物品id+类型+日期 去重（日期变了会重新提醒）
  */
 
@@ -54,6 +54,10 @@ function getReminders(todayStr) {
     push('保修/保质到期', it.warrantyEnabled ? it.warrantyDate : '', '🛡')
     if (!it.recycle) push('预计退役', it.expectedRetireDate, '📦')
     push('订阅续费', it.recycle ? it.expectedRetireDate : '', '🔁', true)
+    // 消耗品：按「可用天数」推算该补货的日子（补一次就顺延一次）
+    push('该补货了', store.restockDate(it), '🧻')
+    // 周期性保养/换芯：每 N 天一次，做完自动顺延
+    push('保养/更换', store.maintenanceDate(it), '🔧')
     // 吃灰：有使用记录且距今超过阈值天数没再使用
     if (!it.retired && it.lastUseDate) {
       const idle = -diffDays(it.lastUseDate, today)

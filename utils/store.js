@@ -115,6 +115,16 @@ function addItem(data) {
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
     icon: data.icon || null,
     qty: Math.max(1, parseInt(data.qty) || 1),
+    brand: data.brand || '',
+    color: data.color || '',
+    season: data.season || '',
+    // 消耗品：可用天数 + 上次补货日 → 推算该补货的日子
+    consumable: !!data.consumable,
+    useUpDays: Number(data.useUpDays) || 0,
+    lastRestockDate: data.lastRestockDate || '',
+    // 周期性保养/更换：每 N 天一次 + 上次完成日
+    maintenanceEvery: Number(data.maintenanceEvery) || 0,
+    lastMaintenanceDate: data.lastMaintenanceDate || '',
     ...(data.extra || {}),
     note: data.note || '',
     targetDaily: Number(data.targetDaily) || 0,
@@ -171,6 +181,37 @@ function monthlyCost(item) {
 function unitPrice(item) {
   const q = Math.max(1, parseInt(item.qty) || 1)
   return item.price / q
+}
+
+/** 日期加天数，返回 YYYY-MM-DD */
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T00:00:00')
+  if (isNaN(d.getTime())) return ''
+  d.setDate(d.getDate() + n)
+  const p = (x) => (x < 10 ? '0' + x : '' + x)
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate())
+}
+
+/**
+ * 消耗品：预计该补货的日子
+ * 基准 = 上次补货日 → 开始使用日 → 购买日，三者取最近的一个
+ */
+function restockDate(item) {
+  if (!item.consumable || !(Number(item.useUpDays) > 0)) return ''
+  const base = [item.lastRestockDate, item.startUseDate, item.buyDate]
+    .filter((d) => d && /^\d{4}-\d{2}-\d{2}$/.test(d))
+    .sort()
+    .pop()
+  if (!base) return ''
+  return addDays(base, Number(item.useUpDays))
+}
+
+/** 周期性保养：下一次该做日 */
+function maintenanceDate(item) {
+  if (!(Number(item.maintenanceEvery) > 0)) return ''
+  const base = item.lastMaintenanceDate || item.startUseDate || item.buyDate
+  if (!base || !/^\d{4}-\d{2}-\d{2}$/.test(base)) return ''
+  return addDays(base, Number(item.maintenanceEvery))
 }
 
 /** 次均成本 = 总成本 / 使用次数（未使用返回 null） */
@@ -352,6 +393,9 @@ module.exports = {
   totalCost,
   dailyCost,
   unitPrice,
+  addDays,
+  restockDate,
+  maintenanceDate,
   perUseCost,
   monthlyCost,
   breakEven,

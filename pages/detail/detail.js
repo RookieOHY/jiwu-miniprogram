@@ -93,6 +93,18 @@ Page({
         warrantyDate: it.warrantyDate || '',
         location: it.location || '',
         photos: it.photos || [],
+        // 消耗品与周期保养
+        consumable: !!it.consumable,
+        useUpDays: Number(it.useUpDays) || 0,
+        lastRestockDate: it.lastRestockDate || '',
+        restockDate: store.restockDate(it),
+        restockOverdue: !!store.restockDate(it) && store.restockDate(it) < this.fmtDate(new Date()),
+        maintenanceEvery: Number(it.maintenanceEvery) || 0,
+        lastMaintenanceDate: it.lastMaintenanceDate || '',
+        maintenanceDate: store.maintenanceDate(it),
+        brand: it.brand || '',
+        color: it.color || '',
+        season: it.season || '',
         extras: it.extras || [],
         hasExtras: !!(it.extras && it.extras.length),
         extrasTotal: it.extras ? store.fmtMoney(it.extras.reduce((s, x) => s + (x.type === '收入' ? -x.amount : x.amount), 0)) : '0',
@@ -107,7 +119,8 @@ Page({
         (it.warrantyEnabled ? 1 : 0) +
         (it.location ? 1 : 0) +
         (it.extras && it.extras.length ? 1 : 0) +
-        (it.photos && it.photos.length ? 1 : 0),
+        (it.photos && it.photos.length ? 1 : 0) +
+        (it.consumable || it.maintenanceEvery ? 1 : 0),
       days: store.daysHeld(it),
       daily: store.fmtMoney(store.dailyCost(it)),
       // 顶层也挂一份，供双引擎卡直接引用（之前只写在 item 内导致永远为空）
@@ -158,6 +171,68 @@ Page({
 
   goHome() {
     wx.switchTab({ url: '/pages/index/index' })
+  },
+
+  /**
+   * 消耗品补货：记下花费并顺延下次补货日
+   * 补货支出写进 extras → totalCost 自动累加，日均跟着变（成本闭环不破）
+   */
+  restock() {
+    const it = store.getById(this.id)
+    if (!it) return
+    const sym = store.currencySymbol(it.currency)
+    wx.showModal({
+      title: '记一次补货',
+      editable: true,
+      placeholderText: '本次花了多少 ' + sym + '？留空 = 没花钱',
+      confirmText: '记上',
+      success: (r) => {
+        if (!r.confirm) return
+        const today = this.fmtDate(new Date())
+        const amount = parseFloat(r.content)
+        const extras = (it.extras || []).slice()
+        if (amount > 0) extras.push({ type: '支出', name: '补货', amount, date: today })
+        store.updateItem(this.id, {
+          extras,
+          lastRestockDate: today,
+          consumable: true,
+          useUpDays: it.useUpDays || 30
+        })
+        this.refresh()
+        const nt = store.getById(this.id)
+        wx.showToast({
+          title: '下次补货 ' + (store.restockDate(nt) || '—'),
+          icon: 'none'
+        })
+      }
+    })
+  },
+
+  /** 保养/换芯完成：记今天并顺延下次 */
+  maintenanceDone() {
+    const it = store.getById(this.id)
+    if (!it) return
+    wx.showModal({
+      title: '这次保养花了多少？',
+      editable: true,
+      placeholderText: '留空 = 自己做的没花钱',
+      confirmText: '已完成',
+      success: (r) => {
+        if (!r.confirm) return
+        const today = this.fmtDate(new Date())
+        const amount = parseFloat(r.content)
+        const extras = (it.extras || []).slice()
+        if (amount > 0) extras.push({ type: '支出', name: '保养', amount, date: today })
+        const patch = { extras, lastMaintenanceDate: today }
+        if (!it.maintenanceEvery) patch.maintenanceEvery = 180
+        store.updateItem(this.id, patch)
+        this.refresh()
+        wx.showToast({
+          title: '下次 ' + (store.maintenanceDate(store.getById(this.id)) || '—'),
+          icon: 'none'
+        })
+      }
+    })
   },
 
   toggleMore() {

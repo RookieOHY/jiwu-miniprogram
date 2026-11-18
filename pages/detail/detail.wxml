@@ -46,6 +46,8 @@
     <view class="row"><text class="k">花费</text><text class="v price">{{amountHidden ? '****' : item.symbol + item.price + (item.qty > 1 ? ' ×' + item.qty + '件（单件 ' + item.symbol + item.unitPrice + '）' : '')}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
+    <view class="row" wx:if="{{item.brand}}"><text class="k">品牌</text><text class="v">{{item.brand}}</text></view>
+    <view class="row" wx:if="{{item.color || item.season}}"><text class="k">颜色季节</text><text class="v">{{item.color}}{{item.color && item.season ? ' · ' : ''}}{{item.season}}</text></view>
     <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>
     <view class="row ed" wx:if="{{item.startUseDate}}" data-f="startUseDate" bindtap="openDate"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text><text class="ed-go">›</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
@@ -95,6 +97,29 @@
     <view class="card info">
       <view class="sec-head">额外信息</view>
       <view class="row ed" bindtap="startEdit" data-f="location"><text class="k">存放位置</text><input wx:if="{{editField === 'location'}}" class="inline-in" type="text" focus="{{true}}" value="{{editValue}}" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" data-f="location" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v">{{item.location || '点击添加'}}</text><text class="ed-go">›</text></block></view>
+    </view>
+
+    <!-- 循环与消耗 -->
+    <view class="card info" wx:if="{{item.consumable || item.maintenanceEvery}}">
+      <view class="sec-head">循环与消耗</view>
+      <view class="row" wx:if="{{item.consumable}}">
+        <text class="k">消耗品</text>
+        <text class="v">可用 {{item.useUpDays}} 天{{item.lastRestockDate ? ' · 上次补货 ' + item.lastRestockDate : ''}}</text>
+      </view>
+      <view class="row act" wx:if="{{item.consumable}}" bindtap="restock">
+        <text class="k">该补货</text>
+        <text class="v {{item.restockOverdue ? 'due' : ''}}">{{item.restockDate ? item.restockDate : '未推算'}}</text>
+        <text class="act-btn">记补货 ›</text>
+      </view>
+      <view class="row" wx:if="{{item.maintenanceEvery}}">
+        <text class="k">周期保养</text>
+        <text class="v">每 {{item.maintenanceEvery}} 天{{item.lastMaintenanceDate ? ' · 上次 ' + item.lastMaintenanceDate : ''}}</text>
+      </view>
+      <view class="row act" wx:if="{{item.maintenanceEvery}}" bindtap="maintenanceDone">
+        <text class="k">下次保养</text>
+        <text class="v">{{item.maintenanceDate || '未推算'}}</text>
+        <text class="act-btn">已完成 ›</text>
+      </view>
     </view>
 
     <!-- 附加收支 -->

@@ -289,3 +289,15 @@
   color: #ffffff;
   font-size: 26rpx;
 }
+
+/* 循环与消耗：可执行行 */
+.row.act .act-btn {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: var(--accent);
+}
+.v.due {
+  color: var(--danger-text);
+  font-weight: 600;
+}
