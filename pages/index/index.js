@@ -3,6 +3,8 @@ const cats = require('../../utils/cats')
 const tagsUtil = require('../../utils/tags')
 const reminders = require('../../utils/reminders')
 const prefs = require('../../utils/prefs')
+
+const uniq = (arr) => Array.from(new Set(arr))
 const poster = require('../../utils/poster')
 const tabAnim = require('../../utils/tabAnim')
 const lock = require('../../utils/lock')
@@ -43,6 +45,13 @@ Page({
     dateTo: '',
     allTags: [],
     selTags: [],
+    // 品牌 / 颜色 / 季节（借鉴 Indyx 的筛选骨架）
+    allBrands: [],
+    selBrands: [],
+    allColors: [],
+    selColors: [],
+    allSeasons: [],
+    selSeasons: [],
     currencies: [],
     selCurrency: '',
     sortBy: 'default',
@@ -159,11 +168,15 @@ Page({
         if (d.dateTo && it.buyDate > d.dateTo) return false
         // 标签多选（任一命中）
         if (d.selTags.length && !(it.tags || []).some((t) => d.selTags.indexOf(t) >= 0)) return false
+        // 品牌 / 颜色 / 季节
+        if (d.selBrands.length && d.selBrands.indexOf(it.brand || '') < 0) return false
+        if (d.selColors.length && d.selColors.indexOf(it.color || '') < 0) return false
+        if (d.selSeasons.length && d.selSeasons.indexOf(it.season || '') < 0) return false
         // 币种
         if (d.selCurrency && (it.currency || 'CNY') !== d.selCurrency) return false
         // 关键词：名称 / 备注 / 分类 / 渠道 / 标签
         if (kw) {
-          const hay = [it.name, it.note, store.getCategoryName(it.category), store.getPlatformName(it.platform), (it.tags || []).join(' ')].join(' ').toLowerCase()
+          const hay = [it.name, it.note, it.brand, it.color, it.season, store.getCategoryName(it.category), store.getPlatformName(it.platform), (it.tags || []).join(' ')].join(' ').toLowerCase()
           if (hay.indexOf(kw) < 0) return false
         }
         return true
@@ -182,6 +195,9 @@ Page({
         symbol: store.currencySymbol(it.currency),
         currency: it.currency || 'CNY',
         note: it.note || '',
+        brand: it.brand || '',
+        color: it.color || '',
+        season: it.season || '',
         location: it.location || '',
         tags: it.tags || [],
         retired: it.retired,
@@ -211,6 +227,9 @@ Page({
     if (d.minPrice !== '' || d.maxPrice !== '') activeChips.push({ key: 'price', label: '¥' + (d.minPrice || '0') + '-' + (d.maxPrice || '∞') })
     if (d.dateFrom || d.dateTo) activeChips.push({ key: 'date', label: (d.dateFrom || '…') + '~' + (d.dateTo || '…') })
     d.selTags.forEach((t) => activeChips.push({ key: 'tag:' + t, label: t }))
+    d.selBrands.forEach((b) => activeChips.push({ key: 'brand:' + b, label: '品牌:' + b }))
+    d.selColors.forEach((c) => activeChips.push({ key: 'color:' + c, label: c }))
+    d.selSeasons.forEach((x) => activeChips.push({ key: 'season:' + x, label: x }))
     if (d.selCurrency) activeChips.push({ key: 'currency', label: d.selCurrency })
     if (kw) activeChips.push({ key: 'kw', label: '搜索:' + kw })
     if (d.sortBy !== 'default') {
@@ -319,7 +338,10 @@ Page({
       showFilter: true,
       allTags: Array.from(new Set(tagsUtil.getTags().concat(
         store.getAll().reduce((acc, it) => acc.concat(it.tags || []), [])
-      )))
+      ))),
+      allBrands: uniq(store.getAll().map((it) => it.brand).filter(Boolean)),
+      allColors: uniq(store.getAll().map((it) => it.color).filter(Boolean)),
+      allSeasons: uniq(store.getAll().map((it) => it.season).filter(Boolean))
     })
   },
 
@@ -357,6 +379,19 @@ Page({
     this.setData({ selPlatforms: list }, () => this.refresh())
   },
 
+  /** 多选切换通用版：品牌 / 颜色 / 季节 */
+  toggleFacet(e) {
+    const v = e.currentTarget.dataset.v
+    const key = e.currentTarget.dataset.k
+    const list = (this.data[key] || []).slice()
+    const i = list.indexOf(v)
+    if (i >= 0) list.splice(i, 1)
+    else list.push(v)
+    const patch = {}
+    patch[key] = list
+    this.setData(patch, () => this.refresh())
+  },
+
   toggleTag(e) {
     const v = e.currentTarget.dataset.v
     const list = this.data.selTags.slice()
@@ -384,7 +419,8 @@ Page({
     this.setData({
       statuses: [], selGroup: '', selSub: '', selPlatforms: [],
       minPrice: '', maxPrice: '', dateFrom: '', dateTo: '',
-      selTags: [], selCurrency: '', sortBy: 'default', searchKeyword: ''
+      selTags: [], selCurrency: '', sortBy: 'default', searchKeyword: '',
+      selBrands: [], selColors: [], selSeasons: []
     }, () => this.refresh())
   },
 

@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const parse = require('../../utils/parse')
 
 function fmtCN(s) {
   if (!s) return ''
@@ -57,6 +58,7 @@ Page({
     buyDateCN: '',
     catName: '其他',
     platformName: '其他',
+    pasteHint: '',
     // 计算器
     showCalc: false,
     // 日历
@@ -371,6 +373,46 @@ Page({
       this.setData({ canSave: !!this.data.name.trim() && v > 0 })
       this._updateNeed()
     })
+  },
+
+  /** 粘贴订单文本 → 秒级预填（行业第一痛点就是录入慢） */
+  pasteOrder() {
+    wx.getClipboardData({
+      success: (r) => {
+        const text = (r.data || '').trim()
+        if (text.length < 6) {
+          wx.showToast({ title: '先复制订单详情，再点粘贴', icon: 'none' })
+          return
+        }
+        const p = parse.fromText(text)
+        if (!p.name && !p.price) {
+          wx.showToast({ title: '没认出名称或价格', icon: 'none' })
+          return
+        }
+        const patch = { pasteHint: '' }
+        if (p.name) patch.name = p.name
+        if (p.price) patch.price = p.price
+        if (p.buyDate) patch.buyDate = p.buyDate
+        if (p.platform && p.platform !== 'other') {
+          patch.platform = p.platform
+          patch.platformName = store.getPlatformName(p.platform)
+        }
+        if (p.currency && p.currency !== 'CNY') patch.currency = p.currency
+        patch.canSave = !!(patch.name || this.data.name).trim() && !!(patch.price || this.data.price)
+        this.setData(patch, () => {
+          this.updatePlatformChips()
+          this._updateNeed()
+        })
+        const hits = p.hits.slice(0, 3).join(' · ')
+        this.setData({ pasteHint: '已识别：' + hits })
+        wx.showToast({ title: '识别出 ' + p.hits.length + ' 项，请核对', icon: 'none' })
+      },
+      fail: () => wx.showToast({ title: '读取剪贴板失败', icon: 'none' })
+    })
+  },
+
+  clearPasteHint() {
+    this.setData({ pasteHint: '' })
   },
 
   save() {

@@ -280,6 +280,24 @@
         <view wx:for="{{allTags}}" wx:key="*this" class="flt-chip {{fmt.has(selTags, item) ? 'on' : ''}}" data-v="{{item}}" bindtap="toggleTag">{{item}}</view>
       </view>
 
+      <view class="flt-sec-title">品牌</view>
+      <view class="flt-chips" wx:if="{{allBrands.length}}">
+        <view wx:for="{{allBrands}}" wx:key="*this" class="flt-chip {{fmt.has(selBrands, item) ? 'on' : ''}}" data-v="{{item}}" data-k="selBrands" bindtap="toggleFacet">{{item}}</view>
+      </view>
+      <view class="flt-sub-note" wx:if="{{!allBrands.length}}">还没有物品填了品牌，详情页「编辑」里可补</view>
+
+      <view class="flt-sec-title">颜色</view>
+      <view class="flt-chips" wx:if="{{allColors.length}}">
+        <view wx:for="{{allColors}}" wx:key="*this" class="flt-chip {{fmt.has(selColors, item) ? 'on' : ''}}" data-v="{{item}}" data-k="selColors" bindtap="toggleFacet">{{item}}</view>
+      </view>
+      <view class="flt-sub-note" wx:if="{{!allColors.length}}">还没有物品填了颜色</view>
+
+      <view class="flt-sec-title">季节</view>
+      <view class="flt-chips" wx:if="{{allSeasons.length}}">
+        <view wx:for="{{allSeasons}}" wx:key="*this" class="flt-chip {{fmt.has(selSeasons, item) ? 'on' : ''}}" data-v="{{item}}" data-k="selSeasons" bindtap="toggleFacet">{{item}}</view>
+      </view>
+      <view class="flt-sub-note" wx:if="{{!allSeasons.length}}">还没有物品填了季节</view>
+
       <view class="flt-sec-title">币种</view>
       <view class="flt-chips">
         <view wx:for="{{currencies}}" wx:key="key" class="flt-chip {{selCurrency === item.key ? 'on' : ''}}" data-v="{{item.key}}" bindtap="setCurrency">{{item.symbol}} {{item.name}}</view>

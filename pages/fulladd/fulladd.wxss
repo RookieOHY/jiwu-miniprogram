@@ -835,3 +835,22 @@ page {
   margin-left: 16rpx;
   flex-shrink: 0;
 }
+
+/* 粘贴识别 */
+.paste-btn {
+  font-size: 24rpx;
+  color: var(--accent);
+  font-weight: 400;
+  padding: 4rpx 16rpx;
+  border-radius: 999rpx;
+  background: var(--chip);
+}
+.paste-hint {
+  font-size: 22rpx;
+  color: var(--accent);
+  background: var(--chip);
+  border-radius: 16rpx;
+  padding: 14rpx 20rpx;
+  margin-bottom: 16rpx;
+  line-height: 1.5;
+}

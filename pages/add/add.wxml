@@ -33,7 +33,11 @@
   </view>
 
   <!-- 基本信息 -->
-  <view class="sec-title">基本信息</view>
+  <view class="sec-title">
+    <text>基本信息</text>
+    <text class="paste-btn" bindtap="pasteOrder">📋 粘贴订单</text>
+  </view>
+  <view wx:if="{{pasteHint}}" class="paste-hint" bindtap="clearPasteHint">{{pasteHint}}（点一下关掉）</view>
   <view class="card form basics">
     <view class="field plain">
       <input

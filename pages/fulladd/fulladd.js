@@ -1,4 +1,5 @@
 const store = require('../../utils/store')
+const parse = require('../../utils/parse')
 const cats = require('../../utils/cats')
 
 function round10(n) {
@@ -69,6 +70,7 @@ Page({
     // 期限信息
     warrantyEnabled: false,
     warrantyDate: '',
+    pasteHint: '',
     // 消耗与保养
     consumable: false,
     useUpDays: '',
@@ -201,6 +203,48 @@ Page({
 
   closeCal() {
     this.setData({ showCal: false })
+  },
+
+  /** 粘贴订单文本预填（详细表单同样支持） */
+  pasteOrder() {
+    wx.getClipboardData({
+      success: (r) => {
+        const text = (r.data || '').trim()
+        if (text.length < 6) {
+          wx.showToast({ title: '先复制订单详情，再点粘贴', icon: 'none' })
+          return
+        }
+        const p = parse.fromText(text)
+        if (!p.name && !p.price) {
+          wx.showToast({ title: '没认出名称或价格', icon: 'none' })
+          return
+        }
+        const patch = {}
+        if (p.name) patch.name = p.name
+        if (p.price) patch.price = p.price
+        if (p.buyDate) patch.buyDate = p.buyDate
+        if (p.qty > 1) patch.qty = String(p.qty)
+        if (p.platform && p.platform !== 'other') {
+          patch.platform = p.platform
+          patch.platformName = store.getPlatformName(p.platform)
+        }
+        if (p.currency && p.currency !== 'CNY') {
+          patch.currency = p.currency
+          patch.symbol = store.currencySymbol(p.currency)
+        }
+        patch.pasteHint = '已识别：' + p.hits.slice(0, 3).join(' · ')
+        this.setData(patch, () => {
+          this._syncUnit()
+          this._buildDisplay()
+        })
+        wx.showToast({ title: '识别出 ' + p.hits.length + ' 项，请核对', icon: 'none' })
+      },
+      fail: () => wx.showToast({ title: '读取剪贴板失败', icon: 'none' })
+    })
+  },
+
+  clearPasteHint() {
+    this.setData({ pasteHint: '' })
   },
 
   /* ---------- 消耗与保养 / 属性 ---------- */
