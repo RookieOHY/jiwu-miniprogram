@@ -239,14 +239,16 @@ Page({
       activeChips,
       filterCount,
       numSize: (function () {
+        // +1 是 ¥ 符号；三列各约 210rpx，按最长值选字号保证不溢出
         const maxLen = Math.max(
-          String(store.fmtMoney(totalSpend)).length,
-          String(store.fmtMoney(totalDaily * mult)).length,
+          String(store.fmtMoney(totalSpend)).length + 1,
+          String(store.fmtMoney(totalDaily * mult)).length + 1,
           String(all.length).length
         )
         if (maxLen <= 7) return 'num-lg'
         if (maxLen <= 9) return 'num-md'
-        return 'num-sm'
+        if (maxLen <= 11) return 'num-sm'
+        return 'num-xs'
       })()
     })
     // 回本日检测：有物品刚达标且未庆祝过 → 弹庆祝卡

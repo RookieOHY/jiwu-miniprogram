@@ -60,8 +60,9 @@
   white-space: nowrap;
 }
 .hero-num.num-lg { font-size: 44rpx; }
-.hero-num.num-md { font-size: 34rpx; }
-.hero-num.num-sm { font-size: 27rpx; }
+.hero-num.num-md { font-size: 36rpx; }
+.hero-num.num-sm { font-size: 30rpx; }
+.hero-num.num-xs { font-size: 25rpx; }
 .hero-num-label {
   font-size: 22rpx;
   opacity: 0.8;
