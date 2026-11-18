@@ -1,3 +1,4 @@
+<wxs src="../../utils/fmt.wxs" module="fmt" />
 <view class="page" wx:if="{{item}}">
 
   <!-- 日均成本主展示 -->
@@ -29,7 +30,7 @@
     <view class="row"><text class="k">花费</text><text class="v price">{{item.symbol}}{{item.price}}</text></view>
     <view class="row"><text class="k">购买日期</text><text class="v">{{item.buyDate}}</text></view>
     <view class="row"><text class="k">分类</text><text class="v">{{item.categoryGroup ? item.categoryGroup + ' · ' : ''}}{{item.catName}}</text></view>
-    <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{item.tags.join(' / ')}}</text></view>
+    <view class="row" wx:if="{{item.tags.length}}"><text class="k">标签</text><text class="v tag-list">{{fmt.joinTags(item.tags, ' / ')}}</text></view>
     <view class="row" wx:if="{{item.startUseDate}}"><text class="k">开始使用</text><text class="v">{{item.startUseDate}}</text></view>
     <view class="row"><text class="k">购买渠道</text><text class="v">{{item.platformName}}</text></view>
     <view class="row" wx:if="{{item.note}}"><text class="k">备注</text><text class="v">{{item.note}}</text></view>

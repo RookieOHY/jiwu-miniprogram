@@ -197,6 +197,24 @@ function checkTagUsage() {
   })
 }
 
+/* ---------- 7. WXML 表达式禁止方法调用（.join/.indexOf/.includes/.toFixed 等） ---------- */
+function checkWxmlExpr() {
+  const files = listPages().map((p) => p + '.wxml')
+  files.push('custom-tab-bar/index.wxml', 'components/calpicker/calpicker.wxml')
+  files.forEach((rel) => {
+    const s = fs.readFileSync(path.join(root, rel), 'utf8')
+    // 提取 {{...}} 内的表达式，检查方法调用（WXS 调用 fmt.xxx() 是合法的）
+    const exprs = [...s.matchAll(/\{\{([^}]+)\}\}/g)]
+    exprs.forEach((m) => {
+      const expr = m[1]
+      const bad = expr.match(/\.(join|indexOf|includes|toFixed|filter|map|slice|charAt|split|push|splice)\(/g)
+      if (bad) fail(rel + ' WXML 表达式含方法调用: ' + bad.join(','))
+      else pass++
+    })
+  })
+  ok('WXML 表达式检查完成')
+}
+
 /* ---------- 运行 ---------- */
 syntaxAll()
 checkHandlers()
@@ -204,6 +222,7 @@ checkComponents()
 checkPages()
 checkExports()
 checkTagUsage()
+checkWxmlExpr()
 
 console.log('✅ 通过 ' + pass + ' 项')
 if (fails.length) {

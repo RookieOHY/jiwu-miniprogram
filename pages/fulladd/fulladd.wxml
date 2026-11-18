@@ -1,3 +1,4 @@
+<wxs src="../../utils/fmt.wxs" module="fmt" />
 <view class="page">
 
   <!-- 两个 tab -->
@@ -32,7 +33,7 @@
       <view class="field-line">
         <text class="f-label">标签</text>
         <view class="cat-open" bindtap="openTagPanel">
-          <text>{{tags.length ? tags.join(' / ') : '请选择'}}</text>
+          <text>{{tags.length ? fmt.joinTags(tags, ' / ') : '请选择'}}</text>
           <text class="cat-chev">›</text>
         </view>
       </view>
@@ -312,12 +313,12 @@
         <view
           wx:for="{{userTags}}"
           wx:key="*this"
-          wx:if="{{!tagKeyword || item.includes(tagKeyword)}}"
-          class="tp-chip {{tempTags.indexOf(item) >= 0 ? 'on' : ''}}"
+          wx:if="{{!tagKeyword || fmt.contains(item, tagKeyword)}}"
+          class="tp-chip {{fmt.has(tempTags, item) ? 'on' : ''}}"
           data-t="{{item}}"
           bindtap="toggleTempTag"
         >
-          <text wx:if="{{tempTags.indexOf(item) >= 0}}" class="tp-check">✓ </text>{{item}}
+          <text wx:if="{{fmt.has(tempTags, item)}}" class="tp-check">✓ </text>{{item}}
         </view>
         <view class="tp-chip tp-new" bindtap="newTag">＋ 新建标签</view>
       </view>

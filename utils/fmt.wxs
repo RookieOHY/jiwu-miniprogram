@@ -1,0 +1,36 @@
+/**
+ * WXS 视图层工具：WXML 表达式不允许方法调用，
+ * 数组/字符串操作统一放这里，页面通过 <wxs module="fmt"> 引用
+ */
+
+/** 数组拼接：joinTags(['a','b'], ' / ') → 'a / b' */
+function joinTags(arr, sep) {
+  if (!arr || !arr.length) return ''
+  var out = ''
+  for (var i = 0; i < arr.length; i++) {
+    if (i > 0) out += sep
+    out += arr[i]
+  }
+  return out
+}
+
+/** 数组包含：has(['a','b'], 'a') → true */
+function has(arr, v) {
+  if (!arr) return false
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === v) return true
+  }
+  return false
+}
+
+/** 字符串包含：contains('主力机', '力') → true */
+function contains(str, sub) {
+  if (!str || !sub) return false
+  return str.indexOf(sub) >= 0
+}
+
+module.exports = {
+  joinTags: joinTags,
+  has: has,
+  contains: contains
+}
