@@ -88,7 +88,7 @@
   </block>
 
   <!-- 物品网格（卡片视图） -->
-  <block wx:else>
+  <block wx:if="{{viewMode === 'card'}}">
     <view wx:if="{{items.length === 0}}" class="empty">
       <view class="empty-icon">📦</view>
       <view>还没有记录任何物品</view>
@@ -130,7 +130,7 @@
       </view>
     </view>
   </block>
-  <block wx:elif="{{viewMode === 'cat'}}">
+  <block wx:if="{{viewMode === 'cat'}}">
     <view wx:if="{{items.length === 0}}" class="empty">
       <view class="empty-icon">📦</view>
       <view>还没有记录任何物品</view>
