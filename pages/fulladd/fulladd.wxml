@@ -39,9 +39,10 @@
 
       <view class="field-line">
         <text class="f-label">购买价格</text>
+        <text class="price-sym">{{symbol || '¥'}}</text>
         <input class="f-input price" type="digit" placeholder="0.00" placeholder-class="ph" value="{{price}}" bindinput="onPrice"/>
-        <view class="currency" wx:for="{{currencies}}" wx:for-item="c" wx:key="key"
-          class="currency {{currency === c.key ? 'on' : ''}}" data-key="{{c.key}}" bindtap="onCurrency">{{c.symbol}}</view>
+        <view class="p-ico swap" bindtap="openFxSheet"></view>
+        <view class="p-ico calc" bindtap="openCalc" data-t="price"></view>
       </view>
 
       <view class="field-line">
@@ -326,3 +327,51 @@
 
 <!-- 日历选择组件 -->
 <cal-picker visible="{{showCal}}" value="{{calValue}}" bindselect="onCalSelect" bindclose="closeCal"/>
+
+<!-- 外币购买价弹层 -->
+<view wx:if="{{fxSheet}}" class="fx-mask" bindtap="closeFxSheet">
+  <view class="fx-panel" catchtap="noop">
+    <view class="fx-title">外币购买价</view>
+    <view class="field-line" bindtap="cycleFx">
+      <text class="f-label">币种</text>
+      <view class="fx-cur">{{fxCurrency === 'USD' ? '$ USD' : fxCurrency === 'EUR' ? '€ EUR' : fxCurrency === 'JPY' ? 'JP¥ JPY' : fxCurrency === 'GBP' ? '£ GBP' : fxCurrency}} ›</view>
+    </view>
+    <view class="fx-label">外币原价</view>
+    <view class="fx-input-row">
+      <text class="fx-sym">{{fxCurrency === 'USD' ? '$' : fxCurrency === 'EUR' ? '€' : fxCurrency === 'JPY' ? 'JP¥' : fxCurrency === 'GBP' ? '£' : fxCurrency}}</text>
+      <input class="fx-input" type="digit" placeholder="请输入购买价格" placeholder-class="ph" value="{{fxPrice}}" bindinput="onFxPrice"/>
+      <view class="p-ico calc" bindtap="openCalc" data-t="fx"></view>
+    </view>
+    <view class="fx-label">折合本位币</view>
+    <view class="fx-converted">¥ {{_fxConverted ? (fxPrice * fxRate).toFixed(2) : '0.0'}}</view>
+    <button class="fx-ok" bindtap="confirmFx">确定</button>
+  </view>
+</view>
+
+<!-- 计算器弹层 -->
+<view wx:if="{{showCalc}}" class="calc-mask" bindtap="closeCalc">
+  <view class="calc-panel" catchtap="noop">
+    <view class="calc-display">{{calcDisplay}}</view>
+    <view class="calc-grid">
+      <view class="calc-key key-fn span2" data-k="C" bindtap="calcKey">C</view>
+      <view class="calc-key key-fn" data-k="÷" bindtap="calcKey">÷</view>
+      <view class="calc-key key-fn" data-k="×" bindtap="calcKey">×</view>
+      <view class="calc-key key-num" data-k="7" bindtap="calcKey">7</view>
+      <view class="calc-key key-num" data-k="8" bindtap="calcKey">8</view>
+      <view class="calc-key key-num" data-k="9" bindtap="calcKey">9</view>
+      <view class="calc-key key-fn" data-k="−" bindtap="calcKey">−</view>
+      <view class="calc-key key-num" data-k="4" bindtap="calcKey">4</view>
+      <view class="calc-key key-num" data-k="5" bindtap="calcKey">5</view>
+      <view class="calc-key key-num" data-k="6" bindtap="calcKey">6</view>
+      <view class="calc-key key-fn" data-k="+" bindtap="calcKey">+</view>
+      <view class="calc-key key-num" data-k="1" bindtap="calcKey">1</view>
+      <view class="calc-key key-num" data-k="2" bindtap="calcKey">2</view>
+      <view class="calc-key key-num" data-k="3" bindtap="calcKey">3</view>
+      <view class="calc-key key-eq" data-k="=" bindtap="calcKey">=</view>
+      <view class="calc-key key-num span2" data-k="0" bindtap="calcKey">0</view>
+      <view class="calc-key key-num" data-k="." bindtap="calcKey">.</view>
+      <view class="calc-key key-fn" data-k="back" bindtap="calcKey">⌫</view>
+    </view>
+    <button class="calc-fill" bindtap="applyCalc">{{calcTarget === 'fx' ? '填入外币价' : '填入价格'}}</button>
+  </view>
+</view>

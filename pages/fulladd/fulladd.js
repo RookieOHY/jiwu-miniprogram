@@ -1,5 +1,18 @@
 const store = require('../../utils/store')
 const cats = require('../../utils/cats')
+
+function round10(n) {
+  return Math.round(n * 1e10) / 1e10
+}
+function calcApply(a, b, op) {
+  switch (op) {
+    case '+': return a + b
+    case '−': return a - b
+    case '×': return a * b
+    case '÷': return b === 0 ? 0 : a / b
+  }
+  return b
+}
 const tagsUtil = require('../../utils/tags')
 const icons = require('../../utils/icons')
 
@@ -71,7 +84,19 @@ Page({
     extraType: '支出',
     extraName: '',
     extraAmount: '',
-    extraDate: ''
+    extraDate: '',
+    // 价格与外币
+    fxSheet: false,
+    fxCurrency: 'USD',
+    fxPrice: '',
+    fxRate: store.rateOf('USD'),
+    // 计算器
+    showCalc: false,
+    calcTarget: 'price',
+    calcDisplay: '0',
+    calcAcc: null,
+    calcOp: null,
+    calcFresh: true
   },
 
   onLoad() {
@@ -404,6 +429,127 @@ Page({
     const photos = this.data.photos.slice()
     photos.splice(i, 1)
     this.setData({ photos })
+  },
+
+  /* ---------- 购买价格：汇率与计算器 ---------- */
+
+  onCurrency(e) {
+    const key = e.currentTarget.dataset.key
+    this.setData({ currency: key, symbol: store.currencySymbol(key) })
+  },
+
+  openFxSheet() {
+    const fxCurrency = this.data.currency === 'CNY' ? 'USD' : this.data.currency
+    this.setData({
+      fxSheet: true,
+      fxCurrency,
+      fxRate: store.rateOf(fxCurrency),
+      fxPrice: this.data.fxPrice || ''
+    })
+  },
+
+  closeFxSheet() {
+    this.setData({ fxSheet: false })
+  },
+
+  cycleFx() {
+    const list = store.CURRENCIES.filter((c) => c.key !== 'CNY')
+    const i = list.findIndex((c) => c.key === this.data.fxCurrency)
+    const next = list[(i + 1) % list.length]
+    this.setData({ fxCurrency: next.key, fxRate: store.rateOf(next.key) })
+  },
+
+  onFxPrice(e) {
+    this.setData({ fxPrice: e.detail.value })
+  },
+
+  /** 折合本位币（实时） */
+  _fxConverted() {
+    return round10(parseFloat(this.data.fxPrice) || 0) * this.data.fxRate
+  },
+
+  confirmFx() {
+    const fx = parseFloat(this.data.fxPrice) || 0
+    const converted = round10(fx * this.data.fxRate)
+    if (!(fx > 0)) {
+      wx.showToast({ title: '请填写外币原价', icon: 'none' })
+      return
+    }
+    this.setData({
+      currency: this.data.fxCurrency,
+      symbol: store.currencySymbol(this.data.fxCurrency),
+      price: String(converted),
+      fxSheet: false
+    })
+  },
+
+  /* ---------- 计算器 ---------- */
+
+  openCalc(e) {
+    const t = (e && e.currentTarget && e.currentTarget.dataset.t) || 'price'
+    let cur = '0'
+    if (t === 'price') cur = this.data.price || '0'
+    if (t === 'fx') cur = this.data.fxPrice || '0'
+    this.setData({ showCalc: true, calcTarget: t, calcDisplay: cur, calcAcc: null, calcOp: null, calcFresh: true })
+  },
+
+  closeCalc() {
+    this.setData({ showCalc: false })
+  },
+
+  calcKey(e) {
+    const k = e.currentTarget.dataset.k
+    const st = this.data
+    let d = st.calcDisplay
+
+    if (k === 'C') {
+      this.setData({ calcDisplay: '0', calcAcc: null, calcOp: null, calcFresh: true })
+      return
+    }
+    if (k === 'back') {
+      if (!st.calcFresh) {
+        d = d.length > 1 ? d.slice(0, -1) : '0'
+        if (d === '-' || d === '') d = '0'
+        this.setData({ calcDisplay: d })
+      }
+      return
+    }
+    if ('+−×÷'.indexOf(k) >= 0) {
+      const cur = parseFloat(d) || 0
+      const base = (st.calcAcc !== null && st.calcOp) ? round10(calcApply(st.calcAcc, cur, st.calcOp)) : cur
+      this.setData({ calcAcc: base, calcOp: k, calcFresh: true, calcDisplay: String(base) })
+      return
+    }
+    if (k === '=') {
+      if (st.calcOp !== null && st.calcAcc !== null) {
+        const cur = parseFloat(d) || 0
+        const r = round10(calcApply(st.calcAcc, cur, st.calcOp))
+        this.setData({ calcDisplay: String(r), calcAcc: null, calcOp: null, calcFresh: true })
+      }
+      return
+    }
+    if (st.calcFresh) {
+      this.setData({ calcDisplay: k === '.' ? '0.' : k, calcFresh: false })
+      return
+    }
+    if (k === '.') {
+      if (d.indexOf('.') >= 0) return
+      d += '.'
+    } else {
+      if (d === '0') d = k
+      else if (d.replace('-', '').replace('.', '').length < 10) d += k
+    }
+    this.setData({ calcDisplay: d })
+  },
+
+  applyCalc() {
+    const v = parseFloat(this.data.calcDisplay) || 0
+    const t = this.data.calcTarget
+    if (t === 'fx') {
+      this.setData({ fxPrice: v > 0 ? String(v) : '', showCalc: false })
+    } else {
+      this.setData({ price: v > 0 ? String(v) : '', showCalc: false }, () => this._updateNeed())
+    }
   },
 
   /* ---------- 附加收支 ---------- */

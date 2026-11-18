@@ -336,6 +336,45 @@ function testTabBar() {
   A(comp.data.hideText === true, '文本默认隐藏')
 }
 
+/* ---------- 场景 9：外币价格 ---------- */
+function testFx() {
+  console.log('▶ 外币价格')
+  freshUtils()
+  const wx = makeWx({})
+  wx._tabbar = { data: {}, setData(p) { Object.assign(this.data, p) } }
+  const inst = loadPage('pages/fulladd/fulladd.js', wx)
+  inst.onLoad({})
+
+  inst.setData({ name: '海淘货', price: '' })
+  inst.openFxSheet()
+  A(inst.data.showCalc === false, '外币弹层初始计算器关闭')
+  A(inst.data.fxCurrency === 'USD', '默认外币 USD')
+
+  inst.onFxPrice({ detail: { value: '100' } })
+  const conv = inst._fxConverted()
+  A(Math.abs(conv - 720) < 0.01, '折合本位币 100USD→¥720')
+
+  inst.cycleFx()
+  A(inst.data.fxCurrency === 'EUR', '币种轮换到 EUR')
+  A(inst.data.fxRate === 7.9, '汇率随币种更新（EUR 7.9）')
+
+  inst.onFxPrice({ detail: { value: '50' } })
+  inst.confirmFx()
+  A(inst.data.currency === 'EUR', '确定后币种切换')
+  A(inst.data.price === '395', '价格折算 50EUR→¥395')
+  A(inst.data.fxSheet === false, '弹层关闭')
+
+  // 计算器填外币价
+  inst.openCalc({ currentTarget: { dataset: { t: 'fx' } } })
+  A(inst.data.calcTarget === 'fx', '计算器目标为外币价')
+  inst.calcKey({ currentTarget: { dataset: { k: '2' } } })
+  inst.calcKey({ currentTarget: { dataset: { k: '0' } } })
+  inst.calcKey({ currentTarget: { dataset: { k: '=' } } })
+  A(inst.data.calcDisplay === '20', '计算 20')
+  inst.applyCalc()
+  A(inst.data.fxPrice === '20', '填入外币价')
+}
+
 /* ---------- 运行全部 ---------- */
 try { testStore() } catch (e) { fails.push('store 崩溃: ' + e.message) }
 try { testAddPage() } catch (e) { fails.push('add 崩溃: ' + e.message) }
@@ -345,6 +384,7 @@ try { testIndex() } catch (e) { fails.push('index 崩溃: ' + e.message) }
 try { testCats() } catch (e) { fails.push('cats 崩溃: ' + e.message) }
 try { testTags() } catch (e) { fails.push('tags 崩溃: ' + e.message) }
 try { testTabBar() } catch (e) { fails.push('tabbar 崩溃: ' + e.message) }
+try { testFx() } catch (e) { fails.push('fx 崩溃: ' + e.message) }
 
 console.log('\n✅ 功能断言通过 ' + pass + ' 项')
 if (fails.length) {

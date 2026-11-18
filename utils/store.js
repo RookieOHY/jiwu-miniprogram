@@ -25,8 +25,11 @@ const CATEGORIES = [
 // 币种
 const USD_TO_CNY = 7.2 // 汇率，后续可做成可配置
 const CURRENCIES = [
-  { key: 'CNY', name: '人民币', symbol: '¥' },
-  { key: 'USD', name: '美元', symbol: '$' }
+  { key: 'CNY', name: '人民币', symbol: '¥', rate: 1 },
+  { key: 'USD', name: '美元', symbol: '$', rate: 7.2 },
+  { key: 'EUR', name: '欧元', symbol: '€', rate: 7.9 },
+  { key: 'JPY', name: '日元', symbol: 'JP¥', rate: 0.048 },
+  { key: 'GBP', name: '英镑', symbol: '£', rate: 9.3 }
 ]
 
 function currencySymbol(key) {
@@ -36,7 +39,14 @@ function currencySymbol(key) {
 
 /** 折算成人民币，用于跨币种汇总 */
 function toCNY(price, currency) {
-  return currency === 'USD' ? price * USD_TO_CNY : price
+  const c = CURRENCIES.find((c) => c.key === currency)
+  return price * ((c && c.rate) || 1)
+}
+
+/** 汇率：1 单位外币 = N 人民币 */
+function rateOf(currency) {
+  const c = CURRENCIES.find((c) => c.key === currency)
+  return (c && c.rate) || 1
 }
 
 // 购买渠道
@@ -293,6 +303,7 @@ module.exports = {
   getPlatformChar,
   currencySymbol,
   toCNY,
+  rateOf,
   getAll,
   getById,
   addItem,

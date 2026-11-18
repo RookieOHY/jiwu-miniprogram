@@ -653,3 +653,96 @@ page {
   color: var(--accent);
   font-weight: 600;
 }
+
+/* ============ 购买价格行 ============ */
+.price-sym {
+  font-size: 28rpx;
+  color: var(--text-1);
+  margin-right: 6rpx;
+  flex-shrink: 0;
+}
+.p-ico {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 36rpx 36rpx;
+  margin-left: 18rpx;
+}
+.p-ico.swap {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3 4 7l4 4'/%3E%3Cpath d='M4 7h16'/%3E%3Cpath d='m16 21 4-4-4-4'/%3E%3Cpath d='M20 17H4'/%3E%3C/svg%3E");
+}
+.p-ico.calc {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='16' height='20' x='4' y='2' rx='2'/%3E%3Cline x1='8' x2='16' y1='6' y2='6'/%3E%3Cline x1='16' x2='16' y1='14' y2='18'/%3E%3Cpath d='M16 10h.01'/%3E%3Cpath d='M12 10h.01'/%3E%3Cpath d='M8 10h.01'/%3E%3Cpath d='M12 14h.01'/%3E%3Cpath d='M8 14h.01'/%3E%3Cpath d='M12 18h.01'/%3E%3Cpath d='M8 18h.01'/%3E%3C/svg%3E");
+}
+
+/* 外币弹层 */
+.fx-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 135;
+  display: flex;
+  align-items: flex-end;
+}
+.fx-panel {
+  width: 100%;
+  background: var(--card);
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 32rpx 32rpx calc(env(safe-area-inset-bottom) + 28rpx);
+  box-sizing: border-box;
+}
+.fx-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+.fx-cur {
+  font-size: 28rpx;
+  color: var(--text-1);
+}
+.fx-label {
+  font-size: 24rpx;
+  color: var(--text-2);
+  margin: 24rpx 0 12rpx;
+}
+.fx-input-row {
+  display: flex;
+  align-items: center;
+  background: var(--track);
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+}
+.fx-sym {
+  font-size: 30rpx;
+  color: var(--text-1);
+  margin-right: 8rpx;
+}
+.fx-input {
+  flex: 1;
+  font-size: 30rpx;
+}
+.fx-input-row .p-ico {
+  margin-left: 16rpx;
+}
+.fx-converted {
+  font-size: 34rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", sans-serif;
+  color: var(--text-1);
+}
+.fx-ok {
+  margin-top: 32rpx;
+  width: 100%;
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  padding: 22rpx 0;
+  line-height: 1.4;
+}
+.fx-ok::after {
+  border: none;
+}
