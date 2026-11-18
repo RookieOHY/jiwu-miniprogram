@@ -60,12 +60,13 @@ Page({
     this.refresh()
   },
 
-  /** 直接选择视图（list | card），不做切换翻转 */
+  /** 直接选择视图（list | card | cat） */
   setView(e) {
     const viewMode = e.currentTarget.dataset.v
     if (viewMode === this.data.viewMode) return
     this.setData({ viewMode })
     wx.setStorageSync('viewMode', viewMode)
+    this.refresh()
   },
 
   refresh() {
