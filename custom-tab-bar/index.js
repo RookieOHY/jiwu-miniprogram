@@ -23,7 +23,6 @@ Component({
   data: {
     selected: 0,
     hideText: true,
-    plusTip: '记物品',
     list: [
       { pagePath: '/pages/index/index', text: '物品' },
       { pagePath: '/pages/wishlist/wishlist', text: '种草' },
@@ -38,10 +37,8 @@ Component({
       const pages = getCurrentPages()
       const cur = pages.length ? '/' + pages[pages.length - 1].route : ''
       const idx = this.data.list.findIndex((it) => it.pagePath === cur)
-      // ➕ 气泡跟随当前 tab：种草页种一株，其余记物品
-      const plusTip = idx === 1 ? '种一株' : '记物品'
-      if (idx >= 0 && (idx !== this.data.selected || plusTip !== this.data.plusTip)) {
-        this.setData({ selected: idx, plusTip })
+      if (idx >= 0 && idx !== this.data.selected) {
+        this.setData({ selected: idx })
       }
       const hideText = store.getTabbarHideText()
       if (hideText !== this.data.hideText) {
