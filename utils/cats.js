@@ -73,6 +73,41 @@ function resetDefaults() {
   setGroups(JSON.parse(JSON.stringify(DEFAULT_GROUPS)))
 }
 
+/** 子分类默认图标（无匹配时回落到大分类图标） */
+const SUB_ICON = {
+  '手机通讯': '/assets/3d/phone.png',
+  '电脑办公': '/assets/3d/laptop.png',
+  '摄影摄像': '/assets/3d/camera.png',
+  '数码配件': '/assets/3d/headphone.png',
+  '智能设备': '/assets/3d/watch.png',
+  '男装女装': '/assets/3d/tshirt.png',
+  '鞋靴箱包': '/assets/3d/boot.png',
+  '配饰腕表': '/assets/3d/ring.png',
+  '面部护肤': '/assets/3d/soap.png',
+  '魅力彩妆': '/assets/3d/rose.png',
+  '洗护身体': '/assets/3d/toothbrush.png',
+  '学习文具': '/assets/3d/pencil.png',
+  '图书杂志': '/assets/3d/books.png',
+  '办公用品': '/assets/3d/pushpin.png',
+  '运动鞋服': '/assets/3d/shirt.png',
+  '户外装备': '/assets/3d/bicycle.png',
+  '健身器材': '/assets/3d/basketball.png',
+  '家用工具': '/assets/3d/scissors.png',
+  '五金耗材': '/assets/3d/key.png',
+  '零食饮料': '/assets/3d/cake.png',
+  '生鲜果蔬': '/assets/3d/apple.png',
+  '锅具餐具': '/assets/3d/egg.png',
+  '小家电': '/assets/3d/tv.png',
+  '家具家电': '/assets/3d/couch.png',
+  '家纺布艺': '/assets/3d/bed.png',
+  '宠物粮食': '/assets/3d/apple.png',
+  '宠物玩具': '/assets/3d/teddy.png'
+}
+
+function getSubIcon(sub, groupIcon) {
+  return SUB_ICON[sub] || groupIcon
+}
+
 module.exports = {
   DEFAULT_GROUPS,
   getGroups,
@@ -81,5 +116,6 @@ module.exports = {
   removeSub,
   exportJSON,
   importJSON,
-  resetDefaults
+  resetDefaults,
+  getSubIcon
 }

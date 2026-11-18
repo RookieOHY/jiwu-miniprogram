@@ -26,6 +26,7 @@ Page({
     showCatPanel: false,
     catKeyword: '',
     catGroups: [],
+    displayGroups: [],
     tags: [],
     tagInput: '',
     // 计价方式
@@ -80,7 +81,7 @@ Page({
   /* ---------- 选择分类面板（大分类 → 子分类） ---------- */
 
   openCatPanel() {
-    this.setData({ showCatPanel: true, catKeyword: '', catGroups: cats.getGroups() })
+    this.setData({ showCatPanel: true, catKeyword: '', catGroups: cats.getGroups() }, () => this._buildDisplay())
   },
 
   closeCatPanel() {
@@ -91,22 +92,32 @@ Page({
 
   onCatSearch(e) {
     const q = (e.detail.value || '').trim()
+    this.setData({ catKeyword: q }, () => this._buildDisplay())
+  },
+
+  /** 右栏展示数据：子分类附图标 */
+  _buildDisplay() {
     const groups = cats.getGroups()
-    if (!q) {
-      this.setData({ catKeyword: '', catGroups: groups })
-      return
-    }
-    this.setData({
-      catKeyword: q,
-      catGroups: groups
+    const q = this.data.catKeyword
+    let gs = groups
+    if (q) {
+      gs = groups
         .map((g) => ({ name: g.name, icon: g.icon, subs: g.subs.filter((x) => x.includes(q)) }))
         .filter((g) => g.subs.length)
-    })
+    } else {
+      gs = groups.filter((g) => g.name === this.data.categoryGroup)
+    }
+    const display = gs.map((g) => ({
+      name: g.name,
+      icon: g.icon,
+      subs: g.subs.map((x) => ({ name: x, icon: cats.getSubIcon(x, g.icon) }))
+    }))
+    this.setData({ displayGroups: display })
   },
 
   /** 点大分类：切换右侧子分类列表 */
   setCatGroup(e) {
-    this.setData({ categoryGroup: e.currentTarget.dataset.name, catKeyword: '' })
+    this.setData({ categoryGroup: e.currentTarget.dataset.name, catKeyword: '' }, () => this._buildDisplay())
   },
 
   /** 点子分类：选中并关闭 */

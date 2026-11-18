@@ -284,21 +284,20 @@
         </view>
       </scroll-view>
       <scroll-view scroll-y class="ccp-right">
-        <block wx:for="{{catGroups}}" wx:key="name" wx:for-item="g">
-          <block wx:if="{{catKeyword || categoryGroup === g.name}}">
-            <view
-              wx:for="{{g.subs}}"
-              wx:for-item="s"
-              wx:key="*this"
-              class="ccp-sub {{category === s ? 'on' : ''}}"
-              data-sub="{{s}}"
-              data-group="{{g.name}}"
-              bindtap="setSub"
-            >
-              <text>{{s}}</text>
-              <text wx:if="{{category === s}}" class="ccp-check">✓</text>
-            </view>
-          </block>
+        <block wx:for="{{displayGroups}}" wx:key="name" wx:for-item="g">
+          <view
+            wx:for="{{g.subs}}"
+            wx:for-item="s"
+            wx:key="name"
+            class="ccp-sub {{category === s.name ? 'on' : ''}}"
+            data-sub="{{s.name}}"
+            data-group="{{g.name}}"
+            bindtap="setSub"
+          >
+            <image class="ccp-sub-icon" src="{{s.icon}}" mode="aspectFit"/>
+            <text class="ccp-sub-name">{{s.name}}</text>
+            <text wx:if="{{category === s.name}}" class="ccp-check">✓</text>
+          </view>
         </block>
         <view class="ccp-empty" wx:if="{{!catGroups.length}}">没有匹配的分类</view>
       </scroll-view>

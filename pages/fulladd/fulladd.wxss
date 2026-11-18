@@ -554,3 +554,12 @@ page {
   padding: 100rpx 0;
   font-size: 26rpx;
 }
+
+.ccp-sub-icon {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+}
+.ccp-sub-name {
+  flex: 1;
+}
