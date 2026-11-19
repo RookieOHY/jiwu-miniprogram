@@ -94,6 +94,13 @@ function getReminders(todayStr) {
     })
   }
 
+  // 人类可读的日期行：预算是月份、吃灰是上次使用日，其余是到期日
+  out.forEach((r) => {
+    if (r.kind === 'budget') r.dateLabel = r.date.replace('-', ' 年 ') + ' 月'
+    else if (r.kind === 'dust') r.dateLabel = '上次使用 ' + r.date
+    else r.dateLabel = '到期 ' + r.date
+  })
+
   out.sort((a, b) => a.left - b.left)
   return out
 }

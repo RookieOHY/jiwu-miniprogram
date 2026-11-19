@@ -41,8 +41,8 @@
         />
         <text wx:else class="bud-num">{{amountHidden ? '****' : item.spent + ' / ' + (item.cap || '未设')}}</text>
       </view>
-      <view class="bud-track">
-        <view wx:if="{{item.cap}}" class="bud-fill {{item.over ? 'over' : ''}}" style="width: {{item.pct}}%;"></view>
+      <view class="bud-track" wx:if="{{item.cap}}">
+        <view class="bud-fill {{item.over ? 'over' : ''}}" style="width: {{item.pct}}%;"></view>
       </view>
       <view class="bud-sub">
         <text wx:if="{{item.over}}" class="bud-over">已超 {{item.overBy}} · 点击改上限</text>

@@ -18,7 +18,7 @@
         <text class="rm-left {{item.overdue ? 'overdue' : ''}}">{{item.text}}</text>
       </view>
       <view class="rm-name">{{item.name}}</view>
-      <view class="rm-date">{{item.date}}</view>
+      <view class="rm-date">{{item.dateLabel}}</view>
     </view>
     <view class="rm-x" data-id="{{item.id}}" catchtap="hide">×</view>
   </view>

@@ -246,10 +246,15 @@ Page({
       if (catIndex[name] === undefined) {
         const g = allGroups.find((x) => x.name === name)
         catIndex[name] = catView.length
-        catView.push({ name, icon: g ? g.icon : '/assets/3d/package.png', items: [] })
+        // 节头金额与位置视图同一口径（已折算人民币的 priceNum/dailyNum）
+        catView.push({ name, icon: g ? g.icon : '/assets/3d/package.png', items: [], spend: 0, daily: 0 })
       }
-      catView[catIndex[name]].items.push(it)
+      const g = catView[catIndex[name]]
+      g.items.push(it)
+      g.spend += it.priceNum || 0
+      g.daily += it.dailyNum || 0
     })
+    catView.forEach((g) => { g.spendText = store.fmtMoney(g.spend) })
     catView.sort((a, b) => b.items.length - a.items.length)
 
     // 位置视图：按「存放位置」文本聚合，未记录的归到最后
