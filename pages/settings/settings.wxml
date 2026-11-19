@@ -14,18 +14,6 @@
     <text wx:if="{{q}}" class="set-search-x" bindtap="clearSearch">×</text>
   </view>
 
-  <!-- 概览 -->
-  <view wx:if="{{!searching}}" class="card set-overview">
-    <view class="ov-cell">
-      <view class="ov-num">{{reminderCount}}</view>
-      <view class="ov-label">条提醒</view>
-    </view>
-    <view class="ov-cell">
-      <view class="ov-num">{{lockOn ? '开' : '关'}}</view>
-      <view class="ov-label">应用锁</view>
-    </view>
-  </view>
-
   <!-- 外观 -->
   <view class="card" wx:if="{{fmt.has(visibleSecs, '外观')}}">
     <view class="sec-title">外观</view>
@@ -151,27 +139,6 @@
   <!-- 隐私与安全 -->
   <view class="card" wx:if="{{fmt.has(visibleSecs, '隐私')}}">
     <view class="sec-title">隐私与安全</view>
-    <view class="row" wx:if="{{fmt.has(visibleKeys, 'appLock')}}">
-      <view class="row-main">
-        <view class="row-name">应用锁</view>
-        <view class="row-sub">{{hasPin ? '4 位数字口令，忘记可重置' : '开启前需先设一个 4 位口令'}}</view>
-      </view>
-      <switch checked="{{lockOn}}" color="#5856D6" bindchange="onLockSwitch"/>
-    </view>
-    <view class="row" wx:if="{{fmt.has(visibleKeys, 'setPin')}}" bindtap="goSetPin" hover-class="row-press" hover-stay-time="80">
-      <view class="row-main">
-        <view class="row-name">{{hasPin ? '修改口令' : '设置口令'}}</view>
-        <view class="row-sub">输入两次新口令确认</view>
-      </view>
-      <view class="row-arrow">›</view>
-    </view>
-    <view class="row" wx:if="{{fmt.has(visibleKeys, 'lockBg')}}">
-      <view class="row-main">
-        <view class="row-name">切后台自动上锁</view>
-        <view class="row-sub">离开小程序后再回来要重新输入</view>
-      </view>
-      <switch checked="{{lockBg}}" color="#5856D6" bindchange="onLockBg"/>
-    </view>
     <view class="row" wx:if="{{fmt.has(visibleKeys, 'privacyNote')}}" bindtap="privacyNote" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
         <view class="row-name">隐私说明</view>

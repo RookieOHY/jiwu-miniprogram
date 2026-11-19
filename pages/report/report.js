@@ -1,5 +1,4 @@
 const report = require('../../utils/report')
-const lock = require('../../utils/lock')
 
 Page({
   data: {
@@ -10,7 +9,6 @@ Page({
   },
 
   onShow() {
-    if (lock.guard()) return
     this.setData({ amountHidden: !!wx.getStorageSync('amountHidden') })
     this.refresh()
   },

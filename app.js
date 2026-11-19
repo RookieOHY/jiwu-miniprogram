@@ -1,11 +1,12 @@
-const lock = require('./utils/lock')
-
 App({
   onLaunch() {
     // 首次启动初始化存储结构
     if (!wx.getStorageSync('items')) {
       wx.setStorageSync('items', [])
     }
+    // 应用锁功能已移除，清掉残留配置
+    try { wx.removeStorageSync('lockConfig') } catch (e) {}
+
     // 修复早期编辑写入 item.extra 嵌套对象的数据（摊平回顶层字段）
     const store = require('./utils/store')
     const fixed = store.flattenLegacyExtras()
@@ -34,11 +35,6 @@ App({
         cur.setData({ __theme: res.theme })
       })
     }
-  },
-
-  /** 切后台即重新上锁（设置里可关） */
-  onHide() {
-    if (lock.enabled() && lock.onBackground()) lock.lockNow()
   },
 
   /** 旧分享卡片 / 失效路径不要停在白屏，直接回首页 */

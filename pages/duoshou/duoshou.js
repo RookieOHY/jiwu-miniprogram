@@ -1,5 +1,4 @@
 const store = require('../../utils/store')
-const lock = require('../../utils/lock')
 
 /** 秒数 → m:ss */
 function fmtSec(s) {
@@ -19,10 +18,6 @@ function fmtEstimate(n) {
 }
 
 Page({
-  onShow() {
-    if (lock.guard()) return
-  },
-
   data: {
     phase: 'mode', // mode 开始 | count 数数中 | done 数完 | quit 放弃
     wish: null,

@@ -1,11 +1,6 @@
 const store = require('../../utils/store')
-const lock = require('../../utils/lock')
 
 Page({
-  onShow() {
-    if (lock.guard()) return
-  },
-
   data: {
     isEdit: false,
     name: '',

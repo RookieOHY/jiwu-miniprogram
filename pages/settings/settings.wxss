@@ -133,27 +133,6 @@
   flex-shrink: 0;
 }
 
-/* 顶部概览 */
-.set-overview {
-  display: flex;
-  padding: 24rpx 0;
-  margin-bottom: 24rpx;
-}
-.ov-cell {
-  flex: 1;
-  text-align: center;
-}
-.ov-num {
-  font-size: 34rpx;
-  font-weight: 700;
-  font-family: "DIN Alternate", sans-serif;
-}
-.ov-label {
-  font-size: 22rpx;
-  color: var(--text-2);
-  margin-top: 4rpx;
-}
-
 /* 长文本截断（模板 ID 等） */
 .ellipsis {
   overflow: hidden;

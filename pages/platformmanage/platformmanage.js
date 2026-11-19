@@ -1,5 +1,4 @@
 const store = require('../../utils/store')
-const lock = require('../../utils/lock')
 
 Page({
   data: {
@@ -10,7 +9,6 @@ Page({
   },
 
   onShow() {
-    if (lock.guard()) return
     this.refresh()
   },
 

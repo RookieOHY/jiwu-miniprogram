@@ -16,7 +16,6 @@ function calcApply(a, b, op) {
 }
 const tagsUtil = require('../../utils/tags')
 const icons = require('../../utils/icons')
-const lock = require('../../utils/lock')
 
 function today() {
   const d = new Date()
@@ -26,7 +25,6 @@ function today() {
 
 Page({
   onShow() {
-    if (lock.guard()) return
     // 从渠道管理回来时刷新自定义渠道
     this.setData({
       platformChips: store.getPlatforms().map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))

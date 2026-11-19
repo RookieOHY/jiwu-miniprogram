@@ -1,13 +1,8 @@
 const cloud = require('../../utils/cloud')
-const lock = require('../../utils/lock')
 
 const LABELS = { buy: '买！', think: '再想想', no: '别买' }
 
 Page({
-  onShow() {
-    if (lock.guard()) return
-  },
-
   data: {
     state: 'loading', // loading | ready | error
     error: '',

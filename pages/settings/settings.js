@@ -4,7 +4,6 @@ const backup = require('../../utils/backup')
 const preview = require('../../utils/preview')
 const reminders = require('../../utils/reminders')
 const prefs = require('../../utils/prefs')
-const lock = require('../../utils/lock')
 const notify = require('../../utils/notify')
 const cats = require('../../utils/cats')
 const tagsUtil = require('../../utils/tags')
@@ -24,9 +23,6 @@ const ROWS = [
   { key: 'notifyAsk', sec: '提醒', label: '攒一次授权', kw: ['授权', '额度', '订阅次数'] },
   { key: 'notifyTest', sec: '提醒', label: '试发最紧急的一条', kw: ['试发', '测试', '发送', '试试'] },
   { key: 'notifyHelp', sec: '提醒', label: '开通步骤', kw: ['开通', '步骤', '怎么弄', '教程', '部署', '帮助'] },
-  { key: 'appLock', sec: '隐私', label: '应用锁', kw: ['锁', '密码', '口令', '加密', '防偷看', 'pin'] },
-  { key: 'setPin', sec: '隐私', label: '设置口令', kw: ['口令', '密码', '修改密码', 'pin', '锁', 'unlock'] },
-  { key: 'lockBg', sec: '隐私', label: '切后台自动上锁', kw: ['后台', '切后台', '自动上锁', '重新输入'] },
   { key: 'privacyNote', sec: '隐私', label: '隐私说明', kw: ['隐私', '说明', '数据存在哪里', '服务器', '上传', '明文', '安全', '存储', '本机'] },
   { key: 'catManage', sec: '整理', label: '分类管理', kw: ['分类', '大分类', '子分类', '归类', '类别', '整理'] },
   { key: 'tagManage', sec: '整理', label: '标签管理', kw: ['标签', 'tag', '整理'] },
@@ -78,10 +74,6 @@ Page({
     budgetAlert: true,
     warnDays: 30,
     dustDays: 90,
-    // 隐私
-    lockOn: false,
-    lockBg: true,
-    hasPin: false,
     // 微信提醒（订阅消息）
     notifyOn: false,
     tmplEditing: false,
@@ -96,7 +88,6 @@ Page({
   },
 
   onShow() {
-    if (lock.guard()) return
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3, hideText: store.getTabbarHideText() })
     }
@@ -127,9 +118,6 @@ Page({
       warnDays: p.warnDays,
       dustDays: p.dustDays,
       budgetAlert: p.budgetAlert !== false,
-      lockOn: lock.enabled(),
-      lockBg: lock.onBackground(),
-      hasPin: lock.hasPin(),
       notifyTmplId: notify.tmplId(),
       notifyQuota: notify.quota(),
       notifyOn: !!notify.tmplId(),
@@ -257,38 +245,11 @@ Page({
 
   /* ---------------- 隐私 ---------------- */
 
-  /** 应用锁开关：没口令时先去设口令，设完自动开启 */
-  onLockSwitch(e) {
-    const v = e.detail.value
-    if (v && !lock.hasPin()) {
-      this.setData({ lockOn: false })
-      wx.navigateTo({ url: '/pages/lock/lock?mode=set&enable=1' })
-      return
-    }
-    lock.toggle(v)
-    this.setData({ lockOn: lock.enabled() })
-    wx.showToast({ title: v ? '应用锁已开启' : '应用锁已关闭', icon: 'none' })
-    // 开着锁就当场演示一次，别让用户猜它到底生效没
-    if (v) setTimeout(() => lock.guard(), 800)
-  },
-
-  goSetPin() {
-    wx.navigateTo({ url: '/pages/lock/lock?mode=set&enable=' + (this.data.lockOn ? '1' : '0') })
-  },
-
-  onLockBg(e) {
-    const v = e.detail.value
-    lock.setOnBackground(v)
-    this.setData({ lockBg: v })
-  },
-
   privacyNote() {
     wx.showModal({
       title: '隐私说明',
       content:
         '· 所有数据只存在这台设备的微信里，不上传服务器\n' +
-        '· 应用锁防的是随手翻看，口令为本地哈希，不是加密存储\n' +
-        '· 忘记口令可直接重置，物品数据不会丢失\n' +
         '· 备份文件是明文，导出后请勿发送到群聊',
       showCancel: false,
       confirmText: '知道了'
