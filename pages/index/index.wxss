@@ -69,10 +69,10 @@
   line-height: 1.2;
   white-space: nowrap;
 }
-.hero-num.num-lg { font-size: 52rpx; }
-.hero-num.num-md { font-size: 42rpx; }
-.hero-num.num-sm { font-size: 34rpx; }
-.hero-num.num-xs { font-size: 28rpx; }
+.hero-num.num-lg { font-size: 44rpx; }
+.hero-num.num-md { font-size: 32rpx; }
+.hero-num.num-sm { font-size: 26rpx; }
+.hero-num.num-xs { font-size: 22rpx; }
 .hero-num-label {
   font-size: 22rpx;
   opacity: 0.8;
