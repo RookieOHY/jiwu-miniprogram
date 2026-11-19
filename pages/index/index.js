@@ -98,7 +98,7 @@ Page({
     // 查询条件候选
     this.setData({
       catGroups: cats.getGroups(),
-      platforms: store.PLATFORMS,
+      platforms: store.getPlatforms(),
       currencies: store.CURRENCIES,
       allTags: tagsUtil.getTags()
     })
@@ -339,6 +339,8 @@ Page({
       allTags: Array.from(new Set(tagsUtil.getTags().concat(
         store.getAll().reduce((acc, it) => acc.concat(it.tags || []), [])
       ))),
+      // 渠道实时取：会话内新增的自定义渠道要立刻出现在筛选里
+      platforms: store.getPlatforms(),
       allBrands: uniq(store.getAll().map((it) => it.brand).filter(Boolean)),
       allColors: uniq(store.getAll().map((it) => it.color).filter(Boolean)),
       allSeasons: uniq(store.getAll().map((it) => it.season).filter(Boolean))

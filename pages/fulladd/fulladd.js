@@ -27,6 +27,10 @@ function today() {
 Page({
   onShow() {
     if (lock.guard()) return
+    // 从渠道管理回来时刷新自定义渠道
+    this.setData({
+      platformChips: store.getPlatforms().map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
+    })
   },
 
   data: {
@@ -131,7 +135,7 @@ Page({
       maxDate: '',
       extraDate: t,
       catGroups: cats.getGroups(),
-      platformChips: store.PLATFORMS.map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
+      platformChips: store.getPlatforms().map((p) => Object.assign({}, p, { char: store.getPlatformChar(p.key) }))
     })
     this.filterIcons()
 
@@ -332,6 +336,11 @@ Page({
   /** 跳转分类管理 */
   goCatManage() {
     wx.navigateTo({ url: '/pages/catmanage/catmanage' })
+  },
+
+  /** 跳转渠道管理 */
+  goPlatformManage() {
+    wx.navigateTo({ url: '/pages/platformmanage/platformmanage' })
   },
 
   /* ---------- 图标选择面板 ---------- */

@@ -207,6 +207,7 @@
           bindtap="onPlatform"
         >{{item.name}}</view>
       </view>
+      <view class="ccp-manage" bindtap="goPlatformManage">渠道管理 ›</view>
       <view class="field-line">
         <text class="f-label">存放位置</text>
         <input class="f-input" placeholder="如：书房抽屉 / 客厅电视柜" placeholder-class="ph" value="{{location}}" bindinput="onLocation"/>

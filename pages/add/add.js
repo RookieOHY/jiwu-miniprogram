@@ -24,6 +24,7 @@ const lock = require('../../utils/lock')
 Page({
   onShow() {
     if (lock.guard()) return
+    this.updatePlatformChips()
   },
 
   data: {
@@ -180,8 +181,8 @@ Page({
   /** 计算渠道标签：收起时只显示常用项 + 当前已选的非常用项 */
   updatePlatformChips() {
     const list = this.data.showAllPlatforms
-      ? store.PLATFORMS
-      : store.PLATFORMS.filter(
+      ? store.getPlatforms()
+      : store.getPlatforms().filter(
           (p) => store.COMMON_PLATFORMS.includes(p.key) || p.key === this.data.platform
         )
     this.setData({

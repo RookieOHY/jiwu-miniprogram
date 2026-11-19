@@ -74,14 +74,49 @@ const PLATFORMS = [
 // 常用渠道（表单平铺展示，其余收进「更多」）
 const COMMON_PLATFORMS = ['jd', 'tb', 'pdd', 'xy', 'wx', 'amazon', 'other']
 
+// 自定义渠道：内置渠道之后追加，key 加 c_ 前缀防撞
+const PKEY = 'customPlatforms'
+
+function getCustomPlatforms() {
+  const v = wx.getStorageSync(PKEY)
+  return Array.isArray(v) ? v : []
+}
+
+/** 内置 + 自定义的完整渠道列表（选择器都应使用这个） */
+function getPlatforms() {
+  return PLATFORMS.concat(getCustomPlatforms())
+}
+
+function addPlatform(name) {
+  const n = String(name || '').trim()
+  if (!n) return { ok: false, reason: 'empty' }
+  if (n.length > 8) return { ok: false, reason: 'long' }
+  if (getPlatforms().some((p) => p.name === n)) return { ok: false, reason: 'dup' }
+  const key = 'c_' + Date.now() + '_' + Math.floor(Math.random() * 1000)
+  const list = getCustomPlatforms()
+  list.push({ key, name: n })
+  wx.setStorageSync(PKEY, list)
+  return { ok: true, key }
+}
+
+/** 删除自定义渠道：被物品引用着就不允许删（否则历史物品渠道名会显示错） */
+function removePlatform(key) {
+  const used = getAll().filter((it) => it.platform === key).length
+  if (used) return { ok: false, used }
+  wx.setStorageSync(PKEY, getCustomPlatforms().filter((p) => p.key !== key))
+  return { ok: true }
+}
+
 function getPlatformName(key) {
-  const p = PLATFORMS.find((p) => p.key === key)
+  const all = PLATFORMS.concat(getCustomPlatforms())
+  const p = all.find((p) => p.key === key)
   return p ? p.name : '其他'
 }
 
 /** 渠道首字徽章：品牌色圆底 + 名字首字（规避商标，又有 App 图标感） */
 function getPlatformChar(key) {
-  const p = PLATFORMS.find((p) => p.key === key)
+  const all = PLATFORMS.concat(getCustomPlatforms())
+  const p = all.find((p) => p.key === key)
   return p ? p.name.charAt(0) : '其'
 }
 
@@ -390,6 +425,10 @@ module.exports = {
   CATEGORIES,
   PLATFORMS,
   COMMON_PLATFORMS,
+  getPlatforms,
+  getCustomPlatforms,
+  addPlatform,
+  removePlatform,
   CURRENCIES,
   USD_TO_CNY,
   PIN_LIMIT,

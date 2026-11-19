@@ -6,6 +6,8 @@ const reminders = require('../../utils/reminders')
 const prefs = require('../../utils/prefs')
 const lock = require('../../utils/lock')
 const notify = require('../../utils/notify')
+const cats = require('../../utils/cats')
+const tagsUtil = require('../../utils/tags')
 
 // 设置项索引：分组 + 搜索关键词（WXML 不能调方法，匹配逻辑全在这里算好）
 const ROWS = [
@@ -26,6 +28,9 @@ const ROWS = [
   { key: 'setPin', sec: '隐私', label: '设置口令', kw: ['口令', '密码', '修改密码', 'pin', '锁', 'unlock'] },
   { key: 'lockBg', sec: '隐私', label: '切后台自动上锁', kw: ['后台', '切后台', '自动上锁', '重新输入'] },
   { key: 'privacyNote', sec: '隐私', label: '隐私说明', kw: ['隐私', '说明', '数据存在哪里', '服务器', '上传', '明文', '安全', '存储', '本机'] },
+  { key: 'catManage', sec: '整理', label: '分类管理', kw: ['分类', '大分类', '子分类', '归类', '类别', '整理'] },
+  { key: 'tagManage', sec: '整理', label: '标签管理', kw: ['标签', 'tag', '整理'] },
+  { key: 'platformManage', sec: '整理', label: '渠道管理', kw: ['渠道', '平台', '购买渠道', '京东', '淘宝', '自定义渠道', '整理'] },
   { key: 'backup', sec: '数据', label: '备份与恢复', kw: ['备份', '恢复', '导出', '导入', 'json', 'csv', '文件'] },
   { key: 'loadDemo', sec: '数据', label: '载入演示数据', kw: ['演示', '示例', '测试数据', 'demo'] },
   { key: 'clearDemo', sec: '数据', label: '清除演示数据', kw: ['清除演示', '删演示', 'demo'] },
@@ -33,7 +38,7 @@ const ROWS = [
   { key: 'rates', sec: '汇率', label: '外币折算汇率', kw: ['汇率', '美元', 'usd', '欧元', '日元', '英镑', '换算', '折算', '外币'] },
   { key: 'version', sec: '关于', label: '版本', kw: ['版本', '关于', 'mvp'] }
 ]
-const SECS = ['外观', '提醒', '隐私', '数据', '汇率', '关于']
+const SECS = ['外观', '提醒', '隐私', '整理', '数据', '汇率', '关于']
 const NOTIFY_KEYS = ['notify', 'notifyTmpl', 'notifyAsk', 'notifyTest', 'notifyHelp']
 
 const VIEW_OPTS = [
@@ -55,6 +60,10 @@ Page({
     visibleKeys: ROWS.map((r) => r.key),
     visibleSecs: SECS,
     notifyOpen: false,
+    groupCount: 0,
+    tagCount: 0,
+    platformCount: 0,
+    customPlatformCount: 0,
     notifySummary: '未配置——提醒只能打开小程序才看得到',
     // 外观
     tabbarHideText: true,
@@ -105,6 +114,10 @@ Page({
     this.setData({
       demoCount: preview.count(),
       reminderCount: reminders.countReminders(),
+      groupCount: cats.getGroups().length,
+      tagCount: tagsUtil.getTags().length,
+      platformCount: store.getPlatforms().length,
+      customPlatformCount: store.getCustomPlatforms().length,
       notifySummary: this._notifySummary(),
       tabbarHideText: store.getTabbarHideText(),
       amountHidden: !!wx.getStorageSync('amountHidden'),
@@ -280,6 +293,20 @@ Page({
       showCancel: false,
       confirmText: '知道了'
     })
+  },
+
+  /* ---------------- 整理：分类 / 标签 / 渠道 ---------------- */
+
+  goCatManage() {
+    wx.navigateTo({ url: '/pages/catmanage/catmanage' })
+  },
+
+  goTagManage() {
+    wx.navigateTo({ url: '/pages/tagmanage/tagmanage' })
+  },
+
+  goPlatformManage() {
+    wx.navigateTo({ url: '/pages/platformmanage/platformmanage' })
   },
 
   /* ---------------- 微信提醒（订阅消息） ---------------- */

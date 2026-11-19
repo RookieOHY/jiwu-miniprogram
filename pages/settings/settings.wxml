@@ -181,6 +181,32 @@
     </view>
   </view>
 
+  <!-- 整理：分类 / 标签 / 渠道 -->
+  <view class="card" wx:if="{{fmt.has(visibleSecs, '整理')}}">
+    <view class="sec-title">分类 · 标签 · 渠道</view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'catManage')}}" bindtap="goCatManage" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">分类管理</view>
+        <view class="row-sub">{{groupCount}} 个大分类 · 新增 / 改名 / 排序</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'tagManage')}}" bindtap="goTagManage" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">标签管理</view>
+        <view class="row-sub">{{tagCount}} 个标签 · 删除不影响已有物品</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+    <view class="row" wx:if="{{fmt.has(visibleKeys, 'platformManage')}}" bindtap="goPlatformManage" hover-class="row-press" hover-stay-time="80">
+      <view class="row-main">
+        <view class="row-name">渠道管理</view>
+        <view class="row-sub">{{platformCount}} 个渠道（含自定义 {{customPlatformCount}} 个）</view>
+      </view>
+      <view class="row-arrow">›</view>
+    </view>
+  </view>
+
   <!-- 数据与备份 -->
   <view class="card" wx:if="{{fmt.has(visibleSecs, '数据')}}">
     <view class="sec-title">数据与备份</view>

@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="card">
+    <view class="sec-title">我的渠道</view>
+    <view class="add-row">
+      <input class="add-input" placeholder="新建渠道，如 得物 / 闲鱼小号" placeholder-class="ph" value="{{newName}}" bindinput="onNewName" confirm-type="done" bindconfirm="add"/>
+      <view class="add-btn" bindtap="add">添加</view>
+    </view>
+    <view class="chip-wrap">
+      <view wx:for="{{customs}}" wx:key="key" class="tag-chip">
+        {{item.name}}
+        <text wx:if="{{counts[item.key]}}" class="chip-count">{{counts[item.key]}}</text>
+        <text class="chip-x" data-k="{{item.key}}" data-n="{{item.name}}" bindtap="remove">×</text>
+      </view>
+      <view wx:if="{{!customs.length}}" class="empty">还没有自定义渠道</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sec-title">内置渠道（不可删改）</view>
+    <view class="chip-wrap">
+      <view wx:for="{{builtin}}" wx:key="key" class="tag-chip builtin">{{item.name}}</view>
+    </view>
+  </view>
+
+  <view class="tip">自定义渠道会出现在添加物品与筛选里；被物品使用的渠道不能删除</view>
+</view>

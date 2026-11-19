@@ -8,6 +8,7 @@
     "pages/fulladd/fulladd",
     "pages/catmanage/catmanage",
     "pages/tagmanage/tagmanage",
+    "pages/platformmanage/platformmanage",
     "pages/duoshou/duoshou",
     "pages/vote/vote",
     "pages/reminders/reminders",
