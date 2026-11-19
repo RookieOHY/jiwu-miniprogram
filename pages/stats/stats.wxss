@@ -301,3 +301,53 @@ page {
 .row-press {
   opacity: 0.6;
 }
+
+/* 使用与闲置 */
+.freq-row {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.freq-row:last-child {
+  border-bottom: none;
+}
+.freq-label {
+  width: 100rpx;
+  flex-shrink: 0;
+  font-size: 24rpx;
+  color: var(--text-2);
+}
+.freq-track {
+  flex: 1;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: var(--track);
+  overflow: hidden;
+  margin-right: 18rpx;
+}
+.freq-fill {
+  height: 100%;
+  border-radius: 4rpx;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.freq-num {
+  flex-shrink: 0;
+  width: 60rpx;
+  font-size: 24rpx;
+  text-align: right;
+  color: var(--text-2);
+  font-family: "DIN Alternate", sans-serif;
+}
+.freq-sum {
+  margin: 20rpx 0 8rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.freq-note {
+  font-size: 20rpx;
+  color: var(--text-dim);
+  line-height: 1.6;
+}

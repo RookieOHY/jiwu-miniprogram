@@ -55,10 +55,32 @@ Page({
     const retired = it.retired
     const amountHidden = !!wx.getStorageSync('amountHidden')
     const sold = !!it.sold
+
+    // 服役进度：未退役且设了预计退役 -> 进度条（已持有/预设生命）；
+    // 已退役 -> 满条（灰色，表示“完成”）；超期 -> 红色+超期标记
+    const diffDaysMs = (d1, d2) => Math.floor((new Date(d1 + 'T00:00:00') - new Date(d2 + 'T00:00:00')) / 86400000)
+    let lifeShow = false, lifePct = 0, lifeOverdue = false, lifeCaption = ''
+    if (retired) {
+      lifeShow = true
+      lifePct = 100
+      lifeCaption = '已服役完成（' + (it.retiredDate || it.buyDate) + ' 起止）'
+    } else if (it.expectedRetireDate) {
+      const remain = diffDaysMs(it.expectedRetireDate, today)
+      const life = store.daysHeld(it) + remain // 剩余可服役天数（负=已超期）
+      if (life > 0) {
+        lifeShow = true
+        lifePct = Math.min(100, Math.max(0, Math.round((store.daysHeld(it) / life) * 100)))
+        lifeOverdue = remain < 0
+        lifeCaption = lifeOverdue
+          ? '已超期 ' + Math.abs(remain) + ' 天（预计 ' + it.expectedRetireDate + ' 退役）'
+          : '预计 ' + it.expectedRetireDate + ' 退役 · 已服役 ' + lifePct + '%'
+      }
+    }
     const profit = sold ? it.soldPrice - it.price : 0
     const be = store.breakEven(it)
     this.setData({
       amountHidden,
+      lifeShow, lifePct, lifeOverdue, lifeCaption,
       item: {
         id: it.id,
         name: it.name,

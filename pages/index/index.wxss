@@ -874,3 +874,16 @@
   color: var(--text-dim);
   padding: 4rpx 0 8rpx;
 }
+
+/* 总净值：现值行 */
+.hero-value {
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--text-2);
+  margin-top: 12rpx;
+}
+.hv-num {
+  font-weight: 600;
+  font-family: "DIN Alternate", sans-serif;
+  color: var(--text-1);
+}

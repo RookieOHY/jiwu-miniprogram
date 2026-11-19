@@ -7,6 +7,12 @@
     <view class="hero-num">{{item.symbol}}<text class="hero-num-big">{{amountHidden ? '****' : daily}}</text></view>
     <view class="hero-sub" wx:if="{{!item.retired}}">{{amountHidden ? '已持有 ' + days + ' 天' : '已持有 ' + days + ' 天 · 30 天后日均 ¥' + daily30 + ' · 一年后 ¥' + daily365}}</view>
     <view class="hero-sub" wx:else>共持有 {{days}} 天（{{item.buyDate}} ~ {{item.retiredDate}}）</view>
+
+    <!-- 服役进度：有预计退役日才画；已退役画满灰条 -->
+    <block wx:if="{{lifeShow}}">
+      <view class="life-bar"><view class="life-fill {{lifeOverdue ? 'over' : ''}} {{item.retired ? 'done' : ''}}" style="width: {{lifePct}}%;"></view></view>
+      <view class="life-cap" wx:if="{{lifeCaption}}">{{lifeCaption}}</view>
+    </block>
   </view>
 
   <!-- 双引擎：日均 / 次均 -->
@@ -82,7 +88,7 @@
       <view class="sec-head">计价与服役</view>
       <view class="row"><text class="k">计价方式</text><text class="v">{{item.pricingDaily ? '日均计价' : '一次性'}}</text></view>
       <view class="row" wx:if="{{item.recycle}}"><text class="k">循环计价</text><text class="v">开启（订阅制周期付费）</text></view>
-      <view class="row ed" wx:if="{{item.expectedRetireDate}}" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate}}</text><text class="ed-go">›</text></view>
+      <view class="row ed" data-f="expectedRetireDate" bindtap="openDate"><text class="k">预计退役</text><text class="v">{{item.expectedRetireDate || '未设置 · 点击添加'}}</text><text class="ed-go">›</text></view>
       <view class="row"><text class="k">服役状态</text><text class="v">{{item.inService ? '服役中' : '闲置'}}</text></view>
       <view class="row ed" bindtap="startEdit" data-f="valuation" data-n="1"><text class="k">当前估值</text><input wx:if="{{editField === 'valuation'}}" class="inline-in" type="digit" focus="{{true}}" value="{{editValue}}" placeholder="现在还值多少钱" placeholder-class="ph" data-f="valuation" data-n="1" catchtap="noop" bindinput="onEditInput" bindblur="commitEdit" bindconfirm="commitEdit"/><block wx:else><text class="v price">{{amountHidden ? '****' : '¥' + item.valuation}}</text><text class="ed-go">›</text></block></view>
     </view>

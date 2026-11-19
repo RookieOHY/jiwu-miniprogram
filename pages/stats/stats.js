@@ -1,6 +1,7 @@
 const store = require('../../utils/store')
 const budget = require('../../utils/budget')
 const cats = require('../../utils/cats')
+const prefs = require('../../utils/prefs')
 
 function today() {
   const d = new Date()
@@ -18,6 +19,12 @@ Page({
     totalCount: 0,
     totalSpend: '0',
     period: 'month', // month | year
+    currentValue: '0',
+    valuationCount: 0,
+    freqBuckets: [],
+    idleSpend: 0,
+    dustDaysLabel: '90', // 与 prefs.dustDays 同步，留渲染侧的动态显示
+
     // 预算
     budgetRows: [],
     budgetMonth: '',
@@ -101,15 +108,58 @@ Page({
       .slice(0, 5)
 
     const rows = budget.rows()
+    // 使用频率分布 + 闲置金额（当前快照，不读历史日志）
+    const dayMs = 86400000
+    const nowMs = now
+    const heldItems = all.filter((it) => !it.retired)
+    const buckets = [
+      { key: 'd7', label: '7 天内', count: 0 },
+      { key: 'd30', label: '30 天内', count: 0 },
+      { key: 'd90', label: '90 天内', count: 0 },
+      { key: 'old', label: '90 天以上', count: 0 },
+      { key: 'none', label: '未记录', count: 0 }
+    ]
+    heldItems.forEach((it) => {
+      const last = String(it.lastUseDate || '')
+      let days = Infinity
+      if (last) days = Math.max(0, Math.floor((now - new Date(last + 'T00:00:00')) / dayMs))
+      let b = buckets[4]
+      if (!last) b = buckets[4]
+      else if (days <= 7) b = buckets[0]
+      else if (days <= 30) b = buckets[1]
+      else if (days <= 90) b = buckets[2]
+      else b = buckets[3]
+      b.count++
+    })
+    const maxB = Math.max(1, Math.max(...buckets.map((x) => x.count)))
+    buckets.forEach((x) => { x.w = Math.round((x.count / maxB) * 100) })
+    const dust = prefs.dustDays()
+    const idleSpend = heldItems
+      .filter((it) => {
+        const last = String(it.lastUseDate || '')
+        if (!last) return false
+        const days = Math.max(0, Math.floor((now - new Date(last + 'T00:00:00')) / dayMs))
+        return days >= dust
+      })
+      .reduce((a, it) => a + store.toCNY(it.price, it.currency), 0)
+    const valued = heldItems.filter((it) => Number(it.valuation) > 0)
+    const heldSpend = heldItems.reduce((a, it) => a + store.toCNY(it.price, it.currency), 0)
+    const heldValue = valued.reduce((a, it) => a + store.toCNY(it.valuation, it.currency), 0)
+
     this.setData({
       months,
+      freqBuckets: buckets,
+      idleSpend: store.fmtMoney(idleSpend),
+      currentValue: store.fmtMoney(heldValue),
+      valuationCount: valued.length,
       budgetRows: rows,
       budgetMonth: rows.length ? rows[0].month : budget.monthKey(),
       catStats,
       statusStats,
       topDaily,
       totalCount: all.length,
-      totalSpend: store.fmtMoney(total)
+      totalSpend: store.fmtMoney(total),
+      dustDaysLabel: String(prefs.dustDays())
     })
   },
 

@@ -5,6 +5,7 @@
   <view class="card overview">
     <view class="ov-item"><view class="ov-num">{{totalCount}}</view><view class="ov-label">总件数</view></view>
     <view class="ov-item"><view class="ov-num">{{amountHidden ? '¥****' : '¥' + totalSpend}}</view><view class="ov-label">总投入</view></view>
+    <view class="ov-item"><view class="ov-num">{{amountHidden ? '¥****' : (valuationCount ? '¥' + currentValue : '—')}}</view><view class="ov-label">现值{{valuationCount ? '' : '（去详情页填估值）'}}</view></view>
   </view>
 
   <!-- 年度报告入口 -->
@@ -89,6 +90,18 @@
       <view class="status-num">{{item.count}}</view>
       <view class="status-label">{{item.name}}</view>
     </view>
+  </view>
+
+  <!-- 使用与闲置（持有中快照） -->
+  <view class="sec-title"><text>使用与闲置</text></view>
+  <view class="card">
+    <view wx:for="{{freqBuckets}}" wx:key="key" class="freq-row">
+      <text class="freq-label">{{item.label}}</text>
+      <view class="freq-track"><view class="freq-fill" style="width: {{item.w}}%;"></view></view>
+      <text class="freq-num">{{item.count}} 件</text>
+    </view>
+    <view class="freq-sum">闲置金额{{amountHidden ? '' : ('¥' + idleSpend)}}（≥{{dustDaysLabel}}未用）</view>
+    <view class="freq-note">快照数据：按最近一次使用距今分桶；实际涨缩需要"定时记录使用"能力，现在主要反映"当前闲置"状态</view>
   </view>
 
   <!-- 日均排行 -->

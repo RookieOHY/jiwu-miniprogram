@@ -292,6 +292,12 @@ Page({
     const retiredCount = all.filter((it) => it.retired && !it.sold).length
     const soldCount = all.filter((it) => it.sold).length
 
+    // 总净值：持有中物品估值合计 + 保值率（与同口径买入价对比）
+    const held = all.filter((it) => !it.retired)
+    const valued = held.filter((it) => Number(it.valuation) > 0)
+    const heldSpend = held.reduce((acc, it) => acc + store.toCNY(it.price, it.currency), 0)
+    const heldValue = valued.reduce((acc, it) => acc + store.toCNY(it.valuation, it.currency), 0)
+
     this.setData({
       items,
       count: all.length,
@@ -309,6 +315,9 @@ Page({
       // 时间线只在「默认顺序 + 无筛选」时有意义，否则顺序已重排，虚线会误导
       showTl: filterCount === 0,
       reminderCount: reminders.countReminders(),
+      currentValue: store.fmtMoney(heldValue),
+      valuationCount: valued.length,
+      keepRate: heldSpend > 0 && valued.length ? Math.round((heldValue / heldSpend) * 100) : 0,
       numSize: (function () {
         // +1 是 ¥ 符号；三列各约 210rpx，按最长值选字号保证不溢出
         const maxLen = Math.max(

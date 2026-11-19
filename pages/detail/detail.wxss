@@ -301,3 +301,30 @@
   color: var(--danger-text);
   font-weight: 600;
 }
+
+/* 服役进度：有退役日才显示；已退役灰满 */
+.life-bar {
+  height: 10rpx;
+  border-radius: 5rpx;
+  background: var(--track);
+  overflow: hidden;
+  margin-top: 24rpx;
+}
+.life-fill {
+  height: 100%;
+  border-radius: 5rpx;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.life-fill.over {
+  background: var(--danger-text);
+}
+.life-fill.done {
+  background: var(--text-3);
+}
+.life-cap {
+  font-size: 20rpx;
+  color: var(--text-dim);
+  margin-top: 10rpx;
+  text-align: center;
+}

@@ -28,6 +28,10 @@
           <view class="hero-num-label">总件数</view>
         </view>
       </view>
+
+      <view class="hero-value" wx:if="{{valuationCount}}">
+        现值 <text class="hv-num">{{amountHidden ? '¥****' : '¥' + currentValue}}</text> · 保值 {{keepRate}}%（{{valuationCount}} 件持有中）
+      </view>
     </view>
   </view>
 
