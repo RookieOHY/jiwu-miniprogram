@@ -49,8 +49,6 @@ Page({
   data: {
     demoCount: 0,
     reminderCount: 0,
-    itemCount: 0,
-    wishCount: 0,
     // 搜索与折叠
     q: '',
     searching: false,
@@ -107,8 +105,6 @@ Page({
     this.setData({
       demoCount: preview.count(),
       reminderCount: reminders.countReminders(),
-      itemCount: store.getAll().length,
-      wishCount: store.getWishes().length,
       notifySummary: this._notifySummary(),
       tabbarHideText: store.getTabbarHideText(),
       amountHidden: !!wx.getStorageSync('amountHidden'),

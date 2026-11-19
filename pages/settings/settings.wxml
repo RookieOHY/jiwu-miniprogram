@@ -17,14 +17,6 @@
   <!-- 概览 -->
   <view wx:if="{{!searching}}" class="card set-overview">
     <view class="ov-cell">
-      <view class="ov-num">{{itemCount}}</view>
-      <view class="ov-label">件物品</view>
-    </view>
-    <view class="ov-cell">
-      <view class="ov-num">{{wishCount}}</view>
-      <view class="ov-label">株草</view>
-    </view>
-    <view class="ov-cell">
       <view class="ov-num">{{reminderCount}}</view>
       <view class="ov-label">条提醒</view>
     </view>
