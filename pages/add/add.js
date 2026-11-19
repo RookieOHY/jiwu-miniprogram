@@ -1,5 +1,6 @@
 const store = require('../../utils/store')
 const parse = require('../../utils/parse')
+const cats = require('../../utils/cats')
 
 function fmtCN(s) {
   if (!s) return ''
@@ -30,6 +31,11 @@ Page({
     price: '',
     buyDate: '',
     category: 'other',
+    categoryGroup: '',
+    // 快捷添加的两级分类选择（组 → 子分类）
+    quickGroup: '',
+    quickSubs: [],
+    catGroups: cats.getGroups(),
     categories: store.CATEGORIES,
     platform: 'other',
     platformChips: [],
@@ -206,8 +212,28 @@ Page({
     this.setData({ buyDate: e.detail.value, buyDateCN: fmtCN(e.detail.value) }, () => this._updateNeed())
   },
 
-  onCat(e) {
-    this.setData({ category: e.currentTarget.dataset.key, catName: store.getCategoryName(e.currentTarget.dataset.key) })
+  /** 快捷分类：先选组，再选子分类（与详细添加同一套两级数据） */
+  onQuickGroup(e) {
+    const name = e.currentTarget.dataset.name
+    if (this.data.quickGroup === name) return
+    const g = cats.getGroups().find((x) => x.name === name) || { subs: [] }
+    const patch = { quickGroup: name, quickSubs: g.subs }
+    // 换组时清掉不属于该组的已选子分类
+    if (this.data.categoryGroup && this.data.categoryGroup !== name) {
+      patch.category = ''
+      patch.categoryGroup = ''
+      patch.catName = ''
+    }
+    this.setData(patch)
+  },
+
+  onQuickSub(e) {
+    const sub = e.currentTarget.dataset.sub
+    if (this.data.category === sub) {
+      this.setData({ category: '', categoryGroup: '', catName: '' })
+      return
+    }
+    this.setData({ category: sub, categoryGroup: this.data.quickGroup, catName: sub })
   },
 
   onPlatform(e) {
@@ -428,14 +454,14 @@ Page({
     const target = Number(targetDaily) > 0 ? Number(targetDaily) : 0
     if (this.data.isEdit && this.editId) {
       store.updateItem(this.editId, {
-        name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target
+        name: name.trim(), price: p, buyDate, category, categoryGroup: this.data.categoryGroup || '', platform, currency, note, icon, targetDaily: target
       })
       wx.showToast({ title: '已保存修改', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 500)
       return
     }
     // 快捷添加：留在本页，给出“继续补充 / 继续添加”
-    const item = store.addItem({ name: name.trim(), price: p, buyDate, category, platform, currency, note, icon, targetDaily: target })
+    const item = store.addItem({ name: name.trim(), price: p, buyDate, category, categoryGroup: this.data.categoryGroup || '', platform, currency, note, icon, targetDaily: target })
     wx.showToast({ title: '已记录', icon: 'success' })
     this.setData({
       justSaved: true,

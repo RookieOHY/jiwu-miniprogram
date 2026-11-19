@@ -68,28 +68,48 @@
     </view>
   </view>
 
-  <!-- 可选补充（暂为界面占位，不接逻辑） -->
-  <view class="sec-title">可选补充</view>
-  <view class="opt-grid">
-    <view class="opt-chip">
-      <view class="opt-ico ico-cat"></view>
-      <text>选择分类</text>
+  <!-- 分类与渠道（两级分类与详细添加同源；渠道含自定义） -->
+  <view class="sec-title">分类与渠道</view>
+  <view class="card qc">
+    <view class="q-label">分类{{category ? ' · ' + category : '（不选默认「其他」）'}}</view>
+    <view class="q-chips">
+      <view
+        wx:for="{{catGroups}}"
+        wx:key="name"
+        class="q-chip {{quickGroup === item.name ? 'q-chip-on' : ''}}"
+        data-name="{{item.name}}"
+        bindtap="onQuickGroup"
+      >{{item.name}}</view>
     </view>
+    <view class="q-chips" wx:if="{{quickSubs.length}}">
+      <view
+        wx:for="{{quickSubs}}"
+        wx:key="*this"
+        class="q-chip {{category === item ? 'q-chip-on' : ''}}"
+        data-sub="{{item}}"
+        bindtap="onQuickSub"
+      >{{item}}</view>
+    </view>
+
+    <view class="q-label">渠道{{platformName ? ' · ' + platformName : ''}}</view>
+    <view class="q-chips">
+      <view
+        wx:for="{{platformChips}}"
+        wx:key="key"
+        class="q-chip {{platform === item.key ? 'q-chip-on' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onPlatform"
+      >{{item.name}}</view>
+      <view class="q-chip" bindtap="togglePlatforms">{{showAllPlatforms ? '收起' : '更多'}}</view>
+    </view>
+  </view>
+
+  <!-- 图标 -->
+  <view class="sec-title">图标</view>
+  <view class="opt-grid">
     <view class="opt-chip" bindtap="openIconPanel">
       <view class="opt-ico ico-img"></view>
       <text>选择图标</text>
-    </view>
-    <view class="opt-chip">
-      <view class="opt-ico ico-pin"></view>
-      <text>存放位置</text>
-    </view>
-    <view class="opt-chip">
-      <view class="opt-ico ico-bag"></view>
-      <text>购买渠道</text>
-    </view>
-    <view class="opt-chip">
-      <view class="opt-ico ico-tag"></view>
-      <text>标签</text>
     </view>
   </view>
 

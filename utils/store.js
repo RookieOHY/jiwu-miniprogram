@@ -146,6 +146,7 @@ function addItem(data) {
     price: Number(data.price),
     buyDate: data.buyDate,
     category: data.category || 'other',
+    categoryGroup: data.categoryGroup || '',
     platform: data.platform || 'other',
     currency: data.currency === 'USD' ? 'USD' : 'CNY',
     icon: data.icon || null,

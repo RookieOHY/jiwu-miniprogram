@@ -698,3 +698,33 @@
   margin-bottom: 16rpx;
   line-height: 1.5;
 }
+
+/* 分类与渠道 chips */
+.qc {
+  margin-bottom: 24rpx;
+}
+.q-label {
+  font-size: 26rpx;
+  color: var(--text-2);
+  padding: 4rpx 8rpx 14rpx;
+}
+.q-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  padding: 0 4rpx 20rpx;
+}
+.q-chip {
+  font-size: 26rpx;
+  padding: 12rpx 26rpx;
+  border-radius: 32rpx;
+  background: var(--chip);
+  color: var(--text-1);
+}
+.q-chip-on {
+  background: var(--accent);
+  color: #ffffff;
+}
+.ph {
+  color: var(--text-dim);
+}
