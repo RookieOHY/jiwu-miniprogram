@@ -25,7 +25,7 @@ const ROWS = [
   { key: 'appLock', sec: '隐私', label: '应用锁', kw: ['锁', '密码', '口令', '加密', '防偷看', 'pin'] },
   { key: 'setPin', sec: '隐私', label: '设置口令', kw: ['口令', '密码', '修改密码', 'pin', '锁', 'unlock'] },
   { key: 'lockBg', sec: '隐私', label: '切后台自动上锁', kw: ['后台', '切后台', '自动上锁', '重新输入'] },
-  { key: 'privacyNote', sec: '隐私', label: '数据存在哪里', kw: ['隐私', '说明', '服务器', '上传', '明文', '安全', '存储'] },
+  { key: 'privacyNote', sec: '隐私', label: '隐私说明', kw: ['隐私', '说明', '数据存在哪里', '服务器', '上传', '明文', '安全', '存储', '本机'] },
   { key: 'backup', sec: '数据', label: '备份与恢复', kw: ['备份', '恢复', '导出', '导入', 'json', 'csv', '文件'] },
   { key: 'loadDemo', sec: '数据', label: '载入演示数据', kw: ['演示', '示例', '测试数据', 'demo'] },
   { key: 'clearDemo', sec: '数据', label: '清除演示数据', kw: ['清除演示', '删演示', 'demo'] },

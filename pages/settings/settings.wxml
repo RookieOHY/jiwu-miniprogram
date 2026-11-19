@@ -174,7 +174,7 @@
     </view>
     <view class="row" wx:if="{{fmt.has(visibleKeys, 'privacyNote')}}" bindtap="privacyNote" hover-class="row-press" hover-stay-time="80">
       <view class="row-main">
-        <view class="row-name">数据存在哪里</view>
+        <view class="row-name">隐私说明</view>
         <view class="row-sub">只存本机、口令非加密、备份是明文</view>
       </view>
       <view class="row-arrow">›</view>
